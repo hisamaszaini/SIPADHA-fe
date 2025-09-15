@@ -15,7 +15,9 @@ export const usePendudukData = () => {
             const response = await pendudukService.findAll(queryParams);
             setPendudukList(response.data);
             setPaginationMeta(response.meta || null);
-        } catch (error) { console.error("Gagal memuat daftar penduduk:", error); }
+        } catch (error) { 
+            console.error("Gagal memuat daftar penduduk:", error);
+        }
         finally { setIsLoading(false); }
     }, [queryParams]);
 

@@ -41,10 +41,10 @@ const AdminJenisSurat: React.FC = () => {
     const handleSave = async (
         formData: CreateJenisSuratDto | UpdateJenisSuratDto, 
         id: number | null, 
-        file?: File // Tambahkan parameter file
+        file?: File
     ) => {
         try {
-            await saveJenisSurat(formData, id, file); // Teruskan parameter file
+            await saveJenisSurat(formData, id, file);
             handleCloseModal();
         } catch (error) {
             console.error("Gagal menyimpan jenis surat:", error);

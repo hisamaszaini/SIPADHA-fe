@@ -14,6 +14,7 @@ import AdminKartuKeluarga from './pages/AdminKartuKeluarga';
 import AdminPenduduk from './pages/AdminPenduduk';
 import { Toaster } from 'sonner';
 import AdminJenisSurat from './pages/AdminJenisSurat';
+import RegisterPage from './pages/Register';
 // import NotFound from './pages/NotFound';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           {/* Public */}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* Protected with layout */}
           <Route

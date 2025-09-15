@@ -11,6 +11,7 @@ export const useJenisSuratData = () => {
     const [queryParams, setQueryParams] = useState<JenisSuratQueryParams>({
         page: 1,
         limit: 10,
+        search: '',
         sortBy: 'namaSurat',
         sortOrder: 'asc',
     });
@@ -34,9 +35,15 @@ export const useJenisSuratData = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setQueryParams(prev => ({ ...prev, page: 1, search: searchTerm }));
+            setQueryParams(prev => {
+                if (prev.search !== searchTerm) {
+                    return { ...prev, search: searchTerm, page: 1 };
+                }
+                return prev;
+            });
         }, 500);
         return () => clearTimeout(timer);
+
     }, [searchTerm]);
 
     const handleSort = useCallback((sortKey: JenisSuratSortableKeys) => {

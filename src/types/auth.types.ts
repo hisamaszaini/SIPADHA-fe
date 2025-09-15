@@ -15,3 +15,11 @@ export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface RegisterWarga {
+  nik: string;
+  email: string;
+  username: string;
+  password: string;
+  noHp: string;
+}

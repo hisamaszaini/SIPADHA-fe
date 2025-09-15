@@ -1,0 +1,439 @@
+import React, { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
+
+import type { CreateKartuKeluargaWithKepalaDto, PecahKkDto, UpdateKartuKeluargaWithKepalaDto } from '../../types/kartuKeluarga.types';
+import type { KartuKeluargaDetail } from '../../types/kartuKeluarga.types';
+import { useKartuKeluargaContext } from '../../contexts/kartuKeluargaContext';
+import TextInput from '../ui/TextInput';
+import SelectInput from '../ui/SelectInput';
+import { agamaOptions, jenisKelaminOptions, pendidikanOptions, statusPerkawinanOptions } from '../../constant/pendudukOption';
+import type { Penduduk } from '../../types/penduduk.types';
+import pendudukService from '../../services/pendudukService';
+import { toast } from 'sonner';
+
+type FormData = Omit<CreateKartuKeluargaWithKepalaDto, 'tanggalLahir'> & { tanggalLahir: string };
+
+interface KartuKeluargaFormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (formData: any, id: number | null) => Promise<void>;
+  editingKk: KartuKeluargaDetail | null;
+}
+
+const formatDateForInput = (isoDate: string | Date | undefined): string => {
+  if (!isoDate) return '';
+  try {
+    return new Date(isoDate).toISOString().split('T')[0];
+  } catch (e) {
+    return '';
+  }
+};
+
+const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen, onClose, onSave, editingKk }) => {
+  const isEditing = !!editingKk;
+
+  const {
+    allDukuh,
+    filteredRw,
+    filteredRt,
+    handleDukuhChange,
+    handleRwChange,
+    isLoadingRw,
+    isLoadingRt
+  } = useKartuKeluargaContext();
+
+  const initialFormState: FormData = {
+    noKk: '', alamat: '', dukuhId: 0, rwId: 0, rtId: 0, nik: '', nama: '',
+    tempatLahir: '', tanggalLahir: '', jenisKelamin: '', agama: '',
+    statusPerkawinan: '', pendidikan: '', pekerjaan: '', hubunganDalamKeluarga: 'Kepala Keluarga',
+  };
+
+  const [formData, setFormData] = useState<FormData>(initialFormState);
+  const [errors, setErrors] = useState<{ [key in keyof FormData]?: string }>({});
+  const [globalError, setGlobalError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [foundPenduduk, setFoundPenduduk] = useState<Penduduk | null>(null);
+  const [isCheckingNik, setIsCheckingNik] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      if (isEditing && editingKk) {
+        setFormData({
+          noKk: editingKk.noKk,
+          alamat: editingKk.alamat,
+          dukuhId: editingKk.dukuhId,
+          rwId: editingKk.rwId,
+          rtId: editingKk.rtId,
+          nik: editingKk.kepalaKeluarga.nik,
+          nama: editingKk.kepalaKeluarga.nama,
+          tempatLahir: editingKk.kepalaKeluarga.tempatLahir,
+          tanggalLahir: formatDateForInput(editingKk.kepalaKeluarga.tanggalLahir),
+          jenisKelamin: editingKk.kepalaKeluarga.jenisKelamin,
+          agama: editingKk.kepalaKeluarga.agama,
+          statusPerkawinan: editingKk.kepalaKeluarga.statusPerkawinan,
+          pendidikan: editingKk.kepalaKeluarga.pendidikan || '',
+          pekerjaan: editingKk.kepalaKeluarga.pekerjaan || '',
+          hubunganDalamKeluarga: editingKk.kepalaKeluarga.hubunganDalamKeluarga,
+        });
+      } else {
+        setFormData(initialFormState);
+      }
+      setErrors({});
+      setFoundPenduduk(null);
+    }
+  }, [isOpen, isEditing, editingKk, handleDukuhChange]);
+
+  useEffect(() => {
+    if (isEditing || formData.nik.length !== 16) {
+      setFoundPenduduk(null);
+      return;
+    }
+
+    const handler = setTimeout(async () => {
+      setIsCheckingNik(true);
+      try {
+        const response = await pendudukService.findByNik(formData.nik);
+        setFoundPenduduk(response.data || null);
+      } catch (error) {
+        setFoundPenduduk(null);
+        console.log("NIK tidak ditemukan atau terjadi error:", error);
+      } finally {
+        setIsCheckingNik(false);
+      }
+    }, 800);
+
+    return () => clearTimeout(handler);
+  }, [formData.nik, isEditing]);
+
+  useEffect(() => {
+    if (isOpen && isEditing && editingKk) {
+      if (editingKk.dukuhId) {
+        handleDukuhChange(editingKk.dukuhId);
+      }
+      if (editingKk.rwId) {
+        handleRwChange(editingKk.rwId);
+      }
+    }
+  }, [isOpen, isEditing, editingKk, handleDukuhChange, handleRwChange]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const isNumericField = ['dukuhId', 'rwId', 'rtId'].includes(name);
+    const numericValue = Number(value);
+
+    if (name === 'dukuhId') {
+      setFormData(prev => ({ ...prev, dukuhId: numericValue, rwId: 0, rtId: 0 }));
+      handleDukuhChange(numericValue || null);
+    } else if (name === 'rwId') {
+      setFormData(prev => ({ ...prev, rwId: numericValue, rtId: 0 }));
+      handleRwChange(numericValue || null);
+    } else {
+      setFormData(prev => ({ ...prev, [name]: isNumericField ? numericValue : value }));
+    }
+  };
+
+  const validate = (): boolean => {
+    const newErrors: { [key in keyof FormData]?: string } = {};
+    if (!formData.noKk || formData.noKk.length !== 16) newErrors.noKk = "Nomor KK harus 16 digit.";
+    if (!formData.alamat) newErrors.alamat = "Alamat wajib diisi.";
+    if (!formData.dukuhId) newErrors.dukuhId = "Dukuh wajib dipilih.";
+    if (!formData.rwId) newErrors.rwId = "RW wajib dipilih.";
+    if (!formData.rtId) newErrors.rtId = "RT wajib dipilih.";
+
+    if (!formData.nik || formData.nik.length !== 16) newErrors.nik = "NIK harus 16 digit.";
+
+    if (!foundPenduduk) {
+      if (!formData.nama) newErrors.nama = "Nama wajib diisi.";
+      if (!formData.tanggalLahir) newErrors.tanggalLahir = "Tanggal lahir wajib diisi.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    setGlobalError(null);
+    setErrors({});
+
+    if (!validate()) return;
+    setIsSubmitting(true);
+
+    let payload: CreateKartuKeluargaWithKepalaDto | UpdateKartuKeluargaWithKepalaDto | PecahKkDto;
+
+    if (isEditing && editingKk) {
+      payload = {
+        noKk: formData.noKk,
+        alamat: formData.alamat,
+        dukuhId: formData.dukuhId,
+        rwId: formData.rwId,
+        rtId: formData.rtId,
+        nik: formData.nik,
+        nama: formData.nama,
+        tempatLahir: formData.tempatLahir,
+        tanggalLahir: new Date(formData.tanggalLahir).toISOString(),
+        jenisKelamin: formData.jenisKelamin,
+        agama: formData.agama,
+        statusPerkawinan: formData.statusPerkawinan,
+        pendidikan: formData.pendidikan,
+        pekerjaan: formData.pekerjaan,
+        hubunganDalamKeluarga: formData.hubunganDalamKeluarga,
+        kepalaPendudukId: editingKk.kepalaPendudukId,
+      };
+    } else {
+      if (foundPenduduk) {
+        payload = {
+          noKk: formData.noKk,
+          alamat: formData.alamat,
+          dukuhId: formData.dukuhId,
+          rwId: formData.rwId,
+          rtId: formData.rtId,
+          kepalaPendudukId: foundPenduduk.id,
+        };
+      } else {
+        payload = {
+          ...formData,
+          tanggalLahir: new Date(formData.tanggalLahir).toISOString(),
+        };
+      }
+    }
+
+    try {
+      await onSave(payload, isEditing ? editingKk.id : null);
+      toast.success(`Kartu Keluarga berhasil ${isEditing ? 'diperbarui' : 'ditambahkan'}`);
+    } catch (error: any) {
+      toast.error(`Gagal ${isEditing ? 'memperbarui' : 'menambahkan'} kartu keluarga`);
+      const response = error?.response?.data;
+      if (response?.message && typeof response.message === 'object') {
+        setErrors(response.message);
+      } else {
+        throw error;
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  const displayKepalaKeluarga = foundPenduduk ? {
+    nama: foundPenduduk.nama,
+    tempatLahir: foundPenduduk.tempatLahir,
+    tanggalLahir: formatDateForInput(foundPenduduk.tanggalLahir),
+    jenisKelamin: foundPenduduk.jenisKelamin,
+    agama: foundPenduduk.agama,
+    statusPerkawinan: foundPenduduk.statusPerkawinan,
+    pendidikan: foundPenduduk.pendidikan || '',
+    pekerjaan: foundPenduduk.pekerjaan || '',
+  } : formData;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-6 m-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <h3 className="text-2xl font-bold text-gray-800 mb-6">{isEditing ? 'Edit Kartu Keluarga' : 'Tambah Kartu Keluarga Baru'}</h3>
+
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+            <fieldset className="space-y-4">
+              <legend className="font-semibold text-lg border-b pb-2 text-gray-700 w-full">Data Kartu Keluarga</legend>
+              <TextInput
+                id="noKk"
+                name="noKk"
+                label="Nomor KK"
+                value={formData.noKk}
+                placeholder="Masukan Nomor KK..."
+                error={errors.noKk}
+                onChange={handleChange}
+              />
+              <TextInput
+                id="alamat"
+                name="alamat"
+                label="Alamat"
+                value={formData.alamat}
+                placeholder="Masukan Alamat..."
+                error={errors.alamat}
+                onChange={handleChange}
+              />
+              <SelectInput
+                id="dukuhId"
+                name="dukuhId"
+                label="Dukuh"
+                value={formData.dukuhId}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                error={errors.dukuhId}
+                required>
+                <option value={0}>-- Pilih Dukuh --</option>
+                {allDukuh.map(d => <option key={d.id} value={d.id}>{d.nama}</option>)}
+              </SelectInput>
+              <SelectInput
+                id="rwId"
+                name="rwId"
+                label="RW"
+                value={formData.rwId}
+                onChange={handleChange}
+                disabled={!formData.dukuhId || isLoadingRw || isSubmitting}
+                error={errors.rwId}
+                required>
+                <option value={0}>{isLoadingRw ? 'Memuat...' : '-- Pilih RW --'}</option>
+                {filteredRw.map(rw => <option key={rw.id} value={rw.id}>RW {rw.nomor}</option>)}
+              </SelectInput>
+              <SelectInput
+                id="rtId"
+                name="rtId"
+                label="RT"
+                value={formData.rtId}
+                onChange={handleChange}
+                disabled={!formData.rwId || isLoadingRt || isSubmitting}
+                error={errors.rtId}
+                required>
+                <option value={0}>{isLoadingRt ? 'Memuat...' : '-- Pilih RT --'}</option>
+                {filteredRt.map(rt => <option key={rt.id} value={rt.id}>RT {rt.nomor}</option>)}
+              </SelectInput>
+            </fieldset>
+
+            <fieldset className="space-y-4">
+              <legend className="font-semibold text-lg border-b pb-2 text-gray-700 w-full">Data Kepala Keluarga</legend>
+              <TextInput
+                id="nik"
+                name="nik"
+                label="NIK Kepala Keluarga"
+                value={formData.nik}
+                placeholder="Masukan 16 digit NIK..."
+                error={errors.nik}
+                onChange={handleChange}
+                disabled={isEditing || isSubmitting}
+                helpText={isCheckingNik ? 'Mengecek NIK...' : (foundPenduduk ? `✔️ NIK ditemukan: ${foundPenduduk.nama}` : 'Ketik 16 digit NIK untuk cek otomatis.')}
+              />
+              <TextInput
+                id="nama" name="nama" label="Nama"
+                value={displayKepalaKeluarga.nama}
+                onChange={handleChange}
+                error={errors.nama}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+                readOnly={!!foundPenduduk || isEditing}
+              />
+              <TextInput
+                id="tempatLahir" name="tempatLahir" label="Tempat Lahir"
+                value={displayKepalaKeluarga.tempatLahir}
+                onChange={handleChange}
+                error={errors.tempatLahir}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+                readOnly={!!foundPenduduk || isEditing}
+              />
+              <TextInput
+                type="date" id="tanggalLahir" name="tanggalLahir" label="Tanggal Lahir"
+                value={displayKepalaKeluarga.tanggalLahir}
+                onChange={handleChange}
+                error={errors.tanggalLahir}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+                readOnly={!!foundPenduduk || isEditing}
+              />
+              <SelectInput
+                id="jenisKelamin" name="jenisKelamin" label="Jenis Kelamin"
+                value={displayKepalaKeluarga.jenisKelamin}
+                onChange={handleChange}
+                error={errors.jenisKelamin}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+              >
+                {jenisKelaminOptions.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
+              </SelectInput>
+              <SelectInput
+                id="agama"
+                name="agama"
+                label="Agama"
+                value={displayKepalaKeluarga.agama}
+                onChange={handleChange}
+                error={errors.agama}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+              >
+                {agamaOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </SelectInput>
+              <SelectInput
+                id="statusPerkawinan"
+                name="statusPerkawinan"
+                label="Status Perkawinan"
+                value={displayKepalaKeluarga.statusPerkawinan}
+                onChange={handleChange}
+                error={errors.statusPerkawinan}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+              >
+                {statusPerkawinanOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </SelectInput>
+              <SelectInput
+                id="pendidikan"
+                name="pendidikan"
+                label="Pendidikan Terakhir"
+                value={displayKepalaKeluarga.pendidikan}
+                onChange={handleChange}
+                error={errors.pendidikan}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+              >
+                {pendidikanOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </SelectInput>
+              <TextInput
+                id="pekerjaan"
+                name="pekerjaan"
+                label="Pekerjaan"
+                value={displayKepalaKeluarga.pekerjaan}
+                placeholder="Masukan Pekerjaan..."
+                error={errors.pekerjaan}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+                onChange={handleChange}
+              />
+            </fieldset>
+          </div>
+
+          {globalError && (
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+              <p>{globalError}</p>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-4 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={isSubmitting}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-colors disabled:opacity-50 flex items-center justify-center"
+            >
+              {isSubmitting ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Menyimpan...
+                </>
+              ) : (
+                'Simpan'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default KartuKeluargaFormModal;

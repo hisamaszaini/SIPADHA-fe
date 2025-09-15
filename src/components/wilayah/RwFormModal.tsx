@@ -1,0 +1,152 @@
+import React, { useState, useEffect, type FormEvent } from 'react';
+import { toast } from 'sonner';
+import type { Rw, CreateRwDto } from '../../types/rw.types';
+import type { Dukuh } from '../../types/dukuh.types';
+import TextInput from '../ui/TextInput';
+import SelectInput from '../ui/SelectInput';
+
+interface RwFormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (formData: CreateRwDto | Partial<CreateRwDto>, id: number | null) => Promise<void>;
+  editingRw: Rw | null;
+  dukuhList: Dukuh[];
+}
+
+const initialFormState = { nomor: '', dukuhId: '' };
+
+const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, editingRw, dukuhList }) => {
+  const [formData, setFormData] = useState(initialFormState);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [globalError, setGlobalError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      if (editingRw) {
+        setFormData({
+          nomor: editingRw.nomor,
+          dukuhId: String(editingRw.dukuhId),
+        });
+      } else {
+        setFormData(initialFormState);
+      }
+      setFieldErrors({});
+      setGlobalError(null);
+    }
+  }, [editingRw, isOpen]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+    if (globalError) setGlobalError(null);
+  };
+  
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.nomor.trim()) newErrors.nomor = 'Nomor RW wajib diisi.';
+    else if (!/^\d{1,3}$/.test(formData.nomor)) newErrors.nomor = 'Nomor RW harus berupa 1-3 digit angka.';
+    if (!formData.dukuhId) newErrors.dukuhId = 'Induk Dukuh wajib dipilih.';
+    return newErrors;
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setFieldErrors({});
+    setGlobalError(null);
+
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
+      return;
+    }
+
+    setIsSaving(true);
+    const payload = {
+      ...formData,
+      dukuhId: Number(formData.dukuhId),
+    };
+
+    try {
+      await onSave(payload, editingRw ? editingRw.id : null);
+      toast.success(`RW berhasil ${editingRw ? 'diperbarui' : 'ditambahkan'}`);
+      onClose();
+    } catch (err: any) {
+      const response = err?.response?.data;
+      if (response?.message && typeof response.message === 'object') {
+        setFieldErrors(response.message);
+      } else {
+        const msg = response?.message || 'Terjadi kesalahan. Silakan coba lagi.';
+        setGlobalError(msg);
+        toast.error(msg);
+      }
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 m-4" onClick={e => e.stopPropagation()}>
+        <h3 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-gray-300 pb-3">
+          {editingRw ? 'Edit RW' : 'Tambah RW'}
+        </h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {globalError && (
+            <div className="bg-red-100 text-red-700 px-4 py-2 rounded-md" role="alert">{globalError}</div>
+          )}
+
+          <TextInput
+            id="nomor"
+            label="Nomor RW"
+            name="nomor"
+            value={formData.nomor}
+            onChange={handleChange}
+            error={fieldErrors.nomor}
+            placeholder="Contoh: 01"
+            disabled={isSaving}
+            autoFocus
+            required
+          />
+
+          <SelectInput
+            id="dukuhId"
+            label="Induk Dukuh"
+            name="dukuhId"
+            value={formData.dukuhId}
+            onChange={handleChange}
+            error={fieldErrors.dukuhId}
+            disabled={isSaving}
+            required
+          >
+            <option value="" disabled>-- Pilih Dukuh --</option>
+            {dukuhList.map((dukuh) => (
+              <option key={dukuh.id} value={dukuh.id}>{dukuh.nama}</option>
+            ))}
+          </SelectInput>
+
+          <div className="flex justify-end gap-4 pt-4">
+            <button type="button" onClick={onClose} disabled={isSaving} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50">
+              Batal
+            </button>
+            <button type="submit" disabled={isSaving} className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]">
+              {isSaving ? 'Menyimpan...' : 'Simpan'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default RwFormModal;

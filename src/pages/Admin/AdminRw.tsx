@@ -2,15 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { PlusIcon } from 'lucide-react';
 
 // Services & Types
-import dukuhService from '../services/dukuhService';
-import type { Dukuh, DukuhQueryParams } from '../types/dukuh.types';
+import dukuhService from '../../services/dukuhService';
+import type { Dukuh, DukuhQueryParams } from '../../types/dukuh.types';
 
 // Components
-import DukuhTable from '../components/wilayah/DukuhTable';
-import DukuhFormModal from '../components/wilayah/DukuhFormModal';
-import type { PaginationMeta } from '../types/api.types';
-import Pagination from '../components/ui/Pagination';
-
+import DukuhTable from '../../components/wilayah/DukuhTable';
+import DukuhFormModal from '../../components/wilayah/DukuhFormModal';
+import type { PaginationMeta } from '../../types/api.types';
+import { Pagination } from '../../components/ui/Pagination';
 
 const AdminDukuh: React.FC = () => {
     // State untuk data dan UI
@@ -133,6 +132,7 @@ const AdminDukuh: React.FC = () => {
 
             {paginationMeta && (
                 <Pagination
+                    currentItemCount={dukuhList.length}
                     meta={paginationMeta}
                     onPageChange={handlePageChange}
                 />

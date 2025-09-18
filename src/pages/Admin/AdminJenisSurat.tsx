@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { PlusIcon } from 'lucide-react';
-import { useJenisSuratData } from '../hooks/useJenisSuratData';
-import type { CreateJenisSuratDto, JenisSurat, UpdateJenisSuratDto } from '../types/jenisSurat.types';
-import JenisSuratTable from '../components/jenisSurat/JenisSuratTable';
-import Pagination from '../components/ui/Pagination';
-import JenisSuratFilter from '../components/jenisSurat/JenisSuratFilter';
-import JenisSuratFormModal from '../components/jenisSurat/JenisSuratModal';
+import { useJenisSuratData } from '../../hooks/useJenisSuratData';
+import type { CreateJenisSuratDto, JenisSurat, UpdateJenisSuratDto } from '../../types/jenisSurat.types';
+import JenisSuratTable from '../../components/jenisSurat/JenisSuratTable';
+import JenisSuratFilter from '../../components/jenisSurat/JenisSuratFilter';
+import JenisSuratFormModal from '../../components/jenisSurat/JenisSuratModal';
+import { Button } from '../../components/ui/Button';
+import { Pagination } from '../../components/ui/Pagination';
 
 const AdminJenisSurat: React.FC = () => {
     const {
@@ -56,13 +56,10 @@ const AdminJenisSurat: React.FC = () => {
         <div className="w-full mx-auto bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
             <header className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-base md:text-xl font-bold text-gray-800">Manajemen Jenis Surat</h2>
-                <button
-                    onClick={() => handleOpenModal()}
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-3 rounded-lg flex items-center gap-2"
-                >
-                    <PlusIcon className="w-5 h-5" />
-                    <span>Tambah Jenis Surat</span>
-                </button>
+                <div className="flex items-center ml-auto">
+                    <Button variant="primary" size="mid" icon="fas fa-plus" onClick={() => handleOpenModal()}
+                    >Tambah Jenis Surat</Button>
+                </div>
             </header>
 
             <JenisSuratFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -78,7 +75,7 @@ const AdminJenisSurat: React.FC = () => {
                 />
             </div>
 
-            {paginationMeta && <Pagination meta={paginationMeta} onPageChange={handlePageChange} />}
+            {paginationMeta && <Pagination currentItemCount={jenisSuratList.length} meta={paginationMeta} onPageChange={handlePageChange} />}
 
             {isModalOpen && (
                 <JenisSuratFormModal

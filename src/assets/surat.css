@@ -1,0 +1,177 @@
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      @media print {
+        .page,
+        .page-break {
+          break-after: page;
+        }
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      p {
+        margin: 0pt
+      }
+
+      li,
+      table {
+        margin-top: 0pt;
+        margin-bottom: 0pt
+      }
+
+      @media print {
+
+        table,
+        th,
+        td {
+          border: none !important;
+          border-collapse: collapse;
+        }
+      }
+
+      .BalloonText {
+        margin-bottom: 0pt;
+        line-height: normal;
+        font-family: 'Segoe UI';
+        font-size: 9pt
+      }
+
+      .BodyText {
+        margin-bottom: 0pt;
+        text-align: justify;
+        line-height: normal;
+        font-family: 'Times New Roman';
+        font-size: 12pt
+      }
+
+      .ListParagraph {
+        margin-left: 36pt;
+        margin-bottom: 10pt;
+        line-height: 115%;
+        font-family: Calibri;
+        font-size: 11pt
+      }
+
+      .Subtitle {
+        margin-left: 81pt;
+        margin-bottom: 0pt;
+        text-align: center;
+        line-height: normal;
+        font-family: 'Times New Roman';
+        font-size: 24pt
+      }
+
+      span.BalloonTextChar {
+        font-family: 'Segoe UI';
+        font-size: 9pt
+      }
+
+      span.BodyTextChar {
+        font-family: 'Times New Roman';
+        font-size: 12pt
+      }
+
+      span.Hyperlink {
+        text-decoration: underline;
+        color: #0000ff
+      }
+
+      span.SubtitleChar {
+        font-family: 'Times New Roman';
+        font-size: 24pt
+      }
+
+      span.UnresolvedMention {
+        color: #605e5c;
+        background-color: #e1dfdd
+      }
+
+      .awlist1 {
+        list-style: none;
+        counter-reset: awlistcounter1_0
+      }
+
+      .awlist1>li:before {
+        content: '';
+        counter-increment: awlistcounter1_0
+      }
+
+      .awlist2 {
+        list-style: none;
+        counter-reset: awlistcounter2_0
+      }
+
+      .awlist2>li:before {
+        content: '';
+        counter-increment: awlistcounter2_0
+      }
+
+      .awlist3 {
+        list-style: none;
+        counter-reset: awlistcounter3_0
+      }
+
+      .awlist3>li:before {
+        content: '';
+        counter-increment: awlistcounter3_0
+      }
+
+      .awlist4 {
+        list-style: none;
+        counter-reset: awlistcounter3_0 1
+      }
+
+      .awlist4>li:before {
+        content: '';
+        counter-increment: awlistcounter3_0
+      }
+
+      .awlist5 {
+        list-style: none;
+        counter-reset: awlistcounter3_0 2
+      }
+
+      .awlist5>li:before {
+        content: '';
+        counter-increment: awlistcounter3_0
+      }
+
+      .awlist6 {
+        list-style: none;
+        counter-reset: awlistcounter3_0 3
+      }
+
+      .awlist6>li:before {
+        content: '';
+        counter-increment: awlistcounter3_0
+      }
+
+      @media (max-width: 900px) {
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+
+        .table-container {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        td,
+        th {
+          padding: 8px;
+          text-align: left;
+          border: 1px solid #ddd;
+        }
+      }

@@ -11,6 +11,7 @@ import type { CreateDukuhDto, Dukuh } from '../../types/dukuh.types';
 import DukuhFormModal from './DukuhFormModal';
 import Pagination from '../ui/Pagination';
 import DukuhTable from './DukuhTable';
+import { Button } from '../ui/Button';
 
 const DukuhTab: React.FC = () => {
     // Memanggil hook untuk mendapatkan semua logika dan state data
@@ -53,16 +54,11 @@ const DukuhTab: React.FC = () => {
               dan di-expose seperti `handleFilterChange`.
             */}
             <div className="p-4 flex justify-end">
-                <button
-                    onClick={() => handleOpenModal()}
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-3 rounded-lg flex items-center gap-2"
-                >
-                    <PlusIcon className="w-5 h-5" />
-                    <span>Tambah Dukuh</span>
-                </button>
+                <Button variant="primary" size="mid" icon="fas fa-plus" onClick={() => handleOpenModal()}
+                >Tambah Dukuh</Button>
             </div>
 
-            <div className="flex-grow overflow-y-auto">
+            <div className="flex-grow">
                 <DukuhTable
                     dukuhList={dukuhList}
                     isLoading={isLoading}

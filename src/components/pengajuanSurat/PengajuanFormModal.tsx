@@ -1,0 +1,143 @@
+import { useEffect, useState } from 'react';
+import type { z } from 'zod';
+import type { PengajuanSuratDetail } from '../../types/pengajuanSurat.types';
+import type { JenisSuratEnum } from '../../types/jenisSurat.types';
+import { usePengajuanSuratForm } from '../../hooks/PengajuanSurat/usePengajuanSuratForm';
+import { PendudukSelect } from '../pendudukSelect';
+import SelectInput from '../ui/SelectInput';
+import { KeteranganUsahaFields } from './fields/KeteranganUsahaFields';
+import { KeteranganTidakMampuSekolahFields } from './fields/SKTMSekolahFields';
+import { Button } from '../ui/Button';
+
+// Perbarui Props untuk menyertakan 'pendudukSearch'
+interface PengajuanSuratFormModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    pengajuan?: PengajuanSuratDetail | null;
+    onSuccess: () => void;
+    // Props untuk pencarian pemohon
+    pendudukOptions: any[];
+    onPendudukSearchChange: (value: string) => void;
+    isPendudukLoading: boolean;
+    // Props untuk pencarian target (anak/siswa)
+    targetOptions: any[];
+    onTargetSearchChange: (value: string) => void;
+    isTargetLoading: boolean;
+}
+
+export function PengajuanSuratFormModal({
+    isOpen,
+    onClose,
+    pengajuan,
+    onSuccess,
+    pendudukOptions,
+    onPendudukSearchChange,
+    isPendudukLoading,
+    targetOptions,
+    onTargetSearchChange,
+    isTargetLoading,
+}: PengajuanSuratFormModalProps) {
+
+    console.log(`TargetOptions: ${JSON.stringify(targetOptions, null, 2)}`);
+
+    const isEditMode = !!pengajuan;
+    const [selectedJenis, setSelectedJenis] = useState<z.infer<typeof JenisSuratEnum>>(
+        pengajuan?.jenis as z.infer<typeof JenisSuratEnum> || 'KETERANGAN_USAHA'
+    );
+
+    const { form, onSubmit, onInvalid, isLoading } = usePengajuanSuratForm({
+        pengajuan,
+        jenisUntukBuat: selectedJenis,
+        onSuccess,
+    });
+
+    // Ambil method yang dibutuhkan dari hook form
+    const { register, watch, setValue, formState: { errors } } = form;
+
+    // Tonton perubahan 'jenis' untuk render field kondisional
+    const watchedJenis = watch('jenis');
+
+    useEffect(() => {
+        if (!isEditMode) {
+            // Set nilai 'jenis' di form state saat dropdown berubah
+            setValue('jenis', selectedJenis, { shouldValidate: true });
+        }
+    }, [selectedJenis, isEditMode, setValue]);
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4">
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl max-h-[95vh] flex flex-col overflow-y-auto scrollbar-hide-y">
+                <div className="py-5 px-6 border-b border-gray-200">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                        {isEditMode ? 'Edit Pengajuan Surat' : 'Tambah Pengajuan Surat'}
+                    </h2>
+                    <p className="text-md text-gray-600 mt-4 font-bold"><span className="text-red-500">*</span> Wajib diisi</p>
+                </div>
+
+                <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} className="space-y-4 p-6 overflow-y-auto">
+                    <PendudukSelect
+                        label="Pemohon"
+                        value={pendudukOptions.find(p => p.id === Number(watch('pendudukId'))) || null}
+                        onChange={(val) => setValue('pendudukId', val ? String(val.id) : '', { shouldValidate: true })}
+                        options={pendudukOptions}
+                        onSearchChange={onPendudukSearchChange}
+                        isLoading={isPendudukLoading}
+                        error={errors.pendudukId?.message as string}
+                    />
+
+                    <SelectInput
+                        id="jenis"
+                        label="Jenis Surat"
+                        error={errors.jenis?.message}
+                        disabled={isEditMode}
+                        // `register` sekarang digunakan di sini
+                        {...register("jenis", {
+                            onChange: (e) => setSelectedJenis(e.target.value as z.infer<typeof JenisSuratEnum>)
+                        })
+                        }
+                    >
+                        <option value="KETERANGAN_USAHA" > Keterangan Usaha </option>
+                        < option value="KETERANGAN_TIDAK_MAMPU_SEKOLAH" > SKTM(Sekolah) </option>
+                        {/* Tambahkan jenis surat lain jika ada */}
+                    </SelectInput>
+
+                    {watchedJenis === "KETERANGAN_USAHA" && (
+                        <KeteranganUsahaFields form={form} />
+                    )}
+
+                    {watchedJenis === "KETERANGAN_TIDAK_MAMPU_SEKOLAH" && (
+                        <KeteranganTidakMampuSekolahFields
+                            form={form}
+                            targetOptions={targetOptions}
+                            onTargetSearchChange={onTargetSearchChange}
+                            isTargetLoading={isTargetLoading}
+                        />
+                    )}
+
+                    {/* Tombol Aksi */}
+                    {/* <div className="flex justify-end gap-4 pt-4" >
+                        <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 rounded-md" > Batal </button>
+                        < button type="submit" disabled={isLoading} className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-blue-300" >
+                            {isLoading ? 'Menyimpan...' : 'Simpan'}
+                        </button>
+                    </div> */}
+                    <div className="flex gap-3 justify-end mt-10">
+                        <Button type="button" variant="secondary" onClick={onClose}>
+                            Batal
+                        </Button>
+                        <Button
+                            type="submit"
+                            variant="primary"
+                            icon="fas fa-save"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'Menyimpan...' : isEditMode ? 'Perbarui' : 'Simpan'}
+                        </Button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { PlusIcon } from 'lucide-react';
 
-import Pagination from '../components/ui/Pagination';
-import KkFilter from '../components/kartukeluarga/KartuKeluargaFilter';
-import KartuKeluargaTable from '../components/kartukeluarga/KartuKeluargaTable';
-import KartuKeluargaFormModal from '../components/kartukeluarga/KartuKeluargaFormModal';
+import KkFilter from '../../components/kartukeluarga/KartuKeluargaFilter';
+import KartuKeluargaTable from '../../components/kartukeluarga/KartuKeluargaTable';
+import KartuKeluargaFormModal from '../../components/kartukeluarga/KartuKeluargaFormModal';
 
 // Types
-import type { KartuKeluarga, FindAllKartuKeluargaResponse } from '../types/kartuKeluarga.types';
-import { KartuKeluargaProvider } from '../contexts/kartuKeluargaContext';
-import { useKartuKeluargaData } from '../hooks/useKartuKeluargaData';
+import type { KartuKeluarga, FindAllKartuKeluargaResponse } from '../../types/kartuKeluarga.types';
+import { KartuKeluargaProvider } from '../../contexts/kartuKeluargaContext';
+import { useKartuKeluargaData } from '../../hooks/useKartuKeluargaData';
+import { Button } from '../../components/ui/Button';
+import { Pagination } from '../../components/ui/Pagination';
 
 const AdminKartuKeluarga: React.FC = () => {
     return (
@@ -65,15 +65,9 @@ const KartuKeluargaPage: React.FC = () => {
 
     return (
         <div className="w-full mx-auto bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
-             <header className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
+            <header className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-base md:text-xl font-bold text-gray-800">Manajemen Kartu Keluarga</h2>
-                <button
-                    onClick={() => handleOpenModal()}
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-3 rounded-lg flex items-center gap-2"
-                >
-                    <PlusIcon className="w-5 h-5" />
-                    <span>Tambah KK Baru</span>
-                </button>
+                <Button variant="primary" size="mid" icon="fas fa-plus" onClick={() => handleOpenModal()}>Tambah Kartu Keluarga</Button>
             </header>
 
             <KkFilter onFilterChange={handleFilterChange} filters={queryParams} />
@@ -91,7 +85,7 @@ const KartuKeluargaPage: React.FC = () => {
                 />
             </div>
 
-            {paginationMeta && <Pagination meta={paginationMeta} onPageChange={handlePageChange} />}
+            {paginationMeta && <Pagination currentItemCount={kkList.length} meta={paginationMeta} onPageChange={handlePageChange} />}
 
             {isModalOpen && (
                 <KartuKeluargaFormModal

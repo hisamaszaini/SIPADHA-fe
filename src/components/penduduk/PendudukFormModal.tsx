@@ -60,11 +60,14 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                     search: kkSearchTerm
                 });
                 setKkOptions(response.data);
+
+
             } catch (error) {
                 console.error("Gagal mencari Kartu Keluarga:", error);
             } finally {
                 setIsKkLoading(false);
             }
+
         }, 500);
 
         return () => clearTimeout(timer);
@@ -166,16 +169,21 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-6 m-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                <h3 className="text-2xl font-bold text-gray-800 mb-6">{isEditing ? 'Edit Data Penduduk' : 'Tambah Penduduk Baru'}</h3>
-                <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4" onClick={onClose}>
+            <div
+                className="bg-white rounded-2xl shadow-xl w-full max-w-3xl max-h-[95vh] flex flex-col overflow-y-auto scrollbar-hide-y"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <div className="py-4 px-6 border-b border-gray-200">
+                    <h3 className="text-2xl font-bold text-gray-800">
+                        {isEditing ? 'Edit Data Penduduk' : 'Tambah Penduduk Baru'}</h3>
+                </div>
+                <form onSubmit={handleSubmit} className="space-y-4 p-6 overflow-y-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                         {/* Kolom Kiri */}
                         <fieldset className="space-y-4">
-                            <legend className="font-semibold text-lg border-b pb-2 text-gray-700 w-full">Data Diri</legend>
+                            <legend className="font-semibold text-lg border-b border-gray-300 pb-2 text-gray-700 w-full">Data Diri</legend>
 
-                            {/* --- PERUBAHAN KUNCI 2: Menggunakan `handleChange` dan `name` --- */}
                             <TextInput
                                 id="nik"
                                 name="nik"
@@ -223,7 +231,7 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
 
                         {/* Kolom Kanan */}
                         <fieldset className="space-y-4">
-                            <legend className="font-semibold text-lg border-b pb-2 text-gray-700 w-full">Data Keluarga & Lainnya</legend>
+                            <legend className="font-semibold text-lg border-b border-gray-300 pb-2 text-gray-700 w-full">Data Keluarga & Lainnya</legend>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Pilih Kartu Keluarga</label>
                                 <Combobox value={selectedKk} onChange={handleKkSelect}>

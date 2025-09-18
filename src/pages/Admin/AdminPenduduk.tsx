@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import { usePendudukData } from '../hooks/usePendudukData';
-import PendudukTable from '../components/penduduk/PendudukTable';
-import { WilayahProvider } from '../contexts/wilayahContext';
-import Pagination from '../components/ui/Pagination';
-import PendudukFilter from '../components/penduduk/PendudukFilter';
-import type { FindAllPendudukResponse, Penduduk, PendudukDto } from '../types/penduduk.types';
-import { PlusIcon } from 'lucide-react';
-import PendudukFormModal from '../components/penduduk/PendudukFormModal';
+import { usePendudukData } from '../../hooks/usePendudukData';
+import PendudukTable from '../../components/penduduk/PendudukTable';
+import { WilayahProvider } from '../../contexts/wilayahContext';
+import PendudukFilter from '../../components/penduduk/PendudukFilter';
+import type { FindAllPendudukResponse, Penduduk, PendudukDto } from '../../types/penduduk.types';
+import PendudukFormModal from '../../components/penduduk/PendudukFormModal';
+import { Button } from '../../components/ui/Button';
+import { Pagination } from '../../components/ui/Pagination';
 
 const AdminPenduduk: React.FC = () => {
     return (
@@ -60,13 +60,7 @@ const PendudukPage: React.FC = () => {
         <div className="w-full mx-auto bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
             <header className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-base md:text-xl font-bold text-gray-800">Manajemen Penduduk</h2>
-                <button
-                    onClick={() => handleOpenModal()}
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-3 rounded-lg flex items-center gap-2"
-                >
-                    <PlusIcon className="w-5 h-5" />
-                    <span>Tambah Penduduk</span>
-                </button>
+                <Button variant="primary" size="mid" icon="fas fa-plus" onClick={() => handleOpenModal()}>Tambah Penduduk</Button>
             </header>
 
             <PendudukFilter filters={queryParams} onFilterChange={handleFilterChange} />
@@ -82,7 +76,7 @@ const PendudukPage: React.FC = () => {
                 />
             </div>
 
-            {paginationMeta && <Pagination meta={paginationMeta} onPageChange={handlePageChange} />}
+            {paginationMeta && <Pagination currentItemCount={pendudukList.length} meta={paginationMeta} onPageChange={handlePageChange} />}
 
             {isModalOpen && <PendudukFormModal
                 isOpen={isModalOpen}

@@ -15,7 +15,7 @@ interface PendudukTableProps {
 export const PendudukTable: React.FC<PendudukTableProps> = ({ pendudukList, isLoading, queryParams, onSort, onEdit, onDelete }) => {
     return (
         <table className="min-w-full text-left text-sm text-gray-900">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 border-b border-gray-200">
                 <tr className="text-xs font-medium uppercase tracking-wider text-gray-500">
                     <SortableHeader columnKey="id" onSort={onSort} queryParams={queryParams}>NO.</SortableHeader>
                     <SortableHeader columnKey="nama" onSort={onSort} queryParams={queryParams}>Nama</SortableHeader>
@@ -23,8 +23,8 @@ export const PendudukTable: React.FC<PendudukTableProps> = ({ pendudukList, isLo
                     <SortableHeader columnKey="jenisKelamin" onSort={onSort} queryParams={queryParams}>J. Kelamin</SortableHeader>
                     <SortableHeader columnKey="tanggalLahir" onSort={onSort} queryParams={queryParams}>Tgl. Lahir</SortableHeader>
                     <SortableHeader columnKey="noKk" onSort={onSort} queryParams={queryParams}>No. KK</SortableHeader>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Wilayah (Dukuh/RW/RT)</th>
-                    <th scope="col" className="relative px-6 py-3"><span className="sr-only">Aksi</span></th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Wilayah (Dukuh/RW/RT)</th>
+                    <th className="px-6 py-3 text-right">Aksi</th>
                 </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -44,7 +44,7 @@ export const PendudukTable: React.FC<PendudukTableProps> = ({ pendudukList, isLo
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {`${penduduk.kartuKeluarga.rt.rw.dukuh.nama}, RW ${penduduk.kartuKeluarga.rt.rw.nomor}, RT ${penduduk.kartuKeluarga.rt.nomor}`}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold">
                                 <div className="flex justify-end items-center gap-2">
                                     <button
                                         onClick={() => onEdit(penduduk)}

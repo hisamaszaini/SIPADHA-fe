@@ -5,16 +5,20 @@ import MainLayout from './components/MainLayout';
 // Components & Pages
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './pages/Admin/AdminDashboard';
 import PengurusDashboard from './pages/PengurusDashboard';
 import WargaDashboard from './pages/WargaDashboard';
 import Profile from './pages/Profile';
-import AdminDukuh from './pages/AdminWilayah';
-import AdminKartuKeluarga from './pages/AdminKartuKeluarga';
-import AdminPenduduk from './pages/AdminPenduduk';
+import AdminDukuh from './pages/Admin/AdminWilayah';
+import AdminKartuKeluarga from './pages/Admin/AdminKartuKeluarga';
+import AdminPenduduk from './pages/Admin/AdminPenduduk';
 import { Toaster } from 'sonner';
-import AdminJenisSurat from './pages/AdminJenisSurat';
+import AdminJenisSurat from './pages/Admin/AdminJenisSurat';
 import RegisterPage from './pages/Register';
+import AdminUsers from './pages/Admin/AdminUsers';
+import AdminPengajuanSurat from './pages/AdminPengajuanSurat';
+import { AdminPengajuanSuratPage } from './pages/Admin/AdminPengajuanSurat';
+import { DetailPengajuanSuratPage } from './pages/DetailPengajuanSuratPage';
 // import NotFound from './pages/NotFound';
 
 function App() {
@@ -44,10 +48,13 @@ function App() {
               }
             >
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/data-master/users" element={<AdminUsers />} />
               <Route path="/admin/data-master/wilayah" element={<AdminDukuh />} />
               <Route path="/admin/data-master/kartukeluarga" element={<AdminKartuKeluarga />} />
               <Route path="/admin/data-master/penduduk" element={<AdminPenduduk />} />
               <Route path="/admin/layanan-surat/jenis-surat" element={<AdminJenisSurat />} />
+              <Route path="/admin/layanan-surat/pengajuan-masuk" element={<AdminPengajuanSuratPage />} />
+              <Route path="/admin/pengajuan-surat/:id" element={<DetailPengajuanSuratPage />} />
             </Route>
 
             {/* Pengurus */}

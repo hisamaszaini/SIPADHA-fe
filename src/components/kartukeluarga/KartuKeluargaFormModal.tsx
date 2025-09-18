@@ -229,14 +229,19 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
   } : formData;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-6 m-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-        <h3 className="text-2xl font-bold text-gray-800 mb-6">{isEditing ? 'Edit Kartu Keluarga' : 'Tambah Kartu Keluarga Baru'}</h3>
-
-        <form onSubmit={handleSubmit}>
+    <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4" onClick={onClose}>
+      <div
+        className="bg-white rounded-2xl shadow-xl w-full max-w-3xl max-h-[95vh] flex flex-col overflow-y-auto scrollbar-hide-y"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="py-4 px-6 border-b border-gray-200">
+          <h3 className="text-2xl font-bold text-gray-800">
+            {isEditing ? 'Edit Kartu Keluarga' : 'Tambah Kartu Keluarga Baru'}</h3>
+        </div>
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <fieldset className="space-y-4">
-              <legend className="font-semibold text-lg border-b pb-2 text-gray-700 w-full">Data Kartu Keluarga</legend>
+              <legend className="font-semibold text-lg border-b border-gray-300 pb-2 text-gray-700 w-full">Data Kartu Keluarga</legend>
               <TextInput
                 id="noKk"
                 name="noKk"
@@ -294,7 +299,7 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
             </fieldset>
 
             <fieldset className="space-y-4">
-              <legend className="font-semibold text-lg border-b pb-2 text-gray-700 w-full">Data Kepala Keluarga</legend>
+              <legend className="font-semibold text-lg border-b border-gray-300 pb-2 text-gray-700 w-full">Data Kepala Keluarga</legend>
               <TextInput
                 id="nik"
                 name="nik"

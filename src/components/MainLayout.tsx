@@ -1,4 +1,3 @@
-// MainLayout.tsx
 import Sidebar from "./ui/Sidebar";
 import React, { useState, useEffect } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
@@ -65,7 +64,7 @@ const MainLayout: React.FC = () => {
     }
 
     return (
-        <div className="relative flex min-h-screen text-white">
+        <div className="relative flex min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
             <Sidebar
                 role={user.role}
                 isOpen={isSidebarOpen}
@@ -83,7 +82,7 @@ const MainLayout: React.FC = () => {
                 aria-hidden="true"
             />
 
-            <div className="flex flex-1 flex-col overflow-hidden">
+            <div className="flex flex-1 flex-col overflow-auto">
                 <Header
                     role={user.role}
                     onMenuClick={openSidebar}

@@ -9,6 +9,7 @@ import {
   Users,
   Map,
   User,
+  User2,
 } from "lucide-react";
 import type { UserRole } from "../types/user.types";
 
@@ -16,22 +17,22 @@ export const menuConfig: Record<UserRole, NavigationItem[]> = {
   ADMIN: [
     { label: 'Dashboard', path: '/admin/dashboard', icon: Home },
     {
+      label: 'Data Master',
+      icon: Database,
+      children: [
+        { label: 'Data User', path: '/admin/data-master/users', icon: User2 },
+        { label: 'Data Wilayah', path: '/admin/data-master/wilayah', icon: Map },
+        { label: 'Data Keluarga', path: '/admin/data-master/kartukeluarga', icon: Home },
+        { label: 'Data Penduduk', path: '/admin/data-master/penduduk', icon: Users },
+      ],
+    },
+    {
       label: 'Layanan Surat',
       icon: FileText,
       notification: 3,
       children: [
         { label: 'Pengajuan Masuk', path: '/admin/layanan-surat/pengajuan-masuk', icon: Inbox },
         { label: 'Jenis Surat', path: '/admin/layanan-surat/jenis-surat', icon: File },
-        { label: 'Validasi Dokumen', path: '/admin/layanan-surat/validasi-dokumen', icon: CheckCircle },
-      ],
-    },
-    {
-      label: 'Data Master',
-      icon: Database,
-      children: [
-        { label: 'Data Wilayah', path: '/admin/data-master/wilayah', icon: Map },
-        { label: 'Data Keluarga', path: '/admin/data-master/kartukeluarga', icon: Home },
-        { label: 'Data Penduduk', path: '/admin/data-master/penduduk', icon: Users },
       ],
     },
   ],

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="id-ID">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>
+    </title>
+    <style>
+        body {
+            font-family: 'Times New Roman';
+            font-size: 12pt
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p {
+            margin: 0pt
+        }
+
+        li,
+        table {
+            margin-top: 0pt;
+            margin-bottom: 0pt
+        }
+
+        h1 {
+            margin-top: 18pt;
+            margin-bottom: 4pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: 'Calibri Light';
+            font-size: 20pt;
+            font-weight: normal;
+            color: #2f5496
+        }
+
+        h2 {
+            margin-top: 8pt;
+            margin-bottom: 4pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: 'Calibri Light';
+            font-size: 16pt;
+            font-weight: normal;
+            color: #2f5496
+        }
+
+        h3 {
+            margin-top: 8pt;
+            margin-bottom: 4pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: Calibri;
+            font-size: 14pt;
+            font-weight: normal;
+            color: #2f5496
+        }
+
+        h4 {
+            margin-top: 4pt;
+            margin-bottom: 2pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: Calibri;
+            font-size: 12pt;
+            font-weight: normal;
+            font-style: italic;
+            color: #2f5496
+        }
+
+        h5 {
+            margin-top: 4pt;
+            margin-bottom: 2pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: Calibri;
+            font-size: 12pt;
+            font-weight: normal;
+            color: #2f5496
+        }
+
+        h6 {
+            margin-top: 2pt;
+            margin-bottom: 0pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: Calibri;
+            font-size: 12pt;
+            font-weight: normal;
+            font-style: italic;
+            color: #595959
+        }
+
+        .Heading7 {
+            margin-top: 2pt;
+            margin-bottom: 0pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: Calibri;
+            font-size: 12pt;
+            font-weight: normal;
+            color: #595959
+        }
+
+        .Heading8 {
+            margin-bottom: 0pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: Calibri;
+            font-size: 12pt;
+            font-weight: normal;
+            font-style: italic;
+            color: #272727
+        }
+
+        .Heading9 {
+            margin-bottom: 0pt;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+            line-height: normal;
+            font-family: Calibri;
+            font-size: 12pt;
+            font-weight: normal;
+            color: #272727
+        }
+
+        .BodyText {
+            margin-bottom: 0pt;
+            text-align: justify;
+            line-height: normal;
+            font-size: 12pt
+        }
+
+        .IntenseQuote {
+            margin: 18pt 43.2pt;
+            text-align: center;
+            line-height: normal;
+            border-top: 0.75pt solid #2f5496;
+            border-bottom: 0.75pt solid #2f5496;
+            padding-top: 10pt;
+            padding-bottom: 10pt;
+            font-size: 12pt;
+            font-style: italic;
+            color: #2f5496
+        }
+
+        .ListParagraph {
+            margin-left: 36pt;
+            margin-bottom: 0pt;
+            line-height: normal;
+            font-size: 12pt
+        }
+
+        .Quote {
+            margin-top: 8pt;
+            margin-bottom: 0pt;
+            text-align: center;
+            line-height: normal;
+            font-size: 12pt;
+            font-style: italic;
+            color: #404040
+        }
+
+        .Subtitle {
+            margin-bottom: 0pt;
+            line-height: normal;
+            font-family: Calibri;
+            font-size: 14pt;
+            letter-spacing: 0.75pt;
+            color: #595959
+        }
+
+        .Title {
+            margin-bottom: 4pt;
+            line-height: normal;
+            font-family: 'Calibri Light';
+            font-size: 28pt;
+            letter-spacing: -0.5pt
+        }
+
+        span.Heading1Char {
+            font-family: 'Calibri Light';
+            font-size: 20pt;
+            color: #2f5496
+        }
+
+        span.Heading2Char {
+            font-family: 'Calibri Light';
+            font-size: 16pt;
+            color: #2f5496
+        }
+
+        span.Heading3Char {
+            font-family: Calibri;
+            font-size: 14pt;
+            color: #2f5496
+        }
+
+        span.Heading4Char {
+            font-family: Calibri;
+            font-style: italic;
+            color: #2f5496
+        }
+
+        span.Heading5Char {
+            font-family: Calibri;
+            color: #2f5496
+        }
+
+        span.Heading6Char {
+            font-family: Calibri;
+            font-style: italic;
+            color: #595959
+        }
+
+        span.Heading7Char {
+            font-family: Calibri;
+            color: #595959
+        }
+
+        span.Heading8Char {
+            font-family: Calibri;
+            font-style: italic;
+            color: #272727
+        }
+
+        span.Heading9Char {
+            font-family: Calibri;
+            color: #272727
+        }
+
+        span.IntenseEmphasis {
+            font-style: italic;
+            color: #2f5496
+        }
+
+        span.IntenseQuoteChar {
+            font-style: italic;
+            color: #2f5496
+        }
+
+        span.IntenseReference {
+            font-weight: bold;
+            font-variant: small-caps;
+            letter-spacing: 0.25pt;
+            color: #2f5496
+        }
+
+        span.QuoteChar {
+            font-style: italic;
+            color: #404040
+        }
+
+        span.SubtitleChar {
+            font-family: Calibri;
+            font-size: 14pt;
+            letter-spacing: 0.75pt;
+            color: #595959
+        }
+
+        span.TitleChar {
+            font-family: 'Calibri Light';
+            font-size: 28pt;
+            letter-spacing: -0.5pt
+        }
+
+        .awlist1 {
+            list-style: none;
+            counter-reset: awlistcounter1_0
+        }
+
+        .awlist1>li:before {
+            content: '';
+            counter-increment: awlistcounter1_0
+        }
+
+        .awlist2 {
+            list-style: none;
+            counter-reset: awlistcounter2_0
+        }
+
+        .awlist2>li:before {
+            content: '';
+            counter-increment: awlistcounter2_0
+        }
+
+        .awlist3 {
+            list-style: none;
+            counter-reset: awlistcounter3_0
+        }
+
+        .awlist3>li:before {
+            content: '';
+            counter-increment: awlistcounter3_0
+        }
+
+        .awlist4 {
+            list-style: none;
+            counter-reset: awlistcounter3_0 1
+        }
+
+        .awlist4>li:before {
+            content: '';
+            counter-increment: awlistcounter3_0
+        }
+
+        .awlist5 {
+            list-style: none;
+            counter-reset: awlistcounter3_0 2
+        }
+
+        .awlist5>li:before {
+            content: '';
+            counter-increment: awlistcounter3_0
+        }
+
+        .awlist6 {
+            list-style: none;
+            counter-reset: awlistcounter3_0 3
+        }
+
+        .awlist6>li:before {
+            content: '';
+            counter-increment: awlistcounter3_0
+        }
+
+        @media (max-width: 900px) {
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            td,
+            th {
+                padding: 8px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <p class="BodyText" style="margin-left:85.05pt; text-align:center; font-size:14pt;"><span style="height:0pt; text-align:left; display:block; position:absolute; z-index:0;"><img src="https://myfiles.space/user_files/temporary/68cb8ebd3a5502.97689744/1758170812_surat-keterangan-usaha/1758170812_surat-keterangan-usaha-1.png" width="124" height="122" alt="C:\Users\LENOVO\Downloads\lg-13985df3b545307d799e7347087e1a8444-removebg-preview.png" style="margin: 0 0 0 auto; display: block; "></span><strong><span style="font-family:Arial;">PEMERINTAH KABUPATEN PONOROGO</span></strong></p>
+    <p class="Subtitle" style="margin-left:85.05pt; text-align:center;"><strong><span style="font-family:Arial; color:#000000;">KECAMATAN NGRAYUN</span></strong></p>
+    <p class="Subtitle" style="margin-left:85.05pt; text-align:center; font-size:18pt;"><strong><span style="font-family:Arial; color:#000000;">DESA CEPOKO</span></strong></p>
+    <p style="margin-left:85.05pt; text-align:center; font-size:11pt;"><span style="font-family:Arial;">Jalan Arum Dalu Nomor 1 Cepoko, Ngrayun, Ponorogo, Jawa Timur 63464</span></p>
+    <p style="margin-left:85.05pt; text-align:center; font-size:11pt;"><span style="font-family:Arial;">Telepon 083895273260, Faksimile 083895273260</span></p>
+    <p style="margin-left:85.05pt; text-align:center; border-bottom:0.75pt solid #000000; padding-bottom:1pt; font-size:11pt;"><span style="font-family:Arial;">Laman Cepokongrayun.ponorogo.go.id , Pos &ndash; el Cepokongrayun@gmail.com</span></p>
+    <p style="text-align:justify;">&nbsp;</p>
+    <p style="text-align:center; font-size:14pt;"><strong><u><span style="font-family:'Bookman Old Style';">SURAT</span></u></strong><strong><u><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span></u></strong><strong><u><span style="font-family:'Bookman Old Style';">KETERANGAN</span></u></strong><strong><u><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span></u></strong><strong><u><span style="font-family:'Bookman Old Style';">USAHA</span></u></strong></p>
+    <p style="text-align:center;"><span style="font-family:'Bookman Old Style';">Nomor</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">:</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">474/&nbsp;</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">&nbsp;</span><span style="font-family:'Bookman Old Style';">/405.29.02.10/2025</span></p>
+    <p style="text-align:center;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+    <table style="padding: 0pt; border-collapse: collapse; width: 100%;">
+        <tbody>
+            <tr>
+                <td colspan="3" style="width:448.2pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:justify;"><span style="font-family:'Bookman Old Style';">Yang bertanda tangan dibawah ini</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="width:448.2pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:center; font-size:5pt;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:justify;"><span style="font-family:'Bookman Old Style';">Nama</span></p>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:center;"><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:justify;"><span style="font-family:'Bookman Old Style';">PIRNGADI, S Sos</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:justify;"><span style="font-family:'Bookman Old Style';">Jabatan</span></p>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:center;"><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:justify;"><span style="font-family:'Bookman Old Style';">Kepala Desa&nbsp;</span><span style="font-family:'Bookman Old Style';">&nbsp;</span><span style="font-family:'Bookman Old Style';">Cepoko, Kecamatan Ngrayun,</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:center;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:center;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:justify;"><span style="font-family:'Bookman Old Style';">Kabupaten Ponorogo</span></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="text-align:center; font-size:5pt;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+    <table style="padding: 0pt; border-collapse: collapse; width: 100%;">
+        <tbody>
+            <tr>
+                <td colspan="3" style="width:448.2pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Dengan ini menerangkan</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">&nbsp;</span><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Nama&nbsp;</span></p>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><span style="font-family:Tahoma;">HERU SETIAWAN</span></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Tempat Tanggal Lahir / umur</span></p>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Ponorogo,</span> <span style="font-family:'Bookman Old Style';">27-09-1984</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">NIK</span></p>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:Arial;">3502022209840001</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Alamat</span></p>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Dukuh Slorok</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">RT 02 RW 02 Desa Cepoko Kecamatan Ngrayun Kabupaten Ponorogo</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="width:448.2pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Yang bersangkutan</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">benar- benar pemilik usaha di bidang *)</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <ul class="awlist1" style="margin:0pt; padding-left:0pt;">
+                        <li class="ListParagraph" style="text-indent:-18pt; font-family:Wingdings;"><span style="width:7.31pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Pertanian</span></li>
+                    </ul>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><em><span style="font-family:'Bookman Old Style';">Pertanian Padi dan Palawija</span></em></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <ul class="awlist2" style="margin:0pt; padding-left:0pt;">
+                        <li class="ListParagraph" style="text-indent:-18pt; font-family:Wingdings;"><span style="width:7.31pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Perdagangan</span></li>
+                    </ul>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><em><span style="font-family:'Bookman Old Style';">&nbsp;</span></em></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <ul class="awlist3" style="margin:0pt; padding-left:0pt;">
+                        <li class="ListParagraph" style="text-indent:-18pt; font-family:Wingdings;"><span style="width:7.31pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Peternakan</span></li>
+                    </ul>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><em><span style="font-family:'Bookman Old Style';">Peternakan Kambing</span></em></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <ul class="awlist4" style="margin:0pt; padding-left:0pt;">
+                        <li class="ListParagraph" style="text-indent:-18pt; font-family:Wingdings;"><span style="width:7.31pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Perindustrian</span></li>
+                    </ul>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><em><span style="font-family:'Bookman Old Style';">&nbsp;</span></em></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <ul class="awlist5" style="margin:0pt; padding-left:0pt;">
+                        <li class="ListParagraph" style="text-indent:-18pt; font-family:Wingdings;"><span style="width:7.31pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Jasa</span></li>
+                    </ul>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><em><span style="font-family:'Bookman Old Style';">&nbsp;</span></em></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <ul class="awlist6" style="margin:0pt; padding-left:0pt;">
+                        <li class="ListParagraph" style="text-indent:-18pt; font-family:Wingdings;"><span style="width:7.31pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Lain &ndash; lain&nbsp;</span></li>
+                    </ul>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">:</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><em><span style="font-family:'Bookman Old Style';">&nbsp;</span></em></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:150.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p class="ListParagraph"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:3.35pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:272.7pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="width:448.2pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:justify;"><span style="font-family:'Bookman Old Style';">Adapun usaha tersebut berada di</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Dukuh Slorok</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">RT 02 RW 02,Desa Cepoko, Kecamatan Ngrayun, Kabupaten Ponorogo , sejak tahun 2003, dan sampai saat ini&nbsp;</span><strong><span style="font-family:'Bookman Old Style';">masih berjalan dengan lancar.</span></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="width:448.2pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="width:448.2pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Demikian Surat Keterangan ini dibuat dengan sebenarnya untuk dapat dipergunakan seperlunya</span></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="text-align:center;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+    <table style="margin-left: 26.7pt; padding: 0pt; border-collapse: collapse; width: 100%;">
+        <tbody>
+            <tr>
+                <td style="width:180.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="margin-left:18pt;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:53pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:159.3pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">Ponorogo, 11&ndash; 06 -</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">2025&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:180.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="margin-left:18pt;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:53pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:159.3pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:180.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p class="ListParagraph" style="margin-left:1.65pt;"><span style="font-family:'Bookman Old Style';">Tanda Tangan Pemohon</span></p>
+                </td>
+                <td style="width:53pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p style="text-align:right;"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:159.3pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Kepala</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Desa</span><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span><span style="font-family:'Bookman Old Style';">Cepoko</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:180.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:53pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:159.3pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:180.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p class="ListParagraph"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:53pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:159.3pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:180.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p class="ListParagraph"><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:53pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+                <td style="width:159.3pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:180.55pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><span style="font-family:Tahoma;">HERU SETIAWAN</span></strong></p>
+                </td>
+                <td style="width:53pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp;</span></p>
+                </td>
+                <td style="width:159.3pt; padding:0pt 5.4pt; vertical-align:top;">
+                    <p><strong><span style="font-family:'Bookman Old Style';">&nbsp;&nbsp; </span></strong><strong><u><span style="font-family:'Bookman Old Style';">PIRNGADI, S.Sos</span></u></strong></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>&nbsp;</p>
+    <p style="text-align:justify;"><em>Ket</em><em><span style="width:19.34pt; display:inline-block;">&nbsp;</span></em><em>:</em><em>&nbsp;&nbsp;</em><em>1) Coret yang tidak perlu</em></p>
+    <p style="text-align:justify;"><em><span style="width:36pt; display:inline-block;">&nbsp;</span></em><em>&nbsp;&nbsp;&nbsp;</em><em>2) Isi dengan jelas jenis usahanya</em></p>
+    <p style="text-align:justify;"><em>&nbsp;</em></p>
+    <p style="text-align:justify;"><em>Catatan</em><em><span style="width:33.33pt; display:inline-block;">&nbsp;</span></em><em>&nbsp;&nbsp;</em><em>:&nbsp;</em></p>
+    <ol style="margin:0pt; padding-left:0pt;">
+        <li class="ListParagraph" style="margin-left:50pt; text-align:justify; padding-left:4pt; font-style:italic;">Usaha ...............................&nbsp; Tgl ........................... Ttd/Paraf ........................</li>
+        <li class="ListParagraph" style="margin-left:50pt; text-align:justify; padding-left:4pt; font-style:italic;">Usaha ................................................&nbsp; Tgl ........................... Ttd/Paraf ........................</li>
+        <li class="ListParagraph" style="margin-left:50pt; text-align:justify; padding-left:4pt; font-style:italic;">Usaha ...............................&nbsp; Tgl ........................... Ttd/Paraf ........................</li>
+    </ol>
+</body>
+
+</html>

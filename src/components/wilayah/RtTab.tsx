@@ -12,6 +12,7 @@ import type { RtWithRelations, CreateRtDto } from '../../types/rt.types';
 import RtTable from '../../components/wilayah/RtTable';
 import RtFormModal from '../../components/wilayah/RtFormModal';
 import Pagination from '../../components/ui/Pagination';
+import { Button } from '../ui/Button';
 
 const RtTab: React.FC = () => {
     const {
@@ -50,23 +51,22 @@ const RtTab: React.FC = () => {
     return (
         <div>
             {/* AREA FILTER */}
-            <div className="p-4 flex flex-col md:flex-row items-center gap-4 bg-gray-50/50">
-                <select name="dukuhId" value={queryParams.dukuhId || ''} onChange={onDukuhSelectChange} className="filter-select mt-1 w-full md:w-64 px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <div className="p-4 flex flex-col md:flex-row items-center gap-4 bg-white">
+                <select name="dukuhId" value={queryParams.dukuhId || ''} onChange={onDukuhSelectChange} className="filter-select mt-1 w-full md:w-64 px-3 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     <option value="">Semua Dukuh</option>
                     {allDukuh.map(d => (<option key={d.id} value={d.id}>{d.nama}</option>))}
                 </select>
 
-                <select name="rwId" value={queryParams.rwId || ''} onChange={handleFilterChange} disabled={!queryParams.dukuhId || isLoadingRw} className="filter-select mt-1 w-full md:w-64 px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <select name="rwId" value={queryParams.rwId || ''} onChange={handleFilterChange} disabled={!queryParams.dukuhId || isLoadingRw} className="filter-select mt-1 w-full md:w-64 px-3 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     <option value="">Semua RW</option>
                     {filteredRw.map(rw => (<option key={rw.id} value={rw.id}>RW {rw.nomor}</option>))}
                 </select>
 
-                <input type="text" placeholder="Cari nomor RT..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="mt-1 w-full md:w-64 px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-
-                <button onClick={() => handleOpenModal()} className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-3 rounded-lg flex items-center gap-2 ml-auto">
-                    <PlusIcon className="w-5 h-5" />
-                    <span>Tambah RT</span>
-                </button>
+                <input type="text" placeholder="Cari nomor RT..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="mt-1 w-full md:w-64 px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+                <div className="flex items-center ml-auto">
+                    <Button variant="primary" size="mid" icon="fas fa-plus" onClick={() => handleOpenModal()}
+                    >Tambah RT</Button>
+                </div>
             </div>
 
             {/* KONTEN TABEL */}

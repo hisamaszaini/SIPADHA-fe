@@ -18,17 +18,17 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+      <label htmlFor={id} className="block text-base font-medium text-gray-700 mb-1">
         {label}
       </label>
       <select
         id={id}
         aria-invalid={!!error}
         aria-describedby={error ? errorId : undefined}
-        className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200 ${
+        className={`w-full px-4 py-3 bg-white border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200 ${
           error
             ? 'border-red-500 ring-red-500 focus:border-red-500'
-            : 'border-gray-300 focus:ring-emerald-500 focus:border-emerald-500'
+            : 'border-blue-300 focus:ring-emerald-500 focus:border-emerald-500'
         } ${className || ''}`}
         {...rest}
       >

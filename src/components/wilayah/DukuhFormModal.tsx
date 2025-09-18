@@ -90,19 +90,18 @@ const DukuhFormModal: React.FC<DukuhFormModalProps> = ({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
-      onClick={handleClose}
-    >
+    <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4" onClick={handleClose}>
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 m-4"
+        className="bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[95vh] flex flex-col overflow-y-auto scrollbar-hide-y"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-gray-300 pb-3">
-          {editingDukuh ? 'Edit Dukuh' : 'Tambah Dukuh'}
-        </h3>
+        <div className="py-4 px-6 border-b border-gray-200">
+          <h3 className="text-2xl font-bold text-gray-800">
+            {editingDukuh ? 'Edit Dukuh' : 'Tambah Dukuh'}
+          </h3>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 p-6 overflow-y-auto">
           {globalError && (
             <div className="bg-red-100 text-red-700 px-4 py-2 rounded-md" role="alert">
               {globalError}

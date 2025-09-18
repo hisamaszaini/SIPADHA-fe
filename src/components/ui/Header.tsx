@@ -42,21 +42,29 @@ const Header: React.FC<HeaderProps> = ({
     onMenuClick();
   };
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 4 && hour < 11) return "Selamat pagi";
+    if (hour >= 11 && hour < 15) return "Selamat siang";
+    if (hour >= 15 && hour < 18) return "Selamat sore";
+    return "Selamat malam";
+  };
+
   return (
-    <header className="flex h-20 items-center justify-between border-b border-white/20 glass-effect px-4 md:px-8">
+    <header className="flex h-20 items-center justify-between border-b border-white/20 px-4 md:px-8 bg-white shadow-md">
       <div className="flex items-center">
         <button
           id="sidebar-open-btn"
-          className="rounded-md p-2 hover:bg-white/20 text-white lg:hidden mr-4"
+          className="rounded-md p-2 hover:bg-white/20 text-gray-800 lg:hidden mr-4"
           aria-label="Buka menu"
           onClick={handleMenuClick}
         >
           <LucideIcons.Menu className="h-6 w-6" />
         </button>
         <div>
-          <h1 className="text-lg md:text-2xl font-bold text-white">{title}</h1>
-          <p id="header-date" className="text-sm text-white/70">
-            {dateText} • Selamat siang!
+          <h1 className="text-lg md:text-2xl font-bold text-gray-800">{title}</h1>
+          <p id="header-date" className="text-sm text-gray-800/70">
+            {dateText} • {getGreeting()}!
           </p>
         </div>
       </div>
@@ -66,13 +74,13 @@ const Header: React.FC<HeaderProps> = ({
           <input
             type="text"
             placeholder="Cari data..."
-            className="w-64 pl-10 pr-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="w-64 pl-10 pr-4 py-2 bg-white/20 border border-white/30 rounded-lg text-gray-800 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50"
           />
-          <LucideIcons.Search className="absolute left-3 top-2.5 h-5 w-5 text-white/60" />
+          <LucideIcons.Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-800/60" />
         </div>
 
         <button
-          className="relative rounded-full p-2 text-white/80 hover:bg-white/20 hover:text-white"
+          className="relative rounded-full p-2 text-gray-800/80 hover:bg-white/20 hover:text-gray-800"
           aria-label="Notifikasi"
         >
           <LucideIcons.Bell className="h-6 w-6" />
@@ -83,8 +91,8 @@ const Header: React.FC<HeaderProps> = ({
 
         <div className="flex items-center space-x-3">
           <div className="hidden text-sm text-right sm:block">
-            <p className="font-semibold text-white">{user.username?.toUpperCase() || ""}</p>
-            <p className="text-white/70 text-xs">{user.email}</p>
+            <p className="font-semibold text-gray-800">{user.username?.toUpperCase() || ""}</p>
+            <p className="text-gray-800/70 text-xs">{user.email}</p>
           </div>
           <div className="relative">
             {user.avatarUrl ? (
@@ -94,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({
                 alt="Avatar"
               />
             ) : (
-              <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-gray-500 text-white font-bold border-2 border-white/30">
+              <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-blue-400 text-white font-bold border-2 border-white/80">
                 {getInitials(user.username)}
               </div>
             )}

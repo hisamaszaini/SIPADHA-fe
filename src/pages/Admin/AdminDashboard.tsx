@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import StatCard from '../components/ui/StatCard';
+import { useAuth } from '../../contexts/AuthContext';
+import StatCard from '../../components/ui/StatCard';
 import { CheckIcon, FileText, Home, PlusIcon, PlusSquare, RefreshCw, UserPlusIcon, Users } from 'lucide-react';
-import ButtonCard from '../components/ui/ButtonCard';
+import ButtonCard from '../../components/ui/ButtonCard';
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -68,11 +68,11 @@ const AdminDashboard: React.FC = () => {
       <section className="">
         <div className="rounded-2xl bg-white/95 backdrop-blur-sm p-6 shadow-xl">
           <h3 className="text-xl font-bold text-gray-800 mb-6">Aksi Cepat</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            <ButtonCard label="Buat Surat" icon={<PlusIcon className="w-8 h-8 mb-2" />} gradientFrom="emerald-500" gradientTo="emerald-600" />
-            <ButtonCard label="Validasi" icon={<CheckIcon className="w-8 h-8 mb-2" />} gradientFrom="blue-500" gradientTo="blue-600" />
-            <ButtonCard label="Tambah Warga" icon={<UserPlusIcon className="w-8 h-8 mb-2" />} gradientFrom="purple-500" gradientTo="purple-600" />
-            <ButtonCard label="Laporan" icon={<FileText className="w-8 h-8 mb-2" />} gradientFrom="orange-500" gradientTo="orange-600" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-6">
+            <ButtonCard label="Buat Surat" icon={<PlusIcon className="w-8 h-8 mb-2" />} variant="emerald" />
+            <ButtonCard label="Validasi" icon={<CheckIcon className="w-8 h-8 mb-2" />} variant="blue" />
+            <ButtonCard label="Tambah Warga" icon={<UserPlusIcon className="w-8 h-8 mb-2" />} variant="purple" />
+            <ButtonCard label="Laporan" icon={<FileText className="w-8 h-8 mb-2" />} variant="orange" />
           </div>
         </div>
       </section>

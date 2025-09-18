@@ -1,41 +1,83 @@
-import React from 'react';
-import type {  } from '../../types/dukuh.types';
+import * as React from 'react';
 import type { PaginationMeta } from '../../types/api.types';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from './Button';
 
 interface PaginationProps {
   meta: PaginationMeta;
-  onPageChange: (newPage: number) => void;
+  onPageChange: (page: number) => void;
+  currentItemCount: number;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ meta, onPageChange }) => {
-  if (!meta || meta.total === 0) {
-    return null; 
+export const Pagination: React.FC<PaginationProps> = ({ meta, onPageChange, currentItemCount }) => {
+  if (!meta || meta.totalPages <= 1) {
+    return null;
   }
 
-  const isFirstPage = meta.page <= 1;
-  const isLastPage = meta.page >= meta.totalPages;
+  const currentPage = Number(meta.page);
+  const totalPages = meta.totalPages;
+
+  // Generate page numbers (with ellipsis if too many pages)
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, '...', totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+      }
+    }
+
+    return pages;
+  };
 
   return (
-    <footer className="p-4 border-t border-gray-200 flex justify-between items-center flex-shrink-0">
-      <span className="text-sm text-gray-600">
-        Total <span className="font-semibold">{meta.total}</span> data
+    <div className="mt-4 p-4 flex justify-between items-center text-sm text-gray-600">
+      <span>
+        Menampilkan {(meta.page - 1) * meta.limit + 1} – {Math.min(meta.page * meta.limit, meta.total)} dari {meta.total} data.
       </span>
       <div className="flex items-center gap-2">
-        <button
-          onClick={() => onPageChange(meta.page - 1)}
-          disabled={isFirstPage}
-          className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-3 rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        > &laquo; Sebelumnya </button>
-        <span className="font-bold text-gray-800 px-2 text-sm">
-          {meta.page} / {meta.totalPages}
-        </span>
-        <button
-          onClick={() => onPageChange(meta.page + 1)}
-          disabled={isLastPage}
-          className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-3 rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        > Berikutnya &raquo; </button>
+        {/* Previous Button */}
+        <Button size="icon" variant="outline" disabled={currentPage <= 1} onClick={() => onPageChange(currentPage - 1)}>
+          <ChevronLeft size={16} />
+        </Button>
+
+        {/* Page Numbers */}
+        {getPageNumbers().map((page, idx) =>
+          typeof page === 'number' ? (
+            <button
+              key={idx}
+              onClick={() => onPageChange(page)}
+              className={`px-3 py-1 rounded-md text-sm font-medium transition ${
+                page === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              }`}
+            >
+              {page}
+            </button>
+          ) : (
+            <span key={idx} className="px-2 text-gray-400">
+              {page}
+            </span>
+          )
+        )}
+
+        {/* Next Button */}
+        <Button
+          size="icon"
+          variant="outline"
+          disabled={currentPage >= totalPages}
+          onClick={() => onPageChange(currentPage + 1)}
+        >
+          <ChevronRight size={16} />
+        </Button>
       </div>
-    </footer>
+    </div>
   );
 };
 

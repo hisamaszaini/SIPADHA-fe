@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { WilayahProvider } from '../contexts/wilayahContext';
-import DukuhTab from '../components/wilayah/DukuhTab';
-import RwTab from '../components/wilayah/RwTab';
-import RtTab from '../components/wilayah/RtTab';
+import { WilayahProvider } from '../../contexts/wilayahContext';
+import DukuhTab from '../../components/wilayah/DukuhTab';
+import RwTab from '../../components/wilayah/RwTab';
+import RtTab from '../../components/wilayah/RtTab';
 
 const AdminWilayah: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'dukuh' | 'rw' | 'rt'>('dukuh');
@@ -23,13 +23,13 @@ const AdminWilayah: React.FC = () => {
 
                 <nav className="p-4 border-b border-gray-200">
                     <div className="flex items-center gap-2">
-                        <button onClick={() => handleTabChange('dukuh')} className={`py-2 px-4 rounded-lg font-bold transition-all ${activeTab === 'dukuh' ? 'bg-emerald-500 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
+                        <button onClick={() => handleTabChange('dukuh')} className={`py-2 px-4 rounded-lg font-bold transition-all ${activeTab === 'dukuh' ? 'bg-blue-400 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
                             Dukuh
                         </button>
-                        <button onClick={() => handleTabChange('rw')} className={`py-2 px-4 rounded-lg font-bold transition-all ${activeTab === 'rw' ? 'bg-emerald-500 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
+                        <button onClick={() => handleTabChange('rw')} className={`py-2 px-4 rounded-lg font-bold transition-all ${activeTab === 'rw' ? 'bg-blue-400 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
                             RW
                         </button>
-                        <button onClick={() => handleTabChange('rt')} className={`py-2 px-4 rounded-lg font-bold transition-all ${activeTab === 'rt' ? 'bg-emerald-500 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
+                        <button onClick={() => handleTabChange('rt')} className={`py-2 px-4 rounded-lg font-bold transition-all ${activeTab === 'rt' ? 'bg-blue-400 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
                             RT
                         </button>
                     </div>

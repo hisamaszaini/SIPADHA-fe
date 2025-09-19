@@ -1,7 +1,6 @@
-import type { PengajuanSuratDetail } from '../../types/pengajuanSurat.types';
+import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
 import { formatTanggalSingkat } from '../../utils/date';
-export function TemplateKeteranganTmMobil({ data }: { data: PengajuanSuratDetail }) {
-    const dataPermohonan = data.dataPermohonan as any;
+export function TemplateKeteranganTmMobil({ data }: { data: DetailPengajuanSuratSchema }) {
 
     return (<>
         <div style={{

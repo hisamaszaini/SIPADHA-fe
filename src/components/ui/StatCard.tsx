@@ -1,5 +1,5 @@
 import React from 'react';
-import { type LucideIcon, PlusSquare, RefreshCw, Users, Home } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
   title: string;

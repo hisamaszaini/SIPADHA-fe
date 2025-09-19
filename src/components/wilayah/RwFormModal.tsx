@@ -1,6 +1,6 @@
 import React, { useState, useEffect, type FormEvent } from 'react';
 import { toast } from 'sonner';
-import type { Rw, CreateRwDto } from '../../types/rw.types';
+import type { RwDetail, CreateRwDto } from '../../types/rw.types';
 import type { Dukuh } from '../../types/dukuh.types';
 import TextInput from '../ui/TextInput';
 import SelectInput from '../ui/SelectInput';
@@ -9,7 +9,7 @@ interface RwFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (formData: CreateRwDto | Partial<CreateRwDto>, id: number | null) => Promise<void>;
-  editingRw: Rw | null;
+  editingRw: RwDetail | null;
   dukuhList: Dukuh[];
 }
 

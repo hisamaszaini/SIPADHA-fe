@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { PlusIcon } from 'lucide-react';
-
-// Custom Hook
 import { useDukuhData } from '../../hooks/useDukuhData';
 
 // Types
@@ -69,7 +66,7 @@ const DukuhTab: React.FC = () => {
             </div>
 
             {paginationMeta && (
-                <Pagination meta={paginationMeta} onPageChange={handlePageChange} />
+                <Pagination currentItemCount={dukuhList.length} meta={paginationMeta} onPageChange={handlePageChange} />
             )}
 
             {isModalOpen && (

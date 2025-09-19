@@ -3,7 +3,7 @@ import type { JenisSurat, JenisSuratQueryParams, JenisSuratSortableKeys } from '
 import { SortableHeader } from '../ui/SortableHeader';
 import { FileEdit, Trash2 } from 'lucide-react';
 
-import { FileText, FileSpreadsheet, FileArchive, File } from "lucide-react";
+import { FileText, FileSpreadsheet, File } from "lucide-react";
 
 function getFileIcon(fileName: string | null | undefined) {
     if (!fileName) return <File className="w-5 h-5 text-gray-400" />;

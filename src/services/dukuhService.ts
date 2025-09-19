@@ -1,11 +1,5 @@
 import type { ApiResponse } from "../types/api.types";
-import type { 
-    CreateDukuhDto, 
-    Dukuh, 
-    DukuhQueryParams, 
-    DukuhWithRelationsCount, 
-    UpdateDukuhDto 
-} from "../types/dukuh.types";
+import type { CreateDukuhDto, Dukuh, DukuhDetail, DukuhQueryParams, UpdateDukuhDto } from "../types/dukuh.types";
 import api from "./api";
 
 export const dukuhService = {
@@ -14,7 +8,7 @@ export const dukuhService = {
      * @param data - Data untuk Dukuh yang akan dibuat.
      * @returns {Promise<ApiResponse<Dukuh>>} Objek Dukuh yang baru dibuat.
      */
-    async create(data: CreateDukuhDto): Promise<ApiResponse<Dukuh>> {
+    async create(data: CreateDukuhDto): Promise<ApiResponse<DukuhDetail>> {
         const response = await api.post('/dukuh', data);
         return response.data;
     },
@@ -24,7 +18,7 @@ export const dukuhService = {
      * @param params - Parameter query untuk paginasi, pencarian, dan pengurutan.
      * @returns {Promise<ApiResponse<DukuhWithRelationsCount[]>>} Daftar Dukuh.
      */
-    async findAll(params: DukuhQueryParams = {}): Promise<ApiResponse<DukuhWithRelationsCount[]>> {
+    async findAll(params: DukuhQueryParams = {}): Promise<ApiResponse<Dukuh[]>> {
         const response = await api.get('/dukuh', { params });
         return response.data;
     },
@@ -34,7 +28,7 @@ export const dukuhService = {
      * @param id - ID dari Dukuh.
      * @returns {Promise<ApiResponse<Dukuh>>} Data Dukuh yang dicari.
      */
-    async findOne(id: number): Promise<ApiResponse<Dukuh>> {
+    async findOne(id: number): Promise<ApiResponse<DukuhDetail>> {
         const response = await api.get(`/dukuh/${id}`);
         return response.data;
     },
@@ -45,7 +39,7 @@ export const dukuhService = {
      * @param data - Data baru untuk Dukuh.
      * @returns {Promise<ApiResponse<Dukuh>>} Data Dukuh setelah diperbarui.
      */
-    async update(id: number, data: UpdateDukuhDto): Promise<ApiResponse<Dukuh>> {
+    async update(id: number, data: UpdateDukuhDto): Promise<ApiResponse<DukuhDetail>> {
         const response = await api.patch(`/dukuh/${id}`, data);
         return response.data;
     },

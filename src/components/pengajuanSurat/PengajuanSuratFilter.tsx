@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusSuratEnum } from '../../types/pengajuanSurat.types';
+import { statusSuratEnum } from '../../types/pengajuanSurat.types';
 
 interface PengajuanSuratFiltersProps {
   searchTerm: string;
@@ -18,7 +18,7 @@ export function PengajuanSuratFilters({
   onStatusChange,
   onLimitChange,
 }: PengajuanSuratFiltersProps) {
-  const statusOptions = StatusSuratEnum.options;
+  const statusOptions = statusSuratEnum.options;
 
   return (
     <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-end gap-4 bg-white border-b border-gray-200">

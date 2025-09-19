@@ -1,25 +1,30 @@
 import z from "zod";
+import { kartuKeluargaDetailSchema } from "./kartuKeluarga.types";
 
-export const StatusSuratEnum = z.enum(['PENDING', 'DIPROSES', 'SELESAI', 'DITOLAK']);
-export const JenisSuratEnum = z.enum([
+export const statusSuratEnum = z.enum(['PENDING', 'DIPROSES', 'SELESAI', 'DITOLAK']);
+
+export const jenisSuratEnum = z.enum([
     'KETERANGAN_USAHA',
     'KETERANGAN_TIDAK_MAMPU_SEKOLAH',
-    'KETERANGAN_PENGHASILAN',
     'KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI',
-    'PERINTAH_TUGAS']);
+    'KETERANGAN_TIDAK_MEMILIKI_MOBIL'
+]);
+
+// ===============
+// CREATE Schema
+// ===============
 
 export const baseCreatePengajuanSuratSchema = z.object({
-    pendudukId: z.string().nonempty('Penduduk wajib dipilih !')
-        .transform((val) => Number(val))
-        .pipe(z.number().int().positive('Penduduk tidak valid')),
-    // jenisSuratId: z.string().nonempty('Jenis surat wajib dipilih !')
-    //     .transform((val) => Number(val)).optional()
-    //     .pipe(z.number().int().positive('Jenis surat tidak valid')),
-    status: StatusSuratEnum.default('PENDING'),
+    pendudukId: z
+        .number({ error: 'Target wajib dipilih' })
+        .refine((val) => val !== null && val > 0, {
+            message: 'Target wajib dipilih',
+        }),
+    statusSurat: statusSuratEnum,
 });
 
 export const keteranganUsahaSchema = z.object({
-    jenis: z.literal('KETERANGAN_USAHA'),
+    jenis: z.literal("KETERANGAN_USAHA"),
     pertanian: z.string().trim(),
     perdagangan: z.string().trim(),
     peternakan: z.string().trim(),
@@ -27,14 +32,8 @@ export const keteranganUsahaSchema = z.object({
     jasa: z.string().trim(),
     lain: z.string().trim(),
     alamatUsaha: z.string().trim(),
-    tahun: z.preprocess(val => Number(val), z.number().refine(num => !isNaN(num) && num >= 1900 && num <= new Date().getFullYear(), { message: "Tahun tidak valid" })),
-}).refine((data) => {
-    return ['pertanian', 'perdagangan', 'peternakan', 'perindustrian', 'jasa', 'lain']
-        .some((key) => data[key as keyof typeof data].trim() !== '');
-}, {
-    message: "Setidaknya satu bidang usaha harus diisi",
-    path: ['root'],
-});
+    tahun: z.preprocess(val => Number(val), z.number().refine(num => !isNaN(num) && num >= 1900 && num <= new Date().getFullYear(), { message: "Tahun tidak valid" }))
+}).refine(data => ["pertanian", "perdagangan", "peternakan", "perindustrian", "jasa", "lain"].some(key => data[key as keyof Omit<typeof data, "tahun" | "jenis" | "alamatUsaha">].trim() !== ""), { message: "Setidaknya satu bidang usaha harus diisi", path: ["root"] });
 
 export const keteranganaTidakMampuSekolahSchema = z.object({
     jenis: z.literal('KETERANGAN_TIDAK_MAMPU_SEKOLAH'),
@@ -57,10 +56,6 @@ export const keteranganTidakMemilikiMobilSchema = z.object({
     jenis: z.literal('KETERANGAN_TIDAK_MEMILIKI_MOBIL')
 });
 
-// const keteranganUsahaWithBase = baseCreatePengajuanSuratSchema.merge(keteranganUsahaSchema);
-// const keteranganTidakMampuSekolahWithBase = baseCreatePengajuanSuratSchema.merge(keteranganaTidakMampuSekolahSchema);
-// const keteranganSuamiIstriKeluarNegeriWithBase = baseCreatePengajuanSuratSchema.merge(keteranganSuamiIstriKeluarNegeriSchema);
-
 export const createPengajuanSuratSchema = z.discriminatedUnion('jenis', [
     keteranganUsahaSchema,
     keteranganaTidakMampuSekolahSchema,
@@ -70,14 +65,8 @@ export const createPengajuanSuratSchema = z.discriminatedUnion('jenis', [
 
 export const fullCreatePengajuanSuratSchema = baseCreatePengajuanSuratSchema.and(createPengajuanSuratSchema);
 
-// export const fullCreatePengajuanSuratSchema = z.discriminatedUnion("jenis", [
-//     keteranganUsahaWithBase,
-//     keteranganTidakMampuSekolahWithBase,
-// ]);
-
 export type fullCreatePengajuanSuratDto = z.infer<typeof fullCreatePengajuanSuratSchema>;
 export type PengajuanSuratFormInput = z.input<typeof fullCreatePengajuanSuratSchema>;
-
 
 export type UpdatePengajuanSuratDto = Partial<
     fullCreatePengajuanSuratDto
@@ -87,24 +76,22 @@ export type UpdatePengajuanSuratDto = Partial<
     status?: string;
 };
 
-export const keteranganUsahaResponseSchema = z.object({
+// =============
+// Response Setiap Kategori
+// =============
+
+const keteranganUsahaResponseSchema = z.object({
     jasa: z.string().nullable(),
     lain: z.string().nullable(),
     pertanian: z.string().nullable(),
     peternakan: z.string().nullable(),
     perdagangan: z.string().nullable(),
     perindustrian: z.string().nullable(),
-}).transform((val) => ({
-    ...val,
-    jasa: val.jasa || null,
-    lain: val.lain || null,
-    pertanian: val.pertanian || null,
-    peternakan: val.peternakan || null,
-    perdagangan: val.perdagangan || null,
-    perindustrian: val.perindustrian || null,
-}));
+    alamatUsaha: z.string(),
+    tahun: z.number(),
+});
 
-export const keteranganTidakMampuSekolahResponseSchema = z.object({
+const keteranganTidakMampuSekolahResponseSchema = z.object({
     targetId: z.number().nullable(),
     institusi: z.string(),
     alamatSiswa: z.string(),
@@ -112,24 +99,36 @@ export const keteranganTidakMampuSekolahResponseSchema = z.object({
     keterangan: z.string(),
 });
 
-export const dataPermohonanResponseSchema = z.discriminatedUnion("jenis", [
-    z.object({
-        jenis: z.literal("KETERANGAN_USAHA"),
-        dataPermohonan: keteranganUsahaResponseSchema,
-    }),
-    z.object({
-        jenis: z.literal("KETERANGAN_TIDAK_MAMPU_SEKOLAH"),
-        dataPermohonan: keteranganTidakMampuSekolahResponseSchema,
-    }),
-]);
+const keteranganSuamiIstriKeluarNegeriResponseSchema = z.object({
+    targetId: z.number(),
+    tahun: z.number(),
+    keterangan: z.string(),
+    negaraTujuan: z.string(),
+});
 
-export const pengajuanSuratResponseSchema = z.object({
+// =============
+// Base Response
+// =============
+
+export const createdBySchema = z.object({
+    id: z.number(),
+    noHp: z.string(),
+    email: z.string(),
+    username: z.string(),
+});
+
+export const jenisSuratSchema = z.object({
+    id: z.number(),
+    nama: z.string(),
+    kode: z.string(),
+}).nullable();
+
+export const basefindAllPengajuanSuratResponseSchema = z.object({
     id: z.number(),
     pendudukId: z.number(),
     targetId: z.number().nullable(),
-    jenis: JenisSuratEnum,
     jenisSuratId: z.number().nullable(),
-    status: StatusSuratEnum,
+    statusSurat: statusSuratEnum,
     catatan: z.string().nullable(),
     fileHasil: z.string().nullable(),
     createdById: z.number(),
@@ -149,56 +148,54 @@ export const pengajuanSuratResponseSchema = z.object({
             nik: z.string(),
         })
         .nullable(),
-}).and(dataPermohonanResponseSchema);
+});
 
-export type PengajuanSuratResponse = z.infer<typeof pengajuanSuratResponseSchema>;
+export const findAllPengajuanSuratResponseSchema = z.discriminatedUnion("jenis", [
+    basefindAllPengajuanSuratResponseSchema.extend({
+        jenis: z.literal("KETERANGAN_USAHA"),
+        dataPermohonan: keteranganUsahaResponseSchema,
+    }),
+    basefindAllPengajuanSuratResponseSchema.extend({
+        jenis: z.literal("KETERANGAN_TIDAK_MAMPU_SEKOLAH"),
+        dataPermohonan: keteranganTidakMampuSekolahResponseSchema,
+    }),
+    basefindAllPengajuanSuratResponseSchema.extend({
+        jenis: z.literal("KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI"),
+        dataPermohonan: keteranganSuamiIstriKeluarNegeriResponseSchema,
+    }),
+    basefindAllPengajuanSuratResponseSchema.extend({
+        jenis: z.literal("KETERANGAN_TIDAK_MEMILIKI_MOBIL"),
+        dataPermohonan: null,
+    }),
+]);
 
-export const pendudukSchema = z.object({
+export type FindAllPengajuanSuratResponseSchema = z.infer<typeof findAllPengajuanSuratResponseSchema>;
+
+export const pendudukDetailSchema = z.object({
     id: z.number(),
     nik: z.string(),
     nama: z.string(),
     tempatLahir: z.string(),
     tanggalLahir: z.string().datetime(),
-    jenisKelamin: z.string(),
+    jenisKelamin: z.enum(['Laki-laki', 'Perempuan']),
     agama: z.string(),
     statusPerkawinan: z.string(),
-    pendidikan: z.string().nullable().optional(),
-    pekerjaan: z.string().nullable().optional(),
+    pendidikan: z.string().nullable(),
+    pekerjaan: z.string().nullable(),
     hubunganDalamKeluarga: z.string(),
     kartuKeluargaId: z.number(),
     userId: z.number(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
+    kartuKeluarga: kartuKeluargaDetailSchema
 });
 
-export const kartuKeluargaSchema = z.object({
-    id: z.number(),
-    noKk: z.string(),
-    alamat: z.string()
-})
-
-export const createdBySchema = z.object({
-    id: z.number(),
-    noHp: z.string(),
-    email: z.string(),
-    username: z.string(),
-});
-
-export const jenisSuratSchema = z
-    .object({
-        id: z.number(),
-        nama: z.string(),
-        kode: z.string(),
-    })
-    .nullable();
-
-export const detailPengajuanSuratResponseSchema = z.object({
+const baseDetailPengajuanSuratSchema = z.object({
     id: z.number(),
     pendudukId: z.number(),
     targetId: z.number().nullable(),
-    jenis: z.string(),
     jenisSuratId: z.number().nullable(),
-    status: z.enum(["PENDING", "DIPROSES", "SELESAI", "DITOLAK"]),
+    statusSurat: statusSuratEnum,
     catatan: z.string().nullable(),
     fileHasil: z.string().nullable(),
     createdById: z.number(),
@@ -206,15 +203,30 @@ export const detailPengajuanSuratResponseSchema = z.object({
     processAt: z.string().datetime().nullable(),
     processEnd: z.string().datetime().nullable(),
     updatedAt: z.string().datetime(),
+    penduduk: pendudukDetailSchema,
+    target: pendudukDetailSchema.nullable(),
+});
 
-    // relasi
-    penduduk: pendudukSchema.merge(z.object({ kartuKeluarga: kartuKeluargaSchema })),
-    target: pendudukSchema.nullable(),
-    jenisSurat: jenisSuratSchema,
-    createdBy: createdBySchema,
-}).and(dataPermohonanResponseSchema);
+export const detailPengajuanSuratSchema = z.discriminatedUnion("jenis", [
+    baseDetailPengajuanSuratSchema.extend({
+        jenis: z.literal("KETERANGAN_USAHA"),
+        dataPermohonan: keteranganUsahaResponseSchema,
+    }),
+    baseDetailPengajuanSuratSchema.extend({
+        jenis: z.literal("KETERANGAN_TIDAK_MAMPU_SEKOLAH"),
+        dataPermohonan: keteranganTidakMampuSekolahResponseSchema,
+    }),
+    baseDetailPengajuanSuratSchema.extend({
+        jenis: z.literal("KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI"),
+        dataPermohonan: keteranganSuamiIstriKeluarNegeriResponseSchema,
+    }),
+    baseDetailPengajuanSuratSchema.extend({
+        jenis: z.literal("KETERANGAN_TIDAK_MEMILIKI_MOBIL"),
+        dataPermohonan: z.null()
+    }),
+]);
 
-export type PengajuanSuratDetail = z.infer<typeof detailPengajuanSuratResponseSchema>;
+export type DetailPengajuanSuratSchema = z.infer<typeof detailPengajuanSuratSchema>;
 
 export interface PengajuanSuratQueryParams {
     page?: number;

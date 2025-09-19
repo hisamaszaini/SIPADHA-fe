@@ -1,7 +1,8 @@
-import type { PengajuanSuratDetail } from '../../types/pengajuanSurat.types';
+import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
 import { formatTanggal, formatTanggalSingkat } from '../../utils/date';
-export function TemplateKtmSekolah({ data }: { data: PengajuanSuratDetail }) {
-    const dataPermohonan = data.dataPermohonan as any;
+export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSuratSchema, { jenis: "KETERANGAN_TIDAK_MAMPU_SEKOLAH" }>;
+}) {
+  const dataPermohonan = data.dataPermohonan;
 
     return (<>
         <div className='page'>
@@ -580,7 +581,7 @@ export function TemplateKtmSekolah({ data }: { data: PengajuanSuratDetail }) {
                         >
                             <p>
                                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                    {data.dataPermohonan.institusi}
+                                    {data.dataPermohonan?.institusi ?? ''}
                                 </span>
                             </p>
                         </td>
@@ -617,7 +618,7 @@ export function TemplateKtmSekolah({ data }: { data: PengajuanSuratDetail }) {
                         >
                             <p>
                                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                    {data.dataPermohonan.alamatSiswa}
+                                    {data.dataPermohonan?.alamatSiswa}
                                 </span>
                                 <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp; </span>
                                 <span style={{ fontFamily: '"Bookman Old Style"' }}>60213</span>

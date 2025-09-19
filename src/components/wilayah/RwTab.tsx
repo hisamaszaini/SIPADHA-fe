@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { PlusIcon } from 'lucide-react';
-
-// Custom Hooks
 import { useRwData } from '../../hooks/useRwData';
 import { useWilayahContext } from '../../contexts/wilayahContext';
 
 // Types
-import type { RwWithRelations, CreateRwDto } from '../../types/rw.types';
+import type { CreateRwDto, FindAllRwResponse } from '../../types/rw.types';
 
 // Components
 import RwTable from '../../components/wilayah/RwTable';
@@ -32,9 +29,9 @@ const RwTab: React.FC = () => {
     const { allDukuh } = useWilayahContext();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [editingItem, setEditingItem] = useState<RwWithRelations | null>(null);
+    const [editingItem, setEditingItem] = useState<FindAllRwResponse | null>(null);
 
-    const handleOpenModal = (item: RwWithRelations | null = null) => {
+    const handleOpenModal = (item: FindAllRwResponse | null = null) => {
         setEditingItem(item);
         setIsModalOpen(true);
     };
@@ -89,7 +86,7 @@ const RwTab: React.FC = () => {
             </div>
 
             {paginationMeta && (
-                <Pagination meta={paginationMeta} onPageChange={handlePageChange} />
+                <Pagination currentItemCount={rwList.length} meta={paginationMeta} onPageChange={handlePageChange} />
             )}
 
             {isModalOpen && (

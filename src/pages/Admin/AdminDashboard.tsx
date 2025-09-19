@@ -1,28 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
 import StatCard from '../../components/ui/StatCard';
 import { CheckIcon, FileText, Home, PlusIcon, PlusSquare, RefreshCw, UserPlusIcon, Users } from 'lucide-react';
 import ButtonCard from '../../components/ui/ButtonCard';
 
 const AdminDashboard: React.FC = () => {
-  const { user } = useAuth();
-
-  // Statistik contoh untuk dashboard admin
-  const stats = [
-    { label: 'Total Pengguna', value: '245', change: '+12%', changeType: 'positive' },
-    { label: 'Total Dukuh', value: '12', change: '+3%', changeType: 'positive' },
-    { label: 'Total RW', value: '48', change: '+5%', changeType: 'positive' },
-    { label: 'Pending Requests', value: '8', change: '-2%', changeType: 'negative' },
-  ];
-
-  const recentActivities = [
-    { id: 1, action: 'Membuat dukuh baru', user: 'Budi Santoso', time: '2 jam yang lalu' },
-    { id: 2, action: 'Menghapus pengguna', user: 'Admin', time: '5 jam yang lalu' },
-    { id: 3, action: 'Mengubah data RW', user: 'Siti Aisyah', time: 'Kemarin' },
-    { id: 4, action: 'Membuat laporan bulanan', user: 'Admin', time: '2 hari yang lalu' },
-  ];
-
   return (
     <>
       {/* Stats Grid */}

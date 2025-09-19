@@ -1,10 +1,10 @@
-import type { PengajuanSuratDetail, PengajuanSuratResponse } from '../types/pengajuanSurat.types';
+import type { DetailPengajuanSuratSchema } from "../../../types/pengajuanSurat.types";
 
 // Tipe props untuk modal ini
 interface ViewDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: PengajuanSuratDetail | PengajuanSuratResponse | null;
+  data: DetailPengajuanSuratSchema | null;
   isLoading: boolean;
 }
 
@@ -74,7 +74,7 @@ export function ViewDetailsModal({ isOpen, onClose, data, isLoading }: ViewDetai
             {/* Informasi Pengajuan */}
             <h4 className="font-semibold text-gray-800 mt-4 border-b">Detail Pengajuan</h4>
             <DetailRow label="Jenis Surat" value={data.jenis.replace(/_/g, ' ')} />
-            <DetailRow label="Status" value={data.status} />
+            <DetailRow label="Status" value={data.statusSurat} />
             <DetailRow label="Tanggal Dibuat" value={new Date(data.createdAt).toLocaleString('id-ID')} />
             <DetailRow label="Catatan" value={data.catatan} />
 

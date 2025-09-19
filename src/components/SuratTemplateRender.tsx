@@ -1,13 +1,12 @@
 import "../assets/surat.css";
-import type { PengajuanSuratDetail } from '../types/pengajuanSurat.types';
+import type { DetailPengajuanSuratSchema } from '../types/pengajuanSurat.types';
 import { TemplateKeteranganTmMobil } from "./templates/TemplateKeteranganTmMobil";
 import { TemplateKeteranganUsaha } from './templates/TemplateKeteranganUsaha';
 import { TemplateKtmSekolah } from './templates/TemplateKtmSekolah';
 import { TemplateKeteranganSuamiIstriKeluarNegeri } from "./templates/TemplateSuamiIstriKeluarNegeri";
 
-
 interface SuratTemplateRendererProps {
-    data: PengajuanSuratDetail;
+    data: DetailPengajuanSuratSchema;
 }
 
 export function SuratTemplateRenderer({ data }: SuratTemplateRendererProps) {
@@ -33,7 +32,7 @@ export function SuratTemplateRenderer({ data }: SuratTemplateRendererProps) {
         default:
             TemplateComponent = (
                 <div className="text-red-500">
-                    Template untuk jenis surat "{data.jenis}" tidak ditemukan.
+                    Template tidak ditemukan!
                 </div>
             );
     }

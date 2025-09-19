@@ -1,45 +1,19 @@
-/**
- * Merepresentasikan data utama dari satu entitas Dukuh.
- * Tipe ini digunakan untuk respons detail (findOne) atau setelah membuat/update data.
- */
-export interface Dukuh {
-  id: number;
-  nama: string;
-  createdAt: string; // ISO Date String
-  updatedAt: string; // ISO Date String
-}
+import z from "zod";
 
-/**
- * Merepresentasikan data Dukuh dalam daftar (findAll).
- * Tipe ini memiliki tambahan properti `_count` untuk relasi.
- */
-export interface DukuhWithRelationsCount extends Dukuh {
-  _count: {
-    rws: number;
-  };
-}
+export const createDukuhSchema = z.object({
+  nama: z.string().nonempty("Nama dukuh wajib diisi")
+});
 
-// --- DTO (Data Transfer Objects) ---
-// Tipe data yang dikirimkan ke API
+export const updateDukuhSchema = createDukuhSchema.partial();
 
-/**
- * Tipe data untuk membuat Dukuh baru.
- * Hanya berisi field yang bisa diisi oleh pengguna.
- */
-export interface CreateDukuhDto {
-  nama: string;
-}
-
-/**
- * Tipe data untuk memperbarui Dukuh.
- * Sama dengan CreateDukuhDto dalam kasus ini.
- */
-export type UpdateDukuhDto = CreateDukuhDto;
-
+export type CreateDukuhDto = z.infer<typeof createDukuhSchema>;
+export type UpdateDukuhDto = z.infer<typeof updateDukuhSchema>;
 export type DukuhSortableKeys = keyof Dukuh;
 
-// --- API Query Parameters ---
-// Tipe untuk parameter yang bisa dikirim saat fetching data
+export interface DukuhReference {
+  id: number;
+  nama: string;
+}
 
 /**
  * Tipe untuk parameter query saat mengambil daftar Dukuh.
@@ -52,3 +26,19 @@ export interface DukuhQueryParams {
   sortBy?: DukuhSortableKeys;
   sortOrder?: 'asc' | 'desc';
 }
+
+export const dukuhDetailSchema = z.object({
+  id: z.number(),
+  nama: z.string(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+export const dukuhSchema = dukuhDetailSchema.extend({
+  _count: z.object({
+    rws: z.number(),
+  }),
+});
+
+export type DukuhDetail = z.infer<typeof dukuhDetailSchema>;
+export type Dukuh = z.infer<typeof dukuhSchema>;

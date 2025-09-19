@@ -1,27 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import type { z } from 'zod';
-import { fullCreatePengajuanSuratSchema, type fullCreatePengajuanSuratDto, type PengajuanSuratDetail } from '../../types/pengajuanSurat.types';
-import type { JenisSuratEnum } from './jenisSuratMap';
+import { fullCreatePengajuanSuratSchema, type DetailPengajuanSuratSchema, type fullCreatePengajuanSuratDto, type PengajuanSuratFormInput } from '../../types/pengajuanSurat.types';
 import { usePengajuanSuratMutations } from './usePengajuranSuratMutation';
+import type { PilihanJenisSurat } from '../../types/jenisSurat.types';
 
 /**
  * Helper untuk menghasilkan nilai awal form berdasarkan mode (edit/create)
  * dan jenis surat yang dipilih.
  */
 export const getInitialValues = (
-  pengajuan: PengajuanSuratDetail | null,
-  jenisUntukBuat: z.infer<typeof JenisSuratEnum> | null
+  pengajuan: DetailPengajuanSuratSchema | null,
+  jenisUntukBuat: PilihanJenisSurat | null
 ): fullCreatePengajuanSuratDto => {
 
   // --- MODE EDIT ---
   if (pengajuan) {
     const baseFields = {
-      pendudukId: String(pengajuan.pendudukId),
-      status: pengajuan.status,
+      pendudukId: pengajuan.pendudukId ?? 0,
+      statusSurat: pengajuan.statusSurat,
     };
 
     switch (pengajuan.jenis) {
@@ -76,8 +74,8 @@ export const getInitialValues = (
 
   // --- MODE CREATE ---
   const baseCreateFields = {
-    pendudukId: '', // Atau '' jika inputnya string
-    status: 'PENDING' as const,
+    pendudukId: 0,
+    statusSurat: 'PENDING' as const,
   };
 
   switch (jenisUntukBuat) {
@@ -91,6 +89,8 @@ export const getInitialValues = (
         perindustrian: '',
         jasa: '',
         lain: '',
+        alamatUsaha: '',
+        tahun: 0,
       };
 
     case 'KETERANGAN_TIDAK_MAMPU_SEKOLAH':
@@ -104,8 +104,6 @@ export const getInitialValues = (
         keterangan: '',
       };
 
-    // Tambahkan case lain jika ada jenis surat baru
-
     default:
       // Default form state saat belum ada jenis surat dipilih
       return {
@@ -117,13 +115,15 @@ export const getInitialValues = (
         perindustrian: '',
         jasa: '',
         lain: '',
+        alamatUsaha: '',
+        tahun: 0,
       }
   }
 };
 
 interface UsePengajuanSuratFormProps {
-  pengajuan?: PengajuanSuratDetail | null;
-  jenisUntukBuat?: z.infer<typeof JenisSuratEnum> | null;
+  pengajuan?: DetailPengajuanSuratSchema | null;
+  jenisUntukBuat?: PilihanJenisSurat | null;
   onSuccess: () => void;
 }
 
@@ -143,7 +143,7 @@ export const usePengajuanSuratForm = ({
   );
 
   const form = useForm<fullCreatePengajuanSuratDto>({
-    resolver: zodResolver(fullCreatePengajuanSuratSchema),
+    resolver: zodResolver(fullCreatePengajuanSuratSchema as any),
     // `values` akan me-reset form jika `defaultValues` berubah. Cocok untuk kasus ini.
     values: defaultValues,
   });
@@ -171,19 +171,22 @@ export const usePengajuanSuratForm = ({
     }
   };
 
-  const onSubmit = async (data: fullCreatePengajuanSuratDto) => {
+  const onSubmit = async (values: PengajuanSuratFormInput) => {
     setApiError(null);
 
-    const mutation = isEditMode
-      ? updateMutation.mutateAsync({ id: pengajuan!.id, data })
-      : createMutation.mutateAsync(data);
+    const data = fullCreatePengajuanSuratSchema.parse(values);
 
-    await mutation
-      .then(() => {
-        onSuccess();
-        form.reset();
-      })
-      .catch(handleApiError);
+    try {
+      if (isEditMode) {
+        await updateMutation.mutateAsync({ id: pengajuan!.id, data });
+      } else {
+        await createMutation.mutateAsync(data);
+      }
+      onSuccess();
+      form.reset();
+    } catch (err) {
+      handleApiError(err);
+    }
   };
 
   // Handler untuk error validasi dari sisi klien (Zod)

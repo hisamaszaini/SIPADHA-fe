@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import { PlusIcon } from 'lucide-react';
+import React, { useState } from 'react';
 
 // Hooks
 import { useRtData } from '../../hooks/useRtData';
@@ -83,7 +82,7 @@ const RtTab: React.FC = () => {
             </div>
 
             {paginationMeta && (
-                <Pagination meta={paginationMeta} onPageChange={handlePageChange} />
+                <Pagination currentItemCount={rtList.length} meta={paginationMeta} onPageChange={handlePageChange} />
             )}
 
             {isModalOpen && (

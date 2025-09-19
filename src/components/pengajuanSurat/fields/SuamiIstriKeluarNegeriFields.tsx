@@ -5,6 +5,7 @@ import TextInput from "../../ui/TextInput";
 interface KeteranganSuamiIstriKeluarNegeriFieldsProps {
     form: UseFormReturn<any>;
     targetOptions: any[];
+    targetSearch: string;
     onTargetSearchChange: (value: string) => void;
     isTargetLoading: boolean;
 }
@@ -12,6 +13,7 @@ interface KeteranganSuamiIstriKeluarNegeriFieldsProps {
 export function KeteranganSuamiIstriKeluarNegeriFields({
     form,
     targetOptions,
+    targetSearch,
     onTargetSearchChange,
     isTargetLoading,
 }: KeteranganSuamiIstriKeluarNegeriFieldsProps) {
@@ -32,6 +34,7 @@ export function KeteranganSuamiIstriKeluarNegeriFields({
                 onChange={(val) => setValue('targetId', val ? String(val.id) : '', { shouldValidate: true })}
                 options={targetOptions}
                 onSearchChange={onTargetSearchChange}
+                searchTerm={targetSearch}
                 isLoading={isTargetLoading}
                 error={errors.targetId?.message as string}
             />

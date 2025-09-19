@@ -1,4 +1,5 @@
-// src/types/rt.types.ts
+import z from "zod";
+import { rwDetailSchema } from "./rw.types";
 
 // Sebaiknya impor tipe Dukuh dan RW dari file masing-masing
 // import type { Dukuh } from './dukuh.types';
@@ -84,3 +85,12 @@ export interface RtQueryParams {
   dukuhId?: number;
   rwId?: number;
 }
+
+export const rtDetailSchema = z.object({
+    id: z.number(),
+    nomor: z.string(),
+    rwId: z.number(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+    rw: rwDetailSchema,
+});

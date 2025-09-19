@@ -1,14 +1,14 @@
 import React from 'react';
 import { FileEdit, Trash2 } from 'lucide-react';
-import type { Rw, RwQueryParams, RwSortableKeys, RwWithRelations } from '../../types/rw.types';
+import type { FindAllRwResponse, RwQueryParams, RwSortableKeys } from '../../types/rw.types';
 import type { PaginationMeta } from '../../types/api.types';
 import { SortableHeader } from '../ui/SortableHeader';
 
 interface RwTableProps {
-  rwList: RwWithRelations[];
+  rwList: FindAllRwResponse[];
   isLoading: boolean;
   meta: PaginationMeta | null;
-  onEdit: (rw: RwWithRelations) => void;
+  onEdit: (rw: FindAllRwResponse) => void;
   onDelete: (id: number) => void;
   onSort: (sortKey: RwSortableKeys) => void;
   queryParams: RwQueryParams;
@@ -16,11 +16,6 @@ interface RwTableProps {
 
 const RwTable: React.FC<RwTableProps> = ({ rwList, isLoading, meta, onEdit, onDelete, onSort, queryParams }) => {
   const startingNumber = meta ? (meta.page - 1) * meta.limit + 1 : 1;
-
-  const getSortIcon = (key: keyof Rw) => {
-    if (queryParams.sortBy !== key) return 'opacity-20';
-    return queryParams.sortOrder === 'asc' ? '▲' : '▼';
-  };
 
   if (isLoading) {
     return (

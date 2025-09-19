@@ -2,9 +2,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
-
 import { useEffect } from 'react';
-import { StatusSuratEnum, type PengajuanSuratResponse } from '../../../types/pengajuanSurat.types';
+import { statusSuratEnum } from '../../../types/pengajuanSurat.types';
+import type { FindAllPengajuanSuratResponseSchema } from '../../../types/pengajuanSurat.types';
 import { usePengajuanSuratMutations } from '../../../hooks/PengajuanSurat/usePengajuranSuratMutation';
 import { Button } from '../../ui/Button';
 import { jenisSuratOptions, statusSuratOptions } from '../../../constant/suratOption';
@@ -12,7 +12,7 @@ import SelectInput from '../../ui/SelectInput';
 
 // Skema validasi untuk form proses
 const processSchema = z.object({
-  status: StatusSuratEnum,
+  status: statusSuratEnum,
   catatan: z.string().optional(),
 });
 type ProcessFormData = z.infer<typeof processSchema>;
@@ -21,7 +21,7 @@ type ProcessFormData = z.infer<typeof processSchema>;
 interface ProcessSuratModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: PengajuanSuratResponse | null;
+  data: FindAllPengajuanSuratResponseSchema | null;
   onSuccess: () => void;
 }
 
@@ -41,7 +41,6 @@ export function ProcessSuratModal({ isOpen, onClose, data, onSuccess }: ProcessS
   useEffect(() => {
     if (data) {
       reset({
-        status: data.status,
         catatan: data.catatan || '',
       });
     }

@@ -1,5 +1,6 @@
+import z from "zod";
 import type { Penduduk } from "./penduduk.types";
-import type { Rt } from "./rt.types";
+import { rtDetailSchema, type Rt } from "./rt.types";
 
 export interface CreateKartuKeluargaWithKepalaDto {
     noKk: string;
@@ -39,8 +40,18 @@ export interface UpdateKartuKeluargaWithKepalaDto {
 }
 
 export interface KepalaKeluarga {
-    nama: string;
+    id: number,
     nik: string;
+    nama: string;
+    tempatLahir: string;
+    tanggalLahir: Date;
+    jenisKelamin: string;
+    agama: string;
+    statusPerkawinan: string;
+    pendidikan: string;
+    pekerjaan: string;
+    hubunganDalamKeluarga: string;
+    kartuKeluargaId: number;
 }
 
 export interface KartuKeluargaCount {
@@ -117,3 +128,16 @@ export interface FindKk {
 }
 
 export type PecahKkDto = Pick<CreateKartuKeluargaWithKepalaDto, 'noKk' | 'alamat' | 'dukuhId' | 'rwId' | 'rtId'> & { kepalaPendudukId: number };
+
+export const kartuKeluargaDetailSchema = z.object({
+    id: z.number(),
+    noKk: z.string(),
+    alamat: z.string(),
+    dukuhId: z.number(),
+    rwId: z.number(),
+    rtId: z.number(),
+    kepalaPendudukId: z.number(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+    rt: rtDetailSchema,
+});

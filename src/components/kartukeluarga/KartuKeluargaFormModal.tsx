@@ -1,7 +1,6 @@
 import React, { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
 
-import type { CreateKartuKeluargaWithKepalaDto, PecahKkDto, UpdateKartuKeluargaWithKepalaDto } from '../../types/kartuKeluarga.types';
-import type { KartuKeluargaDetail } from '../../types/kartuKeluarga.types';
+import type { CreateKartuKeluargaWithKepalaDto, KartuKeluarga, PecahKkDto, UpdateKartuKeluargaWithKepalaDto } from '../../types/kartuKeluarga.types';
 import { useKartuKeluargaContext } from '../../contexts/kartuKeluargaContext';
 import TextInput from '../ui/TextInput';
 import SelectInput from '../ui/SelectInput';
@@ -16,7 +15,7 @@ interface KartuKeluargaFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (formData: any, id: number | null) => Promise<void>;
-  editingKk: KartuKeluargaDetail | null;
+  editingKk: KartuKeluarga | null;
 }
 
 const formatDateForInput = (isoDate: string | Date | undefined): string => {

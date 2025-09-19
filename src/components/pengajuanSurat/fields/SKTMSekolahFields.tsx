@@ -6,6 +6,7 @@ import TextInput from "../../ui/TextInput";
 interface KeteranganTidakMampuSekolahFieldsProps {
   form: UseFormReturn<any>;
   targetOptions: any[]; // Sebaiknya gunakan tipe yang lebih spesifik, misal: Penduduk[]
+  targetSearch: string;
   onTargetSearchChange: (value: string) => void;
   isTargetLoading: boolean;
 }
@@ -13,6 +14,7 @@ interface KeteranganTidakMampuSekolahFieldsProps {
 export function KeteranganTidakMampuSekolahFields({
   form,
   targetOptions,
+  targetSearch,
   onTargetSearchChange,
   isTargetLoading,
 }: KeteranganTidakMampuSekolahFieldsProps) {
@@ -33,6 +35,7 @@ export function KeteranganTidakMampuSekolahFields({
         onChange={(val) => setValue('targetId', val ? String(val.id) : '', { shouldValidate: true })}
         options={targetOptions}
         onSearchChange={onTargetSearchChange}
+        searchTerm={targetSearch}
         isLoading={isTargetLoading}
         error={errors.targetId?.message as string}
       />

@@ -6,9 +6,10 @@ import { usePengajuanSuratModals } from './usePengajuanSuratModals';
 import { usePengajuanSuratQueries } from './usePengajuanSuratQueries';
 import { usePengajuanSuratMutations } from './usePengajuranSuratMutation';
 import { pengajuanSuratService } from '../../services/pengajuanSuratService';
-import type { PengajuanSuratResponse } from '../../types/pengajuanSurat.types';
+// import type { PengajuanSuratResponse } from '../../types/pengajuanSurat.types';
 import { useDebounce } from '../useDebounce';
 import { useAuth } from '../../contexts/AuthContext';
+import type { FindAllPengajuanSuratResponseSchema } from '../../types/pengajuanSurat.types';
 
 /**
  * Hook orkestrator utama untuk fitur Pengajuan Surat.
@@ -105,7 +106,7 @@ export function usePengajuanSuratManagement() {
   };
 
   // Buka modal proses (misal: ubah status)
-  const handleProcess = (data: PengajuanSuratResponse) => {
+  const handleProcess = (data: FindAllPengajuanSuratResponseSchema) => {
     modals.openProcessModal(data);
   }
 
@@ -120,12 +121,15 @@ export function usePengajuanSuratManagement() {
     // Sebarkan semua properti dari filters dan modals agar bisa diakses langsung
     ...filters,
     ...modals,
+    user,
 
     // Data dan Options
     data: queries.findAllQuery.data,
     detailData: queries.findOneQuery.data,
     pendudukOptions,
     targetOptions,
+    pendudukSearch,
+    targetSearch,
     setPendudukSearch,
     setTargetSearch,
 

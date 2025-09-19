@@ -40,7 +40,7 @@ export const Pagination: React.FC<PaginationProps> = ({ meta, onPageChange, curr
   return (
     <div className="mt-4 p-4 flex justify-between items-center text-sm text-gray-600">
       <span>
-        Menampilkan {(meta.page - 1) * meta.limit + 1} – {Math.min(meta.page * meta.limit, meta.total)} dari {meta.total} data.
+        Menampilkan {(meta.page - 1) * meta.limit + 1} – {currentItemCount} dari {meta.total} data.
       </span>
       <div className="flex items-center gap-2">
         {/* Previous Button */}

@@ -9,7 +9,6 @@ import { Button } from "../../components/ui/Button";
 
 
 export function AdminPengajuanSuratPage() {
-    // 1. Panggil hook manajemen utama untuk mendapatkan semua state dan fungsi
     const management = usePengajuanSuratManagement();
 
     return (
@@ -42,7 +41,7 @@ export function AdminPengajuanSuratPage() {
                         onPageChange={management.setPage}
                         onSortChange={management.handleSortChange}
                         onEdit={management.handleEdit}
-                        onDelete={management.openDeleteModal} // Langsung buka modal konfirmasi
+                        onDelete={management.openDeleteModal}
                         onView={management.handleView}
                         onProcess={management.handleProcess}
                         sortBy={management.queryParams.sortBy}
@@ -51,19 +50,20 @@ export function AdminPengajuanSuratPage() {
                 </div>
             </main>
 
-            {/* 4. Render semua Modal */}
+            {/* Render semua Modal */}
             <PengajuanSuratFormModal
                 isOpen={management.isFormModalOpen}
                 onClose={management.closeFormModal}
                 pengajuan={management.editingData}
                 onSuccess={management.handleSuccess}
 
-                // Tambahkan props ini
                 pendudukOptions={management.pendudukOptions}
+                pendudukSearch={management.pendudukSearch}
                 onPendudukSearchChange={management.setPendudukSearch}
                 isPendudukLoading={management.isLoadingPenduduk}
 
                 targetOptions={management.targetOptions}
+                targetSearch={management.targetSearch}
                 onTargetSearchChange={management.setTargetSearch}
                 isTargetLoading={management.isLoadingTarget}
             />
@@ -77,7 +77,7 @@ export function AdminPengajuanSuratPage() {
                 isDeleting={management.isDeleting}
             />
 
-            {/* Modal untuk Lihat Detail (jika diperlukan) */}
+            {/* Modal untuk Lihat Detail */}
             <ViewDetailsModal
                 isOpen={management.isViewModalOpen}
                 onClose={management.closeViewModal}

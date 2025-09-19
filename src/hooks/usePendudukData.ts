@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import pendudukService from '../services/pendudukService';
-import type { FindAllPendudukResponse, PendudukQueryParams, PendudukSortableKeys, Penduduk, PendudukDto } from '../types/penduduk.types';
+import type { FindAllPendudukResponse, PendudukQueryParams, PendudukSortableKeys, PendudukDto } from '../types/penduduk.types';
 import type { PaginationMeta } from '../types/api.types';
 
 export const usePendudukData = () => {

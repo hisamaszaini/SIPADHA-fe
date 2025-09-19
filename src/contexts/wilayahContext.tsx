@@ -3,12 +3,12 @@ import dukuhService from '../services/dukuhService';
 import rwService from '../services/RwService';
 import rtService from '../services/RtService';
 import type { Dukuh } from '../types/dukuh.types';
-import type { Rw } from '../types/rw.types';
+import type { RwReference } from '../types/rw.types';
 import type { Rt } from '../types/rt.types';
 
 interface IWilayahContext {
     allDukuh: Dukuh[];
-    filteredRw: Rw[];
+    filteredRw: RwReference[];
     filteredRt: Rt[];
     handleDukuhChange: (dukuhId: number | null) => void;
     handleRwChange: (rwId: number | null) => void;
@@ -22,7 +22,7 @@ const WilayahContext = createContext<IWilayahContext | undefined>(undefined);
 
 export const WilayahProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [allDukuh, setAllDukuh] = useState<Dukuh[]>([]);
-    const [filteredRw, setFilteredRw] = useState<Rw[]>([]);
+    const [filteredRw, setFilteredRw] = useState<RwReference[]>([]);
     const [filteredRt, setFilteredRt] = useState<Rt[]>([]);
 
     const [isLoadingDukuh, setIsLoadingDukuh] = useState(true);

@@ -1,22 +1,22 @@
-import { EyeIcon, FileEdit, Trash2 } from "lucide-react";
+import { FileEdit, Trash2 } from "lucide-react";
 import type { PaginationMeta } from "../../../types/api.types";
-import type { PengajuanSuratResponse } from "../../../types/pengajuanSurat.types";
 import { Link } from "react-router-dom";
 import { jenisSuratOptions } from "../../../constant/suratOption";
 import { Pagination } from "../../ui/Pagination";
 import { useAuth } from "../../../contexts/AuthContext";
+import type { FindAllPengajuanSuratResponseSchema } from "../../../types/pengajuanSurat.types";
 
 // Definisikan tipe props untuk komponen ini
 interface PengajuanSuratTableProps {
-  data: PengajuanSuratResponse[];
+  data: FindAllPengajuanSuratResponseSchema[];
   meta?: PaginationMeta;
   isLoading: boolean;
   onPageChange: (page: number) => void;
   onSortChange: (column: string) => void;
   onEdit: (id: number) => void;
-  onDelete: (data: PengajuanSuratResponse) => void;
+  onDelete: (data: FindAllPengajuanSuratResponseSchema) => void;
   onView: (id: number) => void;
-  onProcess: (data: PengajuanSuratResponse) => void;
+  onProcess: (data: FindAllPengajuanSuratResponseSchema) => void;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
@@ -37,7 +37,7 @@ export default function PengajuanSuratTable({
   onSortChange,
   onEdit,
   onDelete,
-  onView,
+  // onView,
   onProcess,
   sortBy,
   sortOrder,
@@ -86,8 +86,8 @@ export default function PengajuanSuratTable({
                 <td className="p-3 text-sm">{item.penduduk.nama} <br /> <span className="text-xs text-gray-500">{item.penduduk.nik}</span></td>
                 <td className="p-3">{getLabel(item.jenis)}</td>
                 <td className="p-3">
-                  <span className={`px-2 py-1 text-xs font-semibold rounded-full ${statusStyles[item.status] || 'bg-gray-100 text-gray-800'}`}>
-                    {item.status}
+                  <span className={`px-2 py-1 text-xs font-semibold rounded-full ${statusStyles[item.statusSurat] || 'bg-gray-100 text-gray-800'}`}>
+                    {item.statusSurat}
                   </span>
                 </td>
                 <td className="p-3">{new Date(item.createdAt).toLocaleDateString('id-ID')}</td>

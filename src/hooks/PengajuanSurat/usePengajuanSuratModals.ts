@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { PengajuanSuratResponse } from '../../types/pengajuanSurat.types';
+import type { DetailPengajuanSuratSchema, FindAllPengajuanSuratResponseSchema } from '../../types/pengajuanSurat.types';
 
 /**
  * Custom hook untuk mengelola semua state modal yang berhubungan dengan
@@ -8,22 +8,22 @@ import type { PengajuanSuratResponse } from '../../types/pengajuanSurat.types';
 export function usePengajuanSuratModals() {
   // State untuk modal utama (tambah/edit data)
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-  const [editingData, setEditingData] = useState<PengajuanSuratResponse | null>(null);
+  const [editingData, setEditingData] = useState<DetailPengajuanSuratSchema | null>(null);
 
   // State untuk modal proses (misal: admin mengubah status)
   const [isProcessModalOpen, setIsProcessModalOpen] = useState(false);
-  const [processingData, setProcessingData] = useState<PengajuanSuratResponse | null>(null);
+  const [processingData, setProcessingData] = useState<DetailPengajuanSuratSchema | null>(null);
   
   // State untuk modal lihat detail
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [viewingData, setViewingData] = useState<PengajuanSuratResponse | null>(null);
+  const [viewingData, setViewingData] = useState<DetailPengajuanSuratSchema | null>(null);
 
   // State untuk modal konfirmasi hapus
   // Cukup simpan datanya, modal akan tampil jika data tidak null
-  const [dataToDelete, setDataToDelete] = useState<PengajuanSuratResponse | null>(null);
+  const [dataToDelete, setDataToDelete] = useState<FindAllPengajuanSuratResponseSchema | null>(null);
 
   // === Handlers untuk Modal Form (Create/Edit) ===
-  const openFormModal = (data: PengajuanSuratResponse | null = null) => {
+  const openFormModal = (data: DetailPengajuanSuratSchema | null = null) => {
     setEditingData(data); // null untuk 'create', object untuk 'edit'
     setIsFormModalOpen(true);
   };
@@ -34,7 +34,7 @@ export function usePengajuanSuratModals() {
   };
 
   // === Handlers untuk Modal Proses ===
-  const openProcessModal = (data: PengajuanSuratResponse) => {
+  const openProcessModal = (data: DetailPengajuanSuratSchema) => {
     setProcessingData(data);
     setIsProcessModalOpen(true);
   };
@@ -45,7 +45,7 @@ export function usePengajuanSuratModals() {
   };
   
   // === Handlers untuk Modal Lihat Detail ===
-  const openViewModal = (data: PengajuanSuratResponse) => {
+  const openViewModal = (data: DetailPengajuanSuratSchema) => {
     setViewingData(data);
     setIsViewModalOpen(true);
   };
@@ -56,7 +56,7 @@ export function usePengajuanSuratModals() {
   };
 
   // === Handlers untuk Modal Hapus ===
-  const openDeleteModal = (data: PengajuanSuratResponse) => {
+  const openDeleteModal = (data: FindAllPengajuanSuratResponseSchema) => {
     setDataToDelete(data);
   };
 

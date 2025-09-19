@@ -35,11 +35,11 @@ export function usePengajuanSuratMutations() {
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: UpdatePengajuanSuratDto }) => 
       pengajuanSuratService.update(id, data),
-    onSuccess: (data, variables) => {
+    onSuccess: (variables) => {
       toast.success('Pengajuan surat berhasil diperbarui.');
       // Invalidate list dan juga detail query-nya jika ada
       invalidateQueries();
-      queryClient.invalidateQueries({ queryKey: ['pengajuan-surat', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['pengajuan-surat', variables.data.id] });
     },
     onError: (error) => {
       console.error('Update Pengajuan Surat failed:', error);

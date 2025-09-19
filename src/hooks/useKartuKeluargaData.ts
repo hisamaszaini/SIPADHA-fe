@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import kartuKeluargaService from '../services/kartuKeluargaService';
-import type { KartuKeluarga, KartuKeluargaQueryParams, FindAllKartuKeluargaResponse, KartuKeluargaSortableKeys } from '../types/kartuKeluarga.types';
+import type { KartuKeluargaQueryParams, FindAllKartuKeluargaResponse, KartuKeluargaSortableKeys } from '../types/kartuKeluarga.types';
 import type { PaginationMeta } from '../types/api.types';
 
 export const useKartuKeluargaData = () => {

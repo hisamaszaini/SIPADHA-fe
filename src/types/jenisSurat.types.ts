@@ -3,9 +3,11 @@ import z from "zod";
 export const JenisSuratEnum = z.enum([
     'KETERANGAN_USAHA',
     'KETERANGAN_TIDAK_MAMPU_SEKOLAH',
-    'KETERANGAN_PENGHASILAN',
     'KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI',
-    'PERINTAH_TUGAS']);
+    'KETERANGAN_TIDAK_MEMILIKI_MOBIL'
+]);
+
+export type PilihanJenisSurat = z.infer<typeof JenisSuratEnum>;
 
 export interface CreateJenisSuratDto {
     kode: string;

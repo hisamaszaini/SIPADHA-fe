@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { z } from 'zod';
-import type { PengajuanSuratDetail } from '../../types/pengajuanSurat.types';
-import type { JenisSuratEnum } from '../../types/jenisSurat.types';
+import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
+import type { PilihanJenisSurat } from '../../types/jenisSurat.types';
 import { usePengajuanSuratForm } from '../../hooks/PengajuanSurat/usePengajuanSuratForm';
 import { PendudukSelect } from '../pendudukSelect';
 import SelectInput from '../ui/SelectInput';
@@ -15,14 +14,16 @@ import { KeteranganSuamiIstriKeluarNegeriFields } from './fields/SuamiIstriKelua
 interface PengajuanSuratFormModalProps {
     isOpen: boolean;
     onClose: () => void;
-    pengajuan?: PengajuanSuratDetail | null;
+    pengajuan?: DetailPengajuanSuratSchema | null;
     onSuccess: () => void;
     // Props untuk pencarian pemohon
     pendudukOptions: any[];
+    pendudukSearch: string;
     onPendudukSearchChange: (value: string) => void;
     isPendudukLoading: boolean;
     // Props untuk pencarian target (anak/siswa)
     targetOptions: any[];
+    targetSearch: string;
     onTargetSearchChange: (value: string) => void;
     isTargetLoading: boolean;
 }
@@ -33,9 +34,11 @@ export function PengajuanSuratFormModal({
     pengajuan,
     onSuccess,
     pendudukOptions,
+    pendudukSearch,
     onPendudukSearchChange,
     isPendudukLoading,
     targetOptions,
+    targetSearch,
     onTargetSearchChange,
     isTargetLoading,
 }: PengajuanSuratFormModalProps) {
@@ -43,8 +46,8 @@ export function PengajuanSuratFormModal({
     // console.log(`TargetOptions: ${JSON.stringify(targetOptions, null, 2)}`);
 
     const isEditMode = !!pengajuan;
-    const [selectedJenis, setSelectedJenis] = useState<z.infer<typeof JenisSuratEnum>>(
-        pengajuan?.jenis as z.infer<typeof JenisSuratEnum> || 'KETERANGAN_USAHA'
+    const [selectedJenis, setSelectedJenis] = useState<PilihanJenisSurat>(
+        pengajuan?.jenis as PilihanJenisSurat || 'KETERANGAN_USAHA'
     );
 
     const { form, onSubmit, onInvalid, isLoading } = usePengajuanSuratForm({
@@ -82,9 +85,10 @@ export function PengajuanSuratFormModal({
                     <PendudukSelect
                         label="Pemohon"
                         value={pendudukOptions.find(p => p.id === Number(watch('pendudukId'))) || null}
-                        onChange={(val) => setValue('pendudukId', val ? String(val.id) : '', { shouldValidate: true })}
+                        onChange={(val) => setValue('pendudukId', val ? Number(val.id) : 0, { shouldValidate: true })}
                         options={pendudukOptions}
                         onSearchChange={onPendudukSearchChange}
+                        searchTerm={pendudukSearch}
                         isLoading={isPendudukLoading}
                         error={errors.pendudukId?.message as string}
                     />
@@ -95,7 +99,7 @@ export function PengajuanSuratFormModal({
                         error={errors.jenis?.message}
                         disabled={isEditMode}
                         {...register("jenis", {
-                            onChange: (e) => setSelectedJenis(e.target.value as z.infer<typeof JenisSuratEnum>)
+                            onChange: (e) => setSelectedJenis(e.target.value as PilihanJenisSurat)
                         })}
                     >
                         {jenisSuratOptions.map((opt) => (
@@ -113,6 +117,7 @@ export function PengajuanSuratFormModal({
                         <KeteranganTidakMampuSekolahFields
                             form={form}
                             targetOptions={targetOptions}
+                            targetSearch={targetSearch}
                             onTargetSearchChange={onTargetSearchChange}
                             isTargetLoading={isTargetLoading}
                         />
@@ -122,6 +127,7 @@ export function PengajuanSuratFormModal({
                         <KeteranganSuamiIstriKeluarNegeriFields
                             form={form}
                             targetOptions={targetOptions}
+                            targetSearch={targetSearch}
                             onTargetSearchChange={onTargetSearchChange}
                             isTargetLoading={isTargetLoading}
                         />

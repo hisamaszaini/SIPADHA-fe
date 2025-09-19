@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useWilayahContext } from '../contexts/wilayahContext';
-import type { CreateRwDto, Rw, RwQueryParams, RwSortableKeys, RwWithRelations } from '../types/rw.types';
+import type { CreateRwDto, FindAllRwResponse, RwQueryParams, RwSortableKeys } from '../types/rw.types';
 import type { PaginationMeta } from '../types/api.types';
 import rwService from '../services/RwService';
 
 export const useRwData = () => {
     const { refreshWilayahOptions } = useWilayahContext();
 
-    const [rwList, setRwList] = useState<RwWithRelations[]>([]);
+    const [rwList, setRwList] = useState<FindAllRwResponse[]>([]);
     const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState('');

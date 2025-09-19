@@ -20,15 +20,14 @@ export const baseCreatePengajuanSuratSchema = z.object({
 
 export const keteranganUsahaSchema = z.object({
     jenis: z.literal('KETERANGAN_USAHA'),
-    pertanian: z.string(),
-    perdagangan: z.string(),
-    peternakan: z.string(),
-    perindustrian: z.string(),
-    jasa: z.string(),
-    lain: z.string(),
-    alamatUsaha: z.string(),
-    tahun: z.string().regex(/^\d{4}$/, "Tahun harus 4 digit")
-    .transform((val) => parseInt(val, 10)).refine((val) => val >= 1900 && val <= new Date().getFullYear(), { message: "Tahun tidak valid"}),
+    pertanian: z.string().trim(),
+    perdagangan: z.string().trim(),
+    peternakan: z.string().trim(),
+    perindustrian: z.string().trim(),
+    jasa: z.string().trim(),
+    lain: z.string().trim(),
+    alamatUsaha: z.string().trim(),
+    tahun: z.preprocess(val => Number(val), z.number().refine(num => !isNaN(num) && num >= 1900 && num <= new Date().getFullYear(), { message: "Tahun tidak valid" })),
 }).refine((data) => {
     return ['pertanian', 'perdagangan', 'peternakan', 'perindustrian', 'jasa', 'lain']
         .some((key) => data[key as keyof typeof data].trim() !== '');
@@ -46,21 +45,35 @@ export const keteranganaTidakMampuSekolahSchema = z.object({
     keterangan: z.string().nonempty('Keterangan pembayaran gaji wajib diisi')
 });
 
-const keteranganUsahaWithBase = baseCreatePengajuanSuratSchema.merge(keteranganUsahaSchema);
-const keteranganTidakMampuSekolahWithBase = baseCreatePengajuanSuratSchema.merge(keteranganaTidakMampuSekolahSchema);
+export const keteranganSuamiIstriKeluarNegeriSchema = z.object({
+    jenis: z.literal('KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI'),
+    targetId: z.preprocess((val) => { if (typeof val === 'string') { return val.trim() === '' ? NaN : Number(val); } return val; }, z.number('Anak wajib dipilih').int('targetId harus bilangan bulat').positive('Target wajib dipilih dan ID tidak valid'),),
+    tahun: z.preprocess(val => Number(val), z.number().refine(num => !isNaN(num) && num >= 1900 && num <= new Date().getFullYear(), { message: "Tahun tidak valid" })),
+    negaraTujuan: z.string().nonempty('Negara tujuan wajib diisi'),
+    keterangan: z.string().nonempty('Keterangan tujuan pengajuan surat wajib diisi'),
+});
 
-// export const createPengajuanSuratSchema = z.discriminatedUnion('jenis', [
-//     keteranganUsahaSchema,
-//     keteranganaTidakMampuSekolahSchema
-// ]);
+export const keteranganTidakMemilikiMobilSchema = z.object({
+    jenis: z.literal('KETERANGAN_TIDAK_MEMILIKI_MOBIL')
+});
 
-// export const fullCreatePengajuanSuratSchema = baseCreatePengajuanSuratSchema.and(createPengajuanSuratSchema);
+// const keteranganUsahaWithBase = baseCreatePengajuanSuratSchema.merge(keteranganUsahaSchema);
+// const keteranganTidakMampuSekolahWithBase = baseCreatePengajuanSuratSchema.merge(keteranganaTidakMampuSekolahSchema);
+// const keteranganSuamiIstriKeluarNegeriWithBase = baseCreatePengajuanSuratSchema.merge(keteranganSuamiIstriKeluarNegeriSchema);
 
-
-export const fullCreatePengajuanSuratSchema = z.discriminatedUnion("jenis", [
-    keteranganUsahaWithBase,
-    keteranganTidakMampuSekolahWithBase,
+export const createPengajuanSuratSchema = z.discriminatedUnion('jenis', [
+    keteranganUsahaSchema,
+    keteranganaTidakMampuSekolahSchema,
+    keteranganSuamiIstriKeluarNegeriSchema,
+    keteranganTidakMemilikiMobilSchema
 ]);
+
+export const fullCreatePengajuanSuratSchema = baseCreatePengajuanSuratSchema.and(createPengajuanSuratSchema);
+
+// export const fullCreatePengajuanSuratSchema = z.discriminatedUnion("jenis", [
+//     keteranganUsahaWithBase,
+//     keteranganTidakMampuSekolahWithBase,
+// ]);
 
 export type fullCreatePengajuanSuratDto = z.infer<typeof fullCreatePengajuanSuratSchema>;
 export type PengajuanSuratFormInput = z.input<typeof fullCreatePengajuanSuratSchema>;
@@ -195,7 +208,7 @@ export const detailPengajuanSuratResponseSchema = z.object({
     updatedAt: z.string().datetime(),
 
     // relasi
-    penduduk: pendudukSchema.merge(z.object({kartuKeluarga: kartuKeluargaSchema})),
+    penduduk: pendudukSchema.merge(z.object({ kartuKeluarga: kartuKeluargaSchema })),
     target: pendudukSchema.nullable(),
     jenisSurat: jenisSuratSchema,
     createdBy: createdBySchema,

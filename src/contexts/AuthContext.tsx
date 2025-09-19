@@ -5,7 +5,8 @@ import type { LoginData, RegisterData } from '../types/auth.types';
 
 interface AuthContextType {
   user: User | null;
-  login: (data: LoginData) => Promise<void>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  login: (data: LoginData) => Promise<User>;
   register: (data: RegisterData) => Promise<void>;
   registerWarga: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
@@ -39,7 +40,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Hanya check auth jika tidak di halaman login/register
       const currentPath = window.location.pathname;
       const publicPaths = ['/login', '/register', '/'];
-      
+
       if (publicPaths.includes(currentPath)) {
         setIsLoading(false);
         return;
@@ -50,11 +51,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error: any) {
       console.error('Auth check failed:', error);
       setUser(null);
-      
+
       // Hanya redirect jika error 401 dan tidak di public pages
       const currentPath = window.location.pathname;
       const publicPaths = ['/login', '/register', '/'];
-      
+
       if (error.response?.status === 401 && !publicPaths.includes(currentPath)) {
         window.location.href = '/login';
       }
@@ -63,11 +64,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const login = async (data: LoginData) => {
+  const login = async (data: LoginData): Promise<User> => {
     try {
       await authService.login(data);
       const response = await authService.getProfile();
       setUser(response.data);
+      return response.data;
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
@@ -100,17 +102,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       await authService.logout();
       setUser(null);
-      window.location.href = '/login';
+      // window.location.href = '/login';
     } catch (error) {
       console.error('Logout failed:', error);
       // Tetap reset user state meski logout gagal
       setUser(null);
-      window.location.href = '/login';
+      // window.location.href = '/login';
     }
   };
 
   const value = {
     user,
+    setUser,
     login,
     register,
     registerWarga,

@@ -1,47 +1,30 @@
-import React from "react";
-import * as LucideIcons from "lucide-react";
-import type { UserRole } from "../../types/user.types";
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import * as LucideIcons from 'lucide-react';
+import type { User } from '../../types/user.types';
 
 interface HeaderProps {
-  role: UserRole;
+  user: User | null;
   title?: string;
-  dateText?: string;
-  notificationsCount?: number;
-  user?: {
-    username: string;
-    email: string;
-    avatarUrl?: string | null;
-    online?: boolean;
-  };
-
   onMenuClick: () => void;
+  onLogoutClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
+  user,
   title = "Dashboard",
-  dateText = new Date().toLocaleDateString("id-ID", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }),
-  notificationsCount = 0,
-  user = {
-    username: "Admin",
-    email: "admin@sukamaju.go.id",
-    avatarUrl: null,
-    online: true,
-  },
   onMenuClick,
+  onLogoutClick,
 }) => {
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Helper untuk mendapatkan inisial nama
   const getInitials = (name: string) => {
-    return name?.charAt(0).toUpperCase() || "";
+    return name?.charAt(0).toUpperCase() || "?";
   };
 
-  const handleMenuClick = () => {
-    onMenuClick();
-  };
-
+  // Helper untuk sapaan berdasarkan waktu
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour >= 4 && hour < 11) return "Selamat pagi";
@@ -50,67 +33,88 @@ const Header: React.FC<HeaderProps> = ({
     return "Selamat malam";
   };
 
+  // Menutup dropdown saat klik di luar area dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <header className="flex h-20 items-center justify-between border-b border-white/20 px-4 md:px-8 bg-white shadow-md">
+      {/* Bagian Kiri: Tombol Menu & Judul */}
       <div className="flex items-center">
         <button
-          id="sidebar-open-btn"
-          className="rounded-md p-2 hover:bg-white/20 text-gray-800 lg:hidden mr-4"
+          className="rounded-md p-2 text-gray-600 hover:bg-gray-100 lg:hidden mr-4"
           aria-label="Buka menu"
-          onClick={handleMenuClick}
+          onClick={onMenuClick}
         >
           <LucideIcons.Menu className="h-6 w-6" />
         </button>
         <div>
           <h1 className="text-lg md:text-2xl font-bold text-gray-800">{title}</h1>
-          <p id="header-date" className="text-sm text-gray-800/70">
-            {dateText} • {getGreeting()}!
+          <p className="text-sm text-gray-500">
+            {new Date().toLocaleDateString("id-ID", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+            })} • {getGreeting()}!
           </p>
         </div>
       </div>
 
-      <div className="flex items-center space-x-2 md:space-x-6">
-        {/* <div className="relative hidden md:block">
-          <input
-            type="text"
-            placeholder="Cari data..."
-            className="w-64 pl-10 pr-4 py-2 bg-white/20 border border-white/30 rounded-lg text-gray-800 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50"
-          />
-          <LucideIcons.Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-800/60" />
-        </div>
-
+      {/* Bagian Kanan: Profile Dropdown */}
+      <div className="relative" ref={dropdownRef}>
         <button
-          className="relative rounded-full p-2 text-gray-800/80 hover:bg-white/20 hover:text-gray-800"
-          aria-label="Notifikasi"
+          onClick={() => setDropdownOpen(!isDropdownOpen)}
+          className="flex items-center space-x-3 p-1 rounded-full hover:bg-gray-100 transition-colors"
         >
-          <LucideIcons.Bell className="h-6 w-6" />
-          {notificationsCount > 0 && (
-            <div className="notification-badge absolute top-0 right-0 h-3 w-3 rounded-full bg-red-500 border border-white" />
-          )}
-        </button> */}
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white font-bold">
+            {getInitials(user.username)}
+          </div>
+          <div className="hidden sm:block text-left">
+            <p className="text-sm font-medium text-gray-900 capitalize">{(user.username).toLowerCase()}</p>
+            <p className="text-xs text-gray-500">{user.role.toLowerCase()}</p>
+          </div>
+          <LucideIcons.ChevronDown
+            className={`hidden sm:block h-4 w-4 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''
+              }`}
+          />
+        </button>
 
-        <div className="flex items-center space-x-3">
-          <div className="hidden text-sm text-right sm:block">
-            <p className="font-semibold text-gray-800">{user.username?.toUpperCase() || ""}</p>
-            <p className="text-gray-800/70 text-xs">{user.email}</p>
+        {/* Menu Dropdown */}
+        {isDropdownOpen && (
+          <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-md border border-gray-200 py-1 z-50">
+            <div className="px-4 py-3">
+              <p className="text-sm font-semibold text-gray-800">{(user.username).toLocaleUpperCase()}</p>
+              <p className="text-xs text-gray-500 truncate">{user.email}</p>
+            </div>
+            <Link
+              to="/profile"
+              onClick={() => setDropdownOpen(false)}
+              className="flex w-full items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              <LucideIcons.UserCircle className="h-4 w-4 text-gray-400" />
+              <span>Profil Saya</span>
+            </Link>
+            <hr className="my-1 border-gray-200" />
+            <button
+              onClick={onLogoutClick}
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
+            >
+              <LucideIcons.LogOut className="h-4 w-4 text-red-500" />
+              <span>Keluar</span>
+            </button>
           </div>
-          <div className="relative">
-            {user.avatarUrl ? (
-              <img
-                className="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-white/30"
-                src={user.avatarUrl}
-                alt="Avatar"
-              />
-            ) : (
-              <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-blue-400 text-white font-bold border-2 border-white/80">
-                {getInitials(user.username)}
-              </div>
-            )}
-            {user.online && (
-              <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-400 rounded-full border border-white" />
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </header>
   );

@@ -4,6 +4,7 @@ import type { PengajuanSuratResponse } from "../../../types/pengajuanSurat.types
 import { Link } from "react-router-dom";
 import { jenisSuratOptions } from "../../../constant/suratOption";
 import { Pagination } from "../../ui/Pagination";
+import { useAuth } from "../../../contexts/AuthContext";
 
 // Definisikan tipe props untuk komponen ini
 interface PengajuanSuratTableProps {
@@ -41,6 +42,8 @@ export default function PengajuanSuratTable({
   sortBy,
   sortOrder,
 }: PengajuanSuratTableProps) {
+
+  const { user } = useAuth();
 
   const SortableHeader = ({ column, label }: { column: string; label: string }) => (
     <th className="p-3 text-left">
@@ -91,21 +94,33 @@ export default function PengajuanSuratTable({
                 <td className="p-3">
                   <div className="flex items-center gap-2">
                     {/* Tombol Aksi Utama */}
-                    <button
-                      onClick={() => onProcess(item)}
-                      className="inline-flex items-center justify-center gap-1.5 rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400"
-                    >
-                      <i className="fa-solid fa-gears fa-sm"></i>
-                      <span>Proses</span>
-                    </button>
+                    {user?.role === "ADMIN" && (
+                      <button
+                        onClick={() => onProcess(item)}
+                        className="inline-flex items-center justify-center gap-1.5 rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                      >
+                        <i className="fa-solid fa-gears fa-sm"></i>
+                        <span>Proses</span>
+                      </button>
+                    )}
 
+                    {user?.role === "ADMIN" && (
                     <Link
                       to={`/admin/pengajuan-surat/${item.id}`}
                       className="inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50"
                     >
                       <i className="fa-solid fa-eye fa-sm text-gray-500"></i>
                       <span>Detail</span>
-                    </Link>
+                    </Link>)}
+
+                    {user?.role === "WARGA" && (
+                    <Link
+                      to={`/warga/pengajuan-surat/${item.id}`}
+                      className="inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50"
+                    >
+                      <i className="fa-solid fa-eye fa-sm text-gray-500"></i>
+                      <span>Detail</span>
+                    </Link>)}
 
                     <div className="h-5 w-px bg-gray-200 mx-1"></div>
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import type { LoginData } from '../types/auth.types';
 
@@ -25,8 +25,9 @@ const Login: React.FC = () => {
         setError('');
 
         try {
-            await login(formData);
-            navigate('/profile');
+            const loggedInUser = await login(formData);
+            const role = loggedInUser?.role?.toLowerCase() ?? 'warga';
+            navigate(`/${role}/dashboard`);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Login failed');
         } finally {

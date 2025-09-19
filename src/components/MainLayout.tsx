@@ -4,13 +4,18 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Header from "./ui/Header";
 import Spinner from "./ui/Spinner";
+import { ConfirmationModal } from "./ui/ConfirmationModal";
 
 const MainLayout: React.FC = () => {
-    const { user, isLoading } = useAuth();
+    const { user, isLoading, logout } = useAuth();
     const [isSidebarOpen, setSidebarOpen] = useState(false);
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
     const openSidebar = () => setSidebarOpen(true);
     const closeSidebar = () => setSidebarOpen(false);
+    const openLogoutModal = () => setIsLogoutModalOpen(true);
+    const closeLogoutModal = () => setIsLogoutModalOpen(false);
+
 
     // Auto-close sidebar on route change (mobile)
     useEffect(() => {
@@ -51,6 +56,11 @@ const MainLayout: React.FC = () => {
         };
     }, [isSidebarOpen]);
 
+    const handleConfirmLogout = async () => {
+        await logout();
+        setIsLogoutModalOpen(false);
+    };
+
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -66,40 +76,46 @@ const MainLayout: React.FC = () => {
     return (
         <div className="relative flex min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
             <Sidebar
-                role={user.role}
                 isOpen={isSidebarOpen}
                 onClose={closeSidebar}
+                onLogoutClick={openLogoutModal}
             />
 
             {/* Overlay with improved animation */}
             <div
-                className={`fixed inset-0 bg-black/60 z-20 lg:hidden transition-opacity duration-300 ${
-                    isSidebarOpen 
-                        ? 'opacity-100 pointer-events-auto' 
-                        : 'opacity-0 pointer-events-none'
-                }`}
+                className={`fixed inset-0 bg-black/60 z-20 lg:hidden transition-opacity duration-300 ${isSidebarOpen
+                    ? 'opacity-100 pointer-events-auto'
+                    : 'opacity-0 pointer-events-none'
+                    }`}
                 onClick={closeSidebar}
                 aria-hidden="true"
             />
 
             <div className="flex flex-1 flex-col overflow-auto">
                 <Header
-                    role={user.role}
+                    user={user}
                     onMenuClick={openSidebar}
-                    user={{
-                        username: user.username,
-                        email: user.email,
-                        online: true
-                    }}
+                    onLogoutClick={openLogoutModal}
                     title="Dashboard"
-                    notificationsCount={0}
                 />
 
                 <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
                     <Outlet />
                 </main>
+
+
+                <ConfirmationModal
+                    isOpen={isLogoutModalOpen}
+                    onClose={closeLogoutModal}
+                    onConfirm={handleConfirmLogout}
+                    title="Konfirmasi Keluar"
+                    message="Apakah Anda yakin ingin keluar dari aplikasi?"
+                    confirmButtonText="Ya, Keluar"
+                    variant="danger"
+                />
             </div>
         </div>
+
     );
 };
 

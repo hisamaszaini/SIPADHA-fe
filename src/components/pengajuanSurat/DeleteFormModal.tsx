@@ -1,6 +1,3 @@
-import React from 'react';
-
-// Tipe props untuk modal konfirmasi
 interface DeleteConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;

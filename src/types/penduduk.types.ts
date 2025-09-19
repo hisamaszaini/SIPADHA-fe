@@ -12,7 +12,7 @@ export interface PendudukDto {
     pekerjaan: string;
     hubunganDalamKeluarga: string;
     kartuKeluargaId: number;
-    userId: number | null;
+    userId?: number;
 }
 
 export interface Penduduk {

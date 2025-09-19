@@ -7,4 +7,5 @@ export interface NavigationItem {
   children?: NavigationItem[];
   notification?: number;
   isLogout?: boolean;
+  onClick?: () => void;
 }

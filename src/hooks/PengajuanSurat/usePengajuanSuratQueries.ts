@@ -4,7 +4,7 @@ import { pengajuanSuratService } from '../../services/pengajuanSuratService';
 import pendudukService from '../../services/pendudukService';
 
 interface PengajuanSuratQueriesProps {
-  params: PengajuanSuratQueryParams;  
+  params?: PengajuanSuratQueryParams;  
   pengajuanSuratId?: number | null;  
   pendudukSearch?: string;
   targetSearch?: string;

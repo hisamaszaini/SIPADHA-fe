@@ -1,5 +1,5 @@
 import type { ApiResponse } from "../types/api.types";
-import type { User, UserDto, UserQueryParams } from "../types/user.types";
+import type { UpdateProfileDto, User, UserDto, UserQueryParams } from "../types/user.types";
 import api from "./api";
 
 export const userService = {
@@ -20,6 +20,11 @@ export const userService = {
 
     async update(id: number, data: Partial<Omit<UserDto, 'confirmPassword'>>): Promise<ApiResponse<User>>{
         const response = await api.patch(`/users/${id}`, data);
+        return response.data;
+    },
+
+    async updateProfile(data: UpdateProfileDto){
+        const response = await api.patch('/users/profile', data);
         return response.data;
     },
 

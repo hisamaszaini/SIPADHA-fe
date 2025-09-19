@@ -36,7 +36,7 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
     const initialFormState: FormData = {
         nik: '', nama: '', tempatLahir: '', tanggalLahir: '', jenisKelamin: 'Laki-laki',
         agama: 'Islam', statusPerkawinan: 'Belum Kawin', pendidikan: '', pekerjaan: '',
-        hubunganDalamKeluarga: '', kartuKeluargaId: 0, userId: null,
+        hubunganDalamKeluarga: '', kartuKeluargaId: 0,
     };
 
     const [formData, setFormData] = useState<FormData>(initialFormState);
@@ -89,7 +89,6 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                     pekerjaan: editingPenduduk.pekerjaan || '',
                     hubunganDalamKeluarga: editingPenduduk.hubunganDalamKeluarga,
                     kartuKeluargaId: editingPenduduk.kartuKeluargaId,
-                    userId: editingPenduduk.userId,
                 });
                 if (editingPenduduk.kartuKeluarga) {
                     setSelectedKk(editingPenduduk.kartuKeluarga);

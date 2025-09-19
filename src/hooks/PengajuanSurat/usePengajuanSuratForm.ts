@@ -16,7 +16,7 @@ export const getInitialValues = (
   pengajuan: PengajuanSuratDetail | null,
   jenisUntukBuat: z.infer<typeof JenisSuratEnum> | null
 ): fullCreatePengajuanSuratDto => {
-  
+
   // --- MODE EDIT ---
   if (pengajuan) {
     const baseFields = {
@@ -35,6 +35,8 @@ export const getInitialValues = (
           perindustrian: pengajuan.dataPermohonan.perindustrian || '',
           jasa: pengajuan.dataPermohonan.jasa || '',
           lain: pengajuan.dataPermohonan.lain || '',
+          tahun: Number(pengajuan.dataPermohonan?.tahun) || 0,
+          alamatUsaha: pengajuan.dataPermohonan?.alamatUsaha || '',
         };
 
       case 'KETERANGAN_TIDAK_MAMPU_SEKOLAH':
@@ -47,9 +49,25 @@ export const getInitialValues = (
           penghasilan: pengajuan.dataPermohonan.penghasilan,
           keterangan: pengajuan.dataPermohonan.keterangan,
         };
-      
+
+      case 'KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI':
+        return {
+          ...baseFields,
+          jenis: 'KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI',
+          targetId: pengajuan.targetId || 0,
+          negaraTujuan: pengajuan.dataPermohonan.negaraTujuan,
+          tahun: Number(pengajuan.dataPermohonan?.tahun) || 0,
+          keterangan: pengajuan.dataPermohonan.keterangan,
+        }
+
+      case 'KETERANGAN_TIDAK_MEMILIKI_MOBIL':
+        return {
+          ...baseFields,
+          jenis: 'KETERANGAN_TIDAK_MEMILIKI_MOBIL'
+        }
+
       // Tambahkan case lain jika ada jenis surat baru
-      
+
       default:
         // Fallback untuk jenis surat yang belum ditangani
         throw new Error("Jenis surat tidak didukung dalam mode edit.");
@@ -89,17 +107,17 @@ export const getInitialValues = (
     // Tambahkan case lain jika ada jenis surat baru
 
     default:
-        // Default form state saat belum ada jenis surat dipilih
-        return {
-            ...baseCreateFields,
-            jenis: 'KETERANGAN_USAHA', // Default ke jenis pertama
-            pertanian: '',
-            perdagangan: '',
-            peternakan: '',
-            perindustrian: '',
-            jasa: '',
-            lain: '',
-        }
+      // Default form state saat belum ada jenis surat dipilih
+      return {
+        ...baseCreateFields,
+        jenis: 'KETERANGAN_USAHA', // Default ke jenis pertama
+        pertanian: '',
+        perdagangan: '',
+        peternakan: '',
+        perindustrian: '',
+        jasa: '',
+        lain: '',
+      }
   }
 };
 
@@ -127,7 +145,7 @@ export const usePengajuanSuratForm = ({
   const form = useForm<fullCreatePengajuanSuratDto>({
     resolver: zodResolver(fullCreatePengajuanSuratSchema),
     // `values` akan me-reset form jika `defaultValues` berubah. Cocok untuk kasus ini.
-    values: defaultValues, 
+    values: defaultValues,
   });
 
   const { setError } = form;
@@ -138,15 +156,15 @@ export const usePengajuanSuratForm = ({
     const messages = error.response?.data?.message;
 
     if (messages && Array.isArray(messages)) {
-        messages.forEach(msg => {
-            if(msg.path && msg.message){
-                setError(msg.path.join('.') as any, {
-                    type: 'server',
-                    message: msg.message,
-                });
-            }
-        });
-        toast.error('Gagal menyimpan data, periksa error pada form.');
+      messages.forEach(msg => {
+        if (msg.path && msg.message) {
+          setError(msg.path.join('.') as any, {
+            type: 'server',
+            message: msg.message,
+          });
+        }
+      });
+      toast.error('Gagal menyimpan data, periksa error pada form.');
     } else {
       setApiError(messages || 'Terjadi kesalahan pada server.');
       toast.error(messages || 'Terjadi kesalahan pada server.');

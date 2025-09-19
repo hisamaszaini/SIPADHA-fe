@@ -8,7 +8,7 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import PengurusDashboard from './pages/PengurusDashboard';
 import WargaDashboard from './pages/WargaDashboard';
-import Profile from './pages/Profile';
+import ProfilePage from './pages/Profile';
 import AdminDukuh from './pages/Admin/AdminWilayah';
 import AdminKartuKeluarga from './pages/Admin/AdminKartuKeluarga';
 import AdminPenduduk from './pages/Admin/AdminPenduduk';
@@ -16,9 +16,9 @@ import { Toaster } from 'sonner';
 import AdminJenisSurat from './pages/Admin/AdminJenisSurat';
 import RegisterPage from './pages/Register';
 import AdminUsers from './pages/Admin/AdminUsers';
-import AdminPengajuanSurat from './pages/AdminPengajuanSurat';
 import { AdminPengajuanSuratPage } from './pages/Admin/AdminPengajuanSurat';
 import { DetailPengajuanSuratPage } from './pages/DetailPengajuanSuratPage';
+import { WargaPengajuanSuratPage } from './pages/Warga/WargaPengajuanSurat';
 // import NotFound from './pages/NotFound';
 
 function App() {
@@ -39,6 +39,9 @@ function App() {
               </ProtectedRoute>
             }
           >
+            {/* Profile */}
+            <Route path="/profile" element={<ProfilePage />} />
+
             {/* Admin */}
             <Route
               element={
@@ -71,16 +74,15 @@ function App() {
             {/* Warga */}
             <Route
               element={
-                <ProtectedRoute allowedRoles={['WARGA', 'PENGURUS', 'ADMIN']}>
+                <ProtectedRoute allowedRoles={['WARGA']}>
                   <Outlet />
                 </ProtectedRoute>
               }
             >
+              <Route path="/warga/pengajuan-surat" element={<WargaPengajuanSuratPage />} />
+              <Route path="/warga/pengajuan-surat/:id" element={<DetailPengajuanSuratPage />} />
               <Route path="/warga/*" element={<WargaDashboard />} />
             </Route>
-
-            {/* Profile */}
-            <Route path="/profile" element={<Profile />} />
           </Route>
 
           {/* Fallback */}

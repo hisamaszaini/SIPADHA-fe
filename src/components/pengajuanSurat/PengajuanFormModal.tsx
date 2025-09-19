@@ -8,6 +8,8 @@ import SelectInput from '../ui/SelectInput';
 import { KeteranganUsahaFields } from './fields/KeteranganUsahaFields';
 import { KeteranganTidakMampuSekolahFields } from './fields/SKTMSekolahFields';
 import { Button } from '../ui/Button';
+import { jenisSuratOptions } from '../../constant/suratOption';
+import { KeteranganSuamiIstriKeluarNegeriFields } from './fields/SuamiIstriKeluarNegeriFields';
 
 // Perbarui Props untuk menyertakan 'pendudukSearch'
 interface PengajuanSuratFormModalProps {
@@ -38,7 +40,7 @@ export function PengajuanSuratFormModal({
     isTargetLoading,
 }: PengajuanSuratFormModalProps) {
 
-    console.log(`TargetOptions: ${JSON.stringify(targetOptions, null, 2)}`);
+    // console.log(`TargetOptions: ${JSON.stringify(targetOptions, null, 2)}`);
 
     const isEditMode = !!pengajuan;
     const [selectedJenis, setSelectedJenis] = useState<z.infer<typeof JenisSuratEnum>>(
@@ -92,15 +94,15 @@ export function PengajuanSuratFormModal({
                         label="Jenis Surat"
                         error={errors.jenis?.message}
                         disabled={isEditMode}
-                        // `register` sekarang digunakan di sini
                         {...register("jenis", {
                             onChange: (e) => setSelectedJenis(e.target.value as z.infer<typeof JenisSuratEnum>)
-                        })
-                        }
+                        })}
                     >
-                        <option value="KETERANGAN_USAHA" > Keterangan Usaha </option>
-                        < option value="KETERANGAN_TIDAK_MAMPU_SEKOLAH" > SKTM(Sekolah) </option>
-                        {/* Tambahkan jenis surat lain jika ada */}
+                        {jenisSuratOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
                     </SelectInput>
 
                     {watchedJenis === "KETERANGAN_USAHA" && (
@@ -109,6 +111,15 @@ export function PengajuanSuratFormModal({
 
                     {watchedJenis === "KETERANGAN_TIDAK_MAMPU_SEKOLAH" && (
                         <KeteranganTidakMampuSekolahFields
+                            form={form}
+                            targetOptions={targetOptions}
+                            onTargetSearchChange={onTargetSearchChange}
+                            isTargetLoading={isTargetLoading}
+                        />
+                    )}
+
+                    {watchedJenis === "KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI" && (
+                        <KeteranganSuamiIstriKeluarNegeriFields
                             form={form}
                             targetOptions={targetOptions}
                             onTargetSearchChange={onTargetSearchChange}

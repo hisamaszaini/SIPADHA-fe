@@ -4,10 +4,13 @@ import { SuratTemplateRenderer } from '../components/SuratTemplateRender';
 import { ProcessSuratModal } from '../components/pengajuanSurat/template/ProcessSuratModal';
 import { usePengajuanSuratManagement } from '../hooks/PengajuanSurat/usePengajuanSuratManagement';
 import { Toaster } from 'sonner';
+import { useAuth } from '../contexts/AuthContext';
 
 export function DetailPengajuanSuratPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { user } = useAuth();
+
 
     const management = usePengajuanSuratManagement();
     const pengajuanSuratId = Number(id);
@@ -62,12 +65,14 @@ export function DetailPengajuanSuratPage() {
         <>
             <Toaster richColors position="top-right" />
 
-            <ProcessSuratModal
-                isOpen={management.isProcessModalOpen}
-                onClose={management.closeProcessModal}
-                data={management.processingData}
-                onSuccess={management.handleSuccess}
-            />
+            {user?.role === "ADMIN" && (
+                <ProcessSuratModal
+                    isOpen={management.isProcessModalOpen}
+                    onClose={management.closeProcessModal}
+                    data={management.processingData}
+                    onSuccess={management.handleSuccess}
+                />
+            )}
 
             {/* Panel Aksi / Kontrol Dokumen */}
             <div className="w-full mx-auto bg-white rounded-xl shadow-lg p-5 sm:p-6 mb-8 print:hidden">
@@ -92,13 +97,14 @@ export function DetailPengajuanSuratPage() {
                     </div>
 
                     <div className="flex w-full flex-col sm:flex-row sm:w-auto items-center gap-3">
+                        {user?.role === "ADMIN" && (
                         <button
                             onClick={() => management.openProcessModal(suratData)}
                             className="group w-full sm:w-auto bg-emerald-500 text-white px-5 py-2.5 rounded-lg font-semibold inline-flex items-center justify-center space-x-2 shadow-md hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-300 transition-all duration-300"
                         >
                             <i className="fas fa-cogs transition-transform duration-300 group-hover:rotate-90"></i>
                             <span>Proses Surat</span>
-                        </button>
+                        </button>)}
 
                         <button
                             onClick={handlePrint}

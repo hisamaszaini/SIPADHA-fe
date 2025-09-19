@@ -8,6 +8,7 @@ import { usePengajuanSuratMutations } from './usePengajuranSuratMutation';
 import { pengajuanSuratService } from '../../services/pengajuanSuratService';
 import type { PengajuanSuratResponse } from '../../types/pengajuanSurat.types';
 import { useDebounce } from '../useDebounce';
+import { useAuth } from '../../contexts/AuthContext';
 
 /**
  * Hook orkestrator utama untuk fitur Pengajuan Surat.
@@ -15,7 +16,8 @@ import { useDebounce } from '../useDebounce';
  */
 export function usePengajuanSuratManagement() {
   const queryClient = useQueryClient();
-
+  const { user } = useAuth();
+  
   // State lokal untuk ID yang sedang diedit/dilihat & pencarian di form
   const [activeId, setActiveId] = useState<number | null>(null);
   const [pendudukSearch, setPendudukSearch] = useState('');

@@ -7,5 +7,7 @@ export const statusSuratOptions = [
 
 export const jenisSuratOptions = [
     {value: 'KETERANGAN_USAHA', label: 'Surat Keterangan Usaha'},
-    {value: 'KETERANGAN_TIDAK_MAMPU_SEKOLAH', label: 'Surat Keterangan Tidak Mampu (Sekolah)'}
+    {value: 'KETERANGAN_TIDAK_MAMPU_SEKOLAH', label: 'Surat Keterangan Tidak Mampu (Sekolah)'},
+    {value: 'KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI', label: 'Surat Keterangan Suami/Istri Keluar Negeri'},
+    {value: 'KETERANGAN_TIDAK_MEMILIKI_MOBIL', label: 'Surat Keterangan Tidak Memiliki Mobil'}
 ];

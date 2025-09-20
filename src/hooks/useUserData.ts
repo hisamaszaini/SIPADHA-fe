@@ -67,7 +67,7 @@ export const useUserData = () => {
     }, []);
 
     const saveUser = useCallback(async (formData: UserDto, id: number | null) => {
-        const { confirmPassword, ...payload } = formData;
+        const { ...payload } = formData;
 
         if (id) {
             const updatePayload: UpdateUserDto = { ...payload };

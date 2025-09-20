@@ -97,6 +97,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSave, 
 
         setIsSaving(true);
         try {
+            console.log(formData);
             await onSave(formData, isEditing && editingUser ? editingUser.id : null);
         } catch (error: any) {
             console.error("Gagal menyimpan:", error);

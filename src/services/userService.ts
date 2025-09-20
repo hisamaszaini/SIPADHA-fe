@@ -13,22 +13,23 @@ export const userService = {
         return response.data;
     },
 
-    async findOne(id: number): Promise<ApiResponse<User>>{
+    async findOne(id: number): Promise<ApiResponse<User>> {
         const response = await api.get(`/users/${id}`);
         return response.data;
     },
 
-    async update(id: number, data: Partial<Omit<UserDto, 'confirmPassword'>>): Promise<ApiResponse<User>>{
+    async update(id: number, data: Partial<UserDto>): Promise<ApiResponse<User>> {
+        console.log(data);
         const response = await api.patch(`/users/${id}`, data);
         return response.data;
     },
 
-    async updateProfile(data: UpdateProfileDto){
+    async updateProfile(data: UpdateProfileDto) {
         const response = await api.patch('/users/profile', data);
         return response.data;
     },
 
-    async remove(id: number): Promise<ApiResponse>{
+    async remove(id: number): Promise<ApiResponse> {
         const response = await api.delete(`/users/${id}`);
         return response.data;
     }

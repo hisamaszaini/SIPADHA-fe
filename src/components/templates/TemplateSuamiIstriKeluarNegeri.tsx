@@ -191,15 +191,15 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
             <span style={{ fontFamily: "Tahoma" }}>Tempat Tanggal Lahir / Umur</span>
             <span
                 style={{
-                    width: "13.77pt",
+                    width: "15.77pt",
                     fontFamily: "Tahoma",
                     display: "inline-block"
                 }}
             >
-                &nbsp;
+                &nbsp;&nbsp;
             </span>
             <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
+            <span style={{ fontFamily: "Tahoma" }}> &nbsp; </span>
             <span style={{ fontFamily: "Tahoma" }}>{data.penduduk.tempatLahir}, {formatTanggalSingkat(data.penduduk.tanggalLahir).replaceAll('/', '-')}</span>
         </p>
         <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
@@ -445,7 +445,7 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
             <span style={{ fontFamily: "Tahoma" }}>Tempat Tanggal Lahir / Umur</span>
             <span
                 style={{
-                    width: "13.77pt",
+                    width: "15.77pt",
                     fontFamily: "Tahoma",
                     display: "inline-block"
                 }}

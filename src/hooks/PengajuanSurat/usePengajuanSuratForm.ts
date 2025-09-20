@@ -2,9 +2,8 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { fullCreatePengajuanSuratSchema, type DetailPengajuanSuratSchema, type fullCreatePengajuanSuratDto, type PengajuanSuratFormInput } from '../../types/pengajuanSurat.types';
+import { fullCreatePengajuanSuratSchema, type DetailPengajuanSuratSchema, type fullCreatePengajuanSuratDto, type PengajuanSuratFormInput, type PilihanJenisSurat } from '../../types/pengajuanSurat.types';
 import { usePengajuanSuratMutations } from './usePengajuranSuratMutation';
-import type { PilihanJenisSurat } from '../../types/jenisSurat.types';
 
 /**
  * Helper untuk menghasilkan nilai awal form berdasarkan mode (edit/create)
@@ -64,7 +63,18 @@ export const getInitialValues = (
           jenis: 'KETERANGAN_TIDAK_MEMILIKI_MOBIL'
         }
 
-      // Tambahkan case lain jika ada jenis surat baru
+      case 'KETERANGAN_PROFESI':
+        return {
+          ...baseFields,
+          jenis: 'KETERANGAN_PROFESI'
+        }
+
+      case 'KETERANGAN_DOMISILI':
+        return {
+          ...baseFields,
+          jenis: 'KETERANGAN_DOMISILI',
+          keterangan: pengajuan.dataPermohonan.keterangan,
+        }
 
       default:
         // Fallback untuk jenis surat yang belum ditangani

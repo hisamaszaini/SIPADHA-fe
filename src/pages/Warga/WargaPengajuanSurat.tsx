@@ -42,7 +42,7 @@ export function WargaPengajuanSuratPage() {
                         onEdit={management.handleEdit}
                         onDelete={management.openDeleteModal}
                         onView={management.handleView}
-                        onProcess={management.handleProcess}
+                        // onProcess={management.handleProcess}
                         sortBy={management.queryParams.sortBy}
                         sortOrder={management.queryParams.sortOrder}
                     />

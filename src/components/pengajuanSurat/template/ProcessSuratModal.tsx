@@ -4,15 +4,14 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 import { statusSuratEnum } from '../../../types/pengajuanSurat.types';
-import type { FindAllPengajuanSuratResponseSchema } from '../../../types/pengajuanSurat.types';
+import type { MinimalProsesStatusSurat } from '../../../types/pengajuanSurat.types';
 import { usePengajuanSuratMutations } from '../../../hooks/PengajuanSurat/usePengajuranSuratMutation';
 import { Button } from '../../ui/Button';
 import { jenisSuratOptions, statusSuratOptions } from '../../../constant/suratOption';
 import SelectInput from '../../ui/SelectInput';
 
-// Skema validasi untuk form proses
 const processSchema = z.object({
-  status: statusSuratEnum,
+  statusSurat: statusSuratEnum,
   catatan: z.string().optional(),
 });
 type ProcessFormData = z.infer<typeof processSchema>;
@@ -21,7 +20,7 @@ type ProcessFormData = z.infer<typeof processSchema>;
 interface ProcessSuratModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: FindAllPengajuanSuratResponseSchema | null;
+  data: MinimalProsesStatusSurat | null;
   onSuccess: () => void;
 }
 
@@ -83,12 +82,12 @@ export function ProcessSuratModal({ isOpen, onClose, data, onSuccess }: ProcessS
           <SelectInput
             id="status"
             label="Ubah Status"
-            error={errors.status?.message}
-            {...register("status")}
+            error={errors.statusSurat?.message}
+            {...register("statusSurat")}
           >
-            {statusSuratOptions.map(status => (
-              <option key={status.value} value={status.value}>
-                {status.label}
+            {statusSuratOptions.map(statusSurat => (
+              <option key={statusSurat.value} value={statusSurat.value}>
+                {statusSurat.label}
               </option>
             ))}
           </SelectInput>

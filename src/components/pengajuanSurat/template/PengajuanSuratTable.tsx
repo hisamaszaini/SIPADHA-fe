@@ -16,7 +16,7 @@ interface PengajuanSuratTableProps {
   onEdit: (id: number) => void;
   onDelete: (data: FindAllPengajuanSuratResponseSchema) => void;
   onView: (id: number) => void;
-  onProcess: (data: FindAllPengajuanSuratResponseSchema) => void;
+  onProcess?: (data: FindAllPengajuanSuratResponseSchema) => void;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
@@ -94,7 +94,7 @@ export default function PengajuanSuratTable({
                 <td className="p-3">
                   <div className="flex items-center gap-2">
                     {/* Tombol Aksi Utama */}
-                    {user?.role === "ADMIN" && (
+                    {user?.role === "ADMIN" && onProcess && (
                       <button
                         onClick={() => onProcess(item)}
                         className="inline-flex items-center justify-center gap-1.5 rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400"

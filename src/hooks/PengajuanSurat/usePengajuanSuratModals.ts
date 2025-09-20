@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { DetailPengajuanSuratSchema, FindAllPengajuanSuratResponseSchema } from '../../types/pengajuanSurat.types';
+import type { DetailPengajuanSuratSchema, FindAllPengajuanSuratResponseSchema, MinimalProsesStatusSurat } from '../../types/pengajuanSurat.types';
 
 /**
  * Custom hook untuk mengelola semua state modal yang berhubungan dengan
@@ -12,7 +12,7 @@ export function usePengajuanSuratModals() {
 
   // State untuk modal proses (misal: admin mengubah status)
   const [isProcessModalOpen, setIsProcessModalOpen] = useState(false);
-  const [processingData, setProcessingData] = useState<DetailPengajuanSuratSchema | null>(null);
+  const [processingData, setProcessingData] = useState<MinimalProsesStatusSurat | null>(null);
   
   // State untuk modal lihat detail
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -34,7 +34,7 @@ export function usePengajuanSuratModals() {
   };
 
   // === Handlers untuk Modal Proses ===
-  const openProcessModal = (data: DetailPengajuanSuratSchema) => {
+  const openProcessModal = (data: MinimalProsesStatusSurat) => {
     setProcessingData(data);
     setIsProcessModalOpen(true);
   };

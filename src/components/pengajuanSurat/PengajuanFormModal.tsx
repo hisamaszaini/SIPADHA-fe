@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
-import type { PilihanJenisSurat } from '../../types/jenisSurat.types';
+import type { DetailPengajuanSuratSchema, PilihanJenisSurat } from '../../types/pengajuanSurat.types';
 import { usePengajuanSuratForm } from '../../hooks/PengajuanSurat/usePengajuanSuratForm';
 import { PendudukSelect } from '../pendudukSelect';
 import SelectInput from '../ui/SelectInput';
@@ -9,19 +8,17 @@ import { KeteranganTidakMampuSekolahFields } from './fields/SKTMSekolahFields';
 import { Button } from '../ui/Button';
 import { jenisSuratOptions } from '../../constant/suratOption';
 import { KeteranganSuamiIstriKeluarNegeriFields } from './fields/SuamiIstriKeluarNegeriFields';
+import { KeteranganDomisiliFields } from './fields/KeteranganDomisili';
 
-// Perbarui Props untuk menyertakan 'pendudukSearch'
 interface PengajuanSuratFormModalProps {
     isOpen: boolean;
     onClose: () => void;
     pengajuan?: DetailPengajuanSuratSchema | null;
     onSuccess: () => void;
-    // Props untuk pencarian pemohon
     pendudukOptions: any[];
     pendudukSearch: string;
     onPendudukSearchChange: (value: string) => void;
     isPendudukLoading: boolean;
-    // Props untuk pencarian target (anak/siswa)
     targetOptions: any[];
     targetSearch: string;
     onTargetSearchChange: (value: string) => void;
@@ -131,6 +128,10 @@ export function PengajuanSuratFormModal({
                             onTargetSearchChange={onTargetSearchChange}
                             isTargetLoading={isTargetLoading}
                         />
+                    )}
+
+                    {watchedJenis === "KETERANGAN_DOMISILI" && (
+                        <KeteranganDomisiliFields form={form} />
                     )}
 
                     {/* Tombol Aksi */}

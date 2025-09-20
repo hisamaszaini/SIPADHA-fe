@@ -1,5 +1,7 @@
 import "../assets/surat.css";
 import type { DetailPengajuanSuratSchema } from '../types/pengajuanSurat.types';
+import { TemplateKeteranganDomisili } from "./templates/TemplateKeteranganDomisili";
+import { TemplateKeteranganProfesi } from "./templates/TemplateKeteranganProfesi";
 import { TemplateKeteranganTmMobil } from "./templates/TemplateKeteranganTmMobil";
 import { TemplateKeteranganUsaha } from './templates/TemplateKeteranganUsaha';
 import { TemplateKtmSekolah } from './templates/TemplateKtmSekolah';
@@ -27,6 +29,14 @@ export function SuratTemplateRenderer({ data }: SuratTemplateRendererProps) {
 
         case 'KETERANGAN_TIDAK_MEMILIKI_MOBIL':
             TemplateComponent = <TemplateKeteranganTmMobil data={data} />;
+            break;
+
+        case 'KETERANGAN_PROFESI':
+            TemplateComponent = <TemplateKeteranganProfesi data={data} />;
+            break;
+
+        case 'KETERANGAN_DOMISILI':
+            TemplateComponent = <TemplateKeteranganDomisili data={data} />;
             break;
 
         default:

@@ -7,8 +7,12 @@ export const jenisSuratEnum = z.enum([
     'KETERANGAN_USAHA',
     'KETERANGAN_TIDAK_MAMPU_SEKOLAH',
     'KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI',
-    'KETERANGAN_TIDAK_MEMILIKI_MOBIL'
+    'KETERANGAN_TIDAK_MEMILIKI_MOBIL',
+    'KETERANGAN_PROFESI',
+    'KETERANGAN_DOMISILI'
 ]);
+
+export type PilihanJenisSurat = z.infer<typeof jenisSuratEnum>;
 
 // ===============
 // CREATE Schema
@@ -56,11 +60,22 @@ export const keteranganTidakMemilikiMobilSchema = z.object({
     jenis: z.literal('KETERANGAN_TIDAK_MEMILIKI_MOBIL')
 });
 
+export const keteranganProfesiSchema = z.object({
+    jenis: z.literal('KETERANGAN_PROFESI')
+});
+
+export const keteranganDomisiliSchema = z.object({
+    jenis: z.literal('KETERANGAN_DOMISILI'),
+    keterangan: z.string().nonempty('Keterangan tujuan pengajuan surat wajib diisi'),
+});
+
 export const createPengajuanSuratSchema = z.discriminatedUnion('jenis', [
     keteranganUsahaSchema,
     keteranganaTidakMampuSekolahSchema,
     keteranganSuamiIstriKeluarNegeriSchema,
-    keteranganTidakMemilikiMobilSchema
+    keteranganTidakMemilikiMobilSchema,
+    keteranganProfesiSchema,
+    keteranganDomisiliSchema
 ]);
 
 export const fullCreatePengajuanSuratSchema = baseCreatePengajuanSuratSchema.and(createPengajuanSuratSchema);
@@ -104,6 +119,10 @@ const keteranganSuamiIstriKeluarNegeriResponseSchema = z.object({
     tahun: z.number(),
     keterangan: z.string(),
     negaraTujuan: z.string(),
+});
+
+const keteranganDomisiliResponseSchema = z.object({
+    keterangan: z.string(),
 });
 
 // =============
@@ -167,9 +186,22 @@ export const findAllPengajuanSuratResponseSchema = z.discriminatedUnion("jenis",
         jenis: z.literal("KETERANGAN_TIDAK_MEMILIKI_MOBIL"),
         dataPermohonan: null,
     }),
+    basefindAllPengajuanSuratResponseSchema.extend({
+        jenis: z.literal("KETERANGAN_PROFESI"),
+        dataPermohonan: null,
+    }),
+    basefindAllPengajuanSuratResponseSchema.extend({
+        jenis: z.literal("KETERANGAN_DOMISILI"),
+        dataPermohonan: keteranganDomisiliResponseSchema,
+    })
 ]);
 
 export type FindAllPengajuanSuratResponseSchema = z.infer<typeof findAllPengajuanSuratResponseSchema>;
+
+export type MinimalProsesStatusSurat = Pick<
+    FindAllPengajuanSuratResponseSchema,
+    'id' | 'statusSurat' | 'jenis' | 'catatan'
+> & { penduduk: Pick<FindAllPengajuanSuratResponseSchema['penduduk'], 'id' | 'nama' | 'nik'>; };
 
 export const pendudukDetailSchema = z.object({
     id: z.number(),
@@ -224,6 +256,14 @@ export const detailPengajuanSuratSchema = z.discriminatedUnion("jenis", [
         jenis: z.literal("KETERANGAN_TIDAK_MEMILIKI_MOBIL"),
         dataPermohonan: z.null()
     }),
+    baseDetailPengajuanSuratSchema.extend({
+        jenis: z.literal("KETERANGAN_PROFESI"),
+        dataPermohonan: z.null()
+    }),
+    baseDetailPengajuanSuratSchema.extend({
+        jenis: z.literal("KETERANGAN_DOMISILI"),
+        dataPermohonan: keteranganDomisiliResponseSchema,
+    })
 ]);
 
 export type DetailPengajuanSuratSchema = z.infer<typeof detailPengajuanSuratSchema>;

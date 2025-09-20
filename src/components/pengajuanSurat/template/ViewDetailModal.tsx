@@ -1,6 +1,5 @@
 import type { DetailPengajuanSuratSchema } from "../../../types/pengajuanSurat.types";
 
-// Tipe props untuk modal ini
 interface ViewDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -8,7 +7,6 @@ interface ViewDetailsModalProps {
   isLoading: boolean;
 }
 
-// Komponen kecil untuk menampilkan baris detail
 const DetailRow = ({ label, value }: { label: string; value: string | null | undefined }) => (
   <div className="py-2 px-3 grid grid-cols-3 gap-4 hover:bg-gray-50 rounded">
     <dt className="text-sm font-medium text-gray-500">{label}</dt>

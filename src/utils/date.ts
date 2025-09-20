@@ -29,3 +29,19 @@ export function formatTanggalSingkat(date?: Date | string, locale = "id-ID"): st
     year: "numeric",
   }).format(d);
 }
+
+export function hitungUmur(tanggalLahir?: Date | string): number | null {
+  if (!tanggalLahir) return null;
+
+  const lahir = typeof tanggalLahir === "string" ? new Date(tanggalLahir) : tanggalLahir;
+  if (isNaN(lahir.getTime())) return null;
+
+  const today = new Date();
+  let umur = today.getFullYear() - lahir.getFullYear();
+
+  const bulanBelum = today.getMonth() < lahir.getMonth();
+  const hariBelum = today.getMonth() === lahir.getMonth() && today.getDate() < lahir.getDate();
+  if (bulanBelum || hariBelum) umur--;
+
+  return umur;
+}

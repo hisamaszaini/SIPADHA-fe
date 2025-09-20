@@ -4,10 +4,10 @@ export const JenisSuratEnum = z.enum([
     'KETERANGAN_USAHA',
     'KETERANGAN_TIDAK_MAMPU_SEKOLAH',
     'KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI',
-    'KETERANGAN_TIDAK_MEMILIKI_MOBIL'
+    'KETERANGAN_TIDAK_MEMILIKI_MOBIL',
+    'KETERANGAN_PROFESI',
+    'KETERANGAN_DOMISILI'
 ]);
-
-export type PilihanJenisSurat = z.infer<typeof JenisSuratEnum>;
 
 export interface CreateJenisSuratDto {
     kode: string;

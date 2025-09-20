@@ -1,8 +1,8 @@
-import React, { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
+import React, { useState, useEffect, type FormEvent, type ChangeEvent, Fragment } from 'react';
 import { useWilayahContext } from '../../contexts/wilayahContext';
 import type { KartuKeluargaSimple, Penduduk, PendudukDto } from '../../types/penduduk.types';
 import kartuKeluargaService from '../../services/kartuKeluargaService';
-import { Combobox } from '@headlessui/react';
+import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react';
 import TextInput from '../ui/TextInput';
 import { agamaOptions, hubunganKeluargaOptions, jenisKelaminOptions, pendidikanOptions, statusPerkawinanOptions } from '../../constant/pendudukOption';
@@ -217,12 +217,14 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
                                 <select name="jenisKelamin" value={formData.jenisKelamin} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.jenisKelamin ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}>
+                                    <option value="">-- Pilih Jenis Kelamin --</option>
                                     {jenisKelaminOptions.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
                                 </select>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Agama</label>
                                 <select name="agama" value={formData.agama} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.agama ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}>
+                                    <option value="">-- Pilih Agama --</option>
                                     {agamaOptions.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
                                 </select>
                             </div>
@@ -236,25 +238,65 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                                 <Combobox value={selectedKk} onChange={handleKkSelect}>
                                     <div className="relative">
                                         <Combobox.Input
-                                            className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.kartuKeluargaId ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}
+                                            className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.kartuKeluargaId
+                                                    ? 'border-red-500 ring-red-500'
+                                                    : 'border-gray-300 focus:ring-emerald-500 focus:border-emerald-500'
+                                                }`}
                                             onChange={(event) => setKkSearchTerm(event.target.value)}
-                                            displayValue={(kk: KartuKeluargaSimple) => kk ? (kk.noKk || kk.noKk) : ''}
+                                            displayValue={(kk: KartuKeluargaSimple) => (kk ? kk.noKk || kk.noKk : '')}
                                             placeholder="Cari No. KK atau Nama Kepala"
                                         />
-                                        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2"><ChevronsUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" /></Combobox.Button>
+                                        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                                            <ChevronsUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                        </Combobox.Button>
+
+                                        <Transition
+                                            as={Fragment}
+                                            leave="transition ease-in duration-100"
+                                            leaveFrom="opacity-100"
+                                            leaveTo="opacity-0"
+                                        >
+                                            <Combobox.Options className="absolute z-50 mt-1 max-h-60 w-full max-w-xs overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                {isKkLoading && (
+                                                    <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                                                        Memuat...
+                                                    </div>
+                                                )}
+                                                {!isKkLoading && kkOptions.length === 0 && kkSearchTerm !== '' ? (
+                                                    <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                                                        Tidak ditemukan.
+                                                    </div>
+                                                ) : (
+                                                    kkOptions.map((kk) => (
+                                                        <Combobox.Option
+                                                            key={kk.id}
+                                                            className={({ active }) =>
+                                                                `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-emerald-600 text-white' : 'text-gray-900'
+                                                                }`
+                                                            }
+                                                            value={kk}
+                                                        >
+                                                            {({ selected, active }) => (
+                                                                <>
+                                                                    <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
+                                                                        {kk.noKk} - {kk.kepalaKeluarga?.nama}
+                                                                    </span>
+                                                                    {selected && (
+                                                                        <span
+                                                                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-white' : 'text-emerald-600'
+                                                                                }`}
+                                                                        >
+                                                                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                                                        </span>
+                                                                    )}
+                                                                </>
+                                                            )}
+                                                        </Combobox.Option>
+                                                    ))
+                                                )}
+                                            </Combobox.Options>
+                                        </Transition>
                                     </div>
-                                    <Combobox.Options className="absolute mt-1 max-h-60 w-full max-w-xs overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
-                                        {isKkLoading && <div className="relative cursor-default select-none py-2 px-4 text-gray-700">Memuat...</div>}
-                                        {!isKkLoading && kkOptions.length === 0 && kkSearchTerm !== '' ? (
-                                            <div className="relative cursor-default select-none py-2 px-4 text-gray-700">Tidak ditemukan.</div>
-                                        ) : (
-                                            kkOptions.map((kk) => (
-                                                <Combobox.Option key={kk.id} className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-emerald-600 text-white' : 'text-gray-900'}`} value={kk}>
-                                                    {({ selected, active }) => (<><span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>{kk.noKk} - {kk.kepalaKeluarga?.nama}</span>{selected ? (<span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-white' : 'text-emerald-600'}`}><CheckIcon className="h-5 w-5" aria-hidden="true" /></span>) : null}</>)}
-                                                </Combobox.Option>
-                                            ))
-                                        )}
-                                    </Combobox.Options>
                                 </Combobox>
                             </div>
                             <div>
@@ -267,6 +309,7 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Status Perkawinan</label>
                                 <select name="statusPerkawinan" value={formData.statusPerkawinan} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.statusPerkawinan ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}>
+                                    <option value="">-- Pilih Perkawinan --</option>
                                     {statusPerkawinanOptions.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
                                 </select>
                             </div>

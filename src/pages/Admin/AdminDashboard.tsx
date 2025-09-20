@@ -13,6 +13,7 @@ import {
 import ButtonCard from "../../components/ui/ButtonCard"
 import { useDashboardData } from "../../hooks/useDashboardData"
 import Chart from "chart.js/auto"
+import { jenisSuratOptions, statusSuratOptions } from "../../constant/suratOption"
 
 const AdminDashboard: React.FC = () => {
   const {
@@ -21,21 +22,48 @@ const AdminDashboard: React.FC = () => {
     isError: isErrorDashboard,
   } = useDashboardData()
 
-  const doughnutRef = useRef<HTMLCanvasElement | null>(null);
-  const barRef = useRef<HTMLCanvasElement | null>(null);
+  const doughnutRef = useRef<HTMLCanvasElement | null>(null)
+  const barRef = useRef<HTMLCanvasElement | null>(null)
+
+const doughnutChartRef = useRef<Chart<any> | null>(null);
+const barChartRef = useRef<Chart<any> | null>(null);
+
+
+  const getStatusLabel = (value: string): string => {
+    return statusSuratOptions.find(opt => opt.value === value)?.label ?? value
+  }
+
+  const getJenisSuratLabel = (value: string): string => {
+    return jenisSuratOptions.find(opt => opt.value === value)?.label ?? value
+  }
 
   useEffect(() => {
-    if (!dashboardData) return;
+    if (!dashboardData) return
 
+    // Distribusi Status
+    const distribusiStatus = dashboardData.data.pengajuan.distribusiStatus
+    const statusLabels = Object.keys(distribusiStatus).map(getStatusLabel)
+    const statusValues = Object.values(distribusiStatus)
+
+    // Distribusi Jenis
+    const distribusiJenis = dashboardData.data.pengajuan.distribusiJenis
+    const jenisLabels = Object.keys(distribusiJenis).map(getJenisSuratLabel)
+    const jenisValues = Object.values(distribusiJenis)
+
+    // destroy chart lama biar nggak dobel render
+    if (doughnutChartRef.current) doughnutChartRef.current.destroy()
+    if (barChartRef.current) barChartRef.current.destroy()
+
+    // Doughnut Chart (Status)
     if (doughnutRef.current) {
-      new Chart(doughnutRef.current, {
+      doughnutChartRef.current = new Chart(doughnutRef.current, {
         type: "doughnut",
         data: {
-          labels: ["Selesai", "Diproses", "Pending", "Ditolak"],
+          labels: statusLabels,
           datasets: [
             {
-              data: [45, 35, 15, 5],
-              backgroundColor: ["#10b981", "#3b82f6", "#f59e0b", "#ef4444"],
+              data: statusValues,
+              backgroundColor: ["#f59e0b", "#3b82f6", "#10b981", "#ef4444"],
               borderWidth: 0,
               hoverOffset: 8,
             },
@@ -50,21 +78,29 @@ const AdminDashboard: React.FC = () => {
               labels: { boxWidth: 12, padding: 20 },
             },
           },
-          cutout: "70%",
+          // cutout: "70%",
         },
-      });
+      })
     }
 
+    // Bar Chart (Jenis Surat)
     if (barRef.current) {
-      new Chart(barRef.current, {
+      barChartRef.current = new Chart(barRef.current, {
         type: "bar",
         data: {
-          labels: ["SK Domisili", "SK Usaha", "SK Kematian", "SK Lahir", "SK Nikah"],
+          labels: jenisLabels,
           datasets: [
             {
               label: "Jumlah Pengajuan",
-              data: [25, 18, 12, 15, 8],
-              backgroundColor: ["#10b981", "#3b82f6", "#8b5cf6", "#f59e0b", "#ef4444"],
+              data: jenisValues,
+              backgroundColor: [
+                "#10b981",
+                "#3b82f6",
+                "#8b5cf6",
+                "#f59e0b",
+                "#ef4444",
+                "#6366f1",
+              ],
               borderRadius: 8,
             },
           ],
@@ -76,9 +112,9 @@ const AdminDashboard: React.FC = () => {
           plugins: { legend: { display: false } },
           scales: { x: { beginAtZero: true } },
         },
-      });
+      })
     }
-  }, [dashboardData]);
+  }, [dashboardData])
 
   if (isLoadingDashboard) return <p>Loading...</p>
   if (isErrorDashboard) return <p>Error loading dashboard data.</p>
@@ -90,7 +126,6 @@ const AdminDashboard: React.FC = () => {
         <StatCard
           title="Pengajuan Baru"
           value={dashboardData?.data.countPengajuan?.length ?? 0}
-          subtitle="+2 dari kemarin"
           icon={PlusSquare}
           gradientClass="gradient-emerald"
           animationDelay="0s"
@@ -98,26 +133,24 @@ const AdminDashboard: React.FC = () => {
 
         <StatCard
           title="Dalam Proses"
-          value={12} // 👉 nanti ambil dari dashboardData
-          subtitle="-3 dari minggu lalu"
+          value={12}
           icon={RefreshCw}
           gradientClass="gradient-blue"
           animationDelay="0.1s"
         />
 
         <StatCard
-          title="Total Pengguna"
-          value={dashboardData?.data.countUser ?? 0}
-          subtitle="+15 bulan ini"
+          title="Total Penduduk"
+          value={dashboardData?.data.stats.totalPenduduk ?? 0}
+          subtitle={`L ${dashboardData?.data.penduduk.Laki_laki} / P ${dashboardData?.data.penduduk.Perempuan}`}
           icon={Users}
           gradientClass="gradient-purple"
           animationDelay="0.2s"
         />
 
         <StatCard
-          title="Rumah Terdaftar"
-          value={dashboardData?.data.countKk ?? 0}
-          subtitle="+8 minggu ini"
+          title="Kepala Keluarga"
+          value={dashboardData?.data.stats.countKk ?? 0}
           icon={Home}
           gradientClass="gradient-orange"
           animationDelay="0.3s"
@@ -126,14 +159,6 @@ const AdminDashboard: React.FC = () => {
 
       {/* Chart Section */}
       <section className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* <div className="lg:col-span-3 rounded-2xl bg-white/95 backdrop-blur-sm p-6 shadow-xl">
-          <h3 className="text-xl font-bold text-gray-800 mb-6">
-            Statistik Pengajuan Surat
-          </h3>
-          <div className="h-80">
-            <canvas id="lineChart" />
-          </div>
-        </div> */}
         <div className="lg:col-span-3 rounded-2xl bg-white/95 backdrop-blur-sm p-6 shadow-xl">
           <h3 className="text-xl font-bold text-gray-800 mb-6">
             Jenis Surat Terpopuler
@@ -151,10 +176,6 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Jenis Surat Populer */}
-      {/* <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      </section> */}
 
       {/* Quick Actions */}
       <section>

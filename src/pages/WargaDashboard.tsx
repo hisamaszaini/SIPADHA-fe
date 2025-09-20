@@ -255,18 +255,19 @@ const DashboardWarga: React.FC = () => {
             pengajuan.detail.map((p: any, index: number) => (
               <div key={p.id} className="bg-white mb-2 rounded-lg shadow">
                 <div className="bg-gradient-to-r from-indigo-50 to-blue-50 px-4 py-3 flex justify-between items-start gap-3">
-                  <div className="flex items-center gap-3">
+
+                  <div className="flex items-center gap-3 min-w-0">
                     <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-md font-semibold text-sm">
                       {index + 1}
                     </span>
-                    <div>
-                      <h3 className="font-bold text-base text-indigo-800">{p.jenis}</h3>
+                    <div className="break-words">
+                      <h3 className="font-bold text-base text-indigo-800">{getLabel(p.jenis)}</h3>
                       <p className="text-xs text-gray-500">{formatDate(p.tanggal)}</p>
                     </div>
                   </div>
                   <StatusBadge status={p.status} />
                 </div>
-                <div className="p-4 space-y-2">
+                <div className="p-4">
                   <Link
                     to={`/warga/pengajuan-surat/${p.id}`}
                     className="inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50"

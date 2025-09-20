@@ -517,13 +517,10 @@ export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPeng
                                 <span style={{ fontFamily: "Tahoma" }}>=======</span>
                             </strong>
                             <strong>
-                                <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
+                                <span style={{ fontFamily: "Tahoma" }}>&nbsp; {data.dataPermohonan?.keterangan} &nbsp;</span>
                             </strong>
                             <strong>
-                                <span style={{ fontFamily: "Tahoma" }}>
-                                    {data.dataPermohonan?.keterangan}
-                                    =======
-                                </span>
+                                <span style={{ fontFamily: "Tahoma" }}>=======</span>
                             </strong>
                         </p>
                         <p style={{ lineHeight: "115%" }}>

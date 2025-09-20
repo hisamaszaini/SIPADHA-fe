@@ -6,6 +6,7 @@ import JenisSuratFilter from '../../components/jenisSurat/JenisSuratFilter';
 import JenisSuratFormModal from '../../components/jenisSurat/JenisSuratModal';
 import { Button } from '../../components/ui/Button';
 import { Pagination } from '../../components/ui/Pagination';
+import { toast } from 'sonner';
 
 const AdminJenisSurat: React.FC = () => {
     const {
@@ -45,8 +46,10 @@ const AdminJenisSurat: React.FC = () => {
     ) => {
         try {
             await saveJenisSurat(formData, id, file);
+            toast.success(`Jenis surat berhasil ${editingItem ? 'diperbarui' : 'ditambahkan'}`)
             handleCloseModal();
         } catch (error) {
+            toast.error(`Gagal  ${editingItem ? 'menyimpan' : 'menambahkan'} jenis surat`);
             console.error("Gagal menyimpan jenis surat:", error);
             throw error;
         }

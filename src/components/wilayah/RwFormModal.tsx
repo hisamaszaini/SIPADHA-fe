@@ -4,6 +4,7 @@ import type { RwDetail, CreateRwDto } from '../../types/rw.types';
 import type { Dukuh } from '../../types/dukuh.types';
 import TextInput from '../ui/TextInput';
 import SelectInput from '../ui/SelectInput';
+import { Button } from '../ui/Button';
 
 interface RwFormModalProps {
   isOpen: boolean;
@@ -140,13 +141,18 @@ const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, edit
             ))}
           </SelectInput>
 
-          <div className="flex justify-end gap-4 pt-4">
-            <button type="button" onClick={onClose} disabled={isSaving} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50">
+          <div className="flex gap-3 justify-end mt-10">
+            <Button type="button" variant="secondary" disabled={isSaving} onClick={onClose}>
               Batal
-            </button>
-            <button type="submit" disabled={isSaving} className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]">
-              {isSaving ? 'Menyimpan...' : 'Simpan'}
-            </button>
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              icon="fas fa-save"
+              disabled={isSaving}
+            >
+              {isSaving ? 'Menyimpan...' : editingRw ? 'Perbarui' : 'Simpan'}
+            </Button>
           </div>
         </form>
       </div>

@@ -56,7 +56,7 @@ const RtTab: React.FC = () => {
                     {allDukuh.map(d => (<option key={d.id} value={d.id}>{d.nama}</option>))}
                 </select>
 
-                <select name="rwId" value={queryParams.rwId || ''} onChange={handleFilterChange} disabled={!queryParams.dukuhId || isLoadingRw} className="filter-select mt-1 w-full md:w-64 px-3 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <select name="rwId" value={queryParams.rwId || ''} onChange={handleFilterChange} disabled={!queryParams.dukuhId || isLoadingRw} className="filter-select mt-1 w-full md:w-64 px-3 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-gray-200">
                     <option value="">Semua RW</option>
                     {filteredRw.map(rw => (<option key={rw.id} value={rw.id}>RW {rw.nomor}</option>))}
                 </select>

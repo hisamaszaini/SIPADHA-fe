@@ -73,9 +73,8 @@ const KkFilter: React.FC<KkFilterProps> = ({ filters, onFilterChange }) => {
       {/* Filter RW */}
       <div>
         <label className="block text-sm font-medium text-gray-600 mb-1">Filter RW</label>
-        <select name="rwId" value={filters.rwId || ''} onChange={onRwSelectChange} disabled={!filters.dukuhId || isLoadingRw} className="mt-1 w-full md:w-64 px-3 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        <select name="rwId" value={filters.rwId || ''} onChange={onRwSelectChange} disabled={!filters.dukuhId || isLoadingRw} className="mt-1 w-full md:w-64 px-3 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-gray-200">
           <option value="">{isLoadingRw ? 'Memuat...' : 'Semua RW'}</option>
-          {/* Gunakan filteredRw dari context */}
           {filteredRw.map(rw => (<option key={rw.id} value={rw.id}>RW {rw.nomor}</option>))}
         </select>
       </div>
@@ -83,7 +82,7 @@ const KkFilter: React.FC<KkFilterProps> = ({ filters, onFilterChange }) => {
       {/* Filter RT */}
       <div>
         <label className="block text-sm font-medium text-gray-600 mb-1">Filter RT</label>
-        <select name="rtId" value={filters.rtId || ''} onChange={onRtSelectChange} disabled={!filters.rwId || isLoadingRt} className="mt-1 w-full md:w-64 px-3 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        <select name="rtId" value={filters.rtId || ''} onChange={onRtSelectChange} disabled={!filters.rwId || isLoadingRt} className="mt-1 w-full md:w-64 px-3 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-gray-200">
           <option value="">{isLoadingRt ? 'Memuat...' : 'Semua RT'}</option>
           {/* Gunakan filteredRt dari context */}
           {filteredRt.map(rt => (<option key={rt.id} value={rt.id}>RT {rt.nomor}</option>))}

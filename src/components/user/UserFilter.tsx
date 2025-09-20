@@ -17,7 +17,7 @@ const UserFilter: React.FC<UserFilterProps> = ({ filters, onFilterChange, search
     };
 
     return (
-        <div className="p-4 flex flex-col md:flex-row items-center gap-4 bg-white">
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-end gap-4 bg-gray-50/50 border-b border-gray-200">
             {/* Input Pencarian */}
             <div>
                 <label htmlFor="search-user" className="block text-sm font-medium text-gray-600 mb-1">

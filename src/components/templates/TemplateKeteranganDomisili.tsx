@@ -554,292 +554,47 @@ export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPeng
             <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
         </p>
         <table
-            style={{ marginLeft: "21.3pt", padding: "0pt", borderCollapse: "collapse" }}
+            style={{
+                width: "90%", // 1. Buat lebar tabel penuh
+                borderCollapse: "collapse",
+                fontFamily: '"Bookman Old Style", serif'
+            }}
         >
             <tbody>
                 <tr>
+                    {/* Kolom kiri (bisa kosong atau diisi konten) */}
                     <td
                         style={{
-                            width: "180.55pt",
-                            padding: "0pt 5.4pt",
+                            width: "50%", // 2. Gunakan persentase
                             verticalAlign: "top"
                         }}
                     >
-                        <p style={{ marginLeft: "18pt" }}>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
+                        {/* Konten sisi kiri jika ada */}
                     </td>
-                    <td
-                        style={{ width: "53pt", padding: "0pt 5.4pt", verticalAlign: "top" }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
+
+                    {/* Kolom kanan untuk tanda tangan */}
                     <td
                         style={{
-                            width: "159.3pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
+                            width: "50%", // 2. Gunakan persentase
+                            verticalAlign: "top",
+                            textAlign: "center" // 3. Gunakan text-align untuk perataan
                         }}
                     >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                Ponorogo, {formatTanggal(data.createdAt)} </span>
+                        <p style={{ margin: 0, padding: 0 }}>
+                            Ponorogo, {formatTanggal(data.createdAt)}
                         </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "180.55pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p style={{ marginLeft: "18pt" }}>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
+                        <p style={{ margin: 0, padding: 0 }}>
+                            Kepala Desa Cepoko
                         </p>
-                    </td>
-                    <td
-                        style={{ width: "53pt", padding: "0pt 5.4pt", verticalAlign: "top" }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "159.3pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "180.55pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p
-                            className="ListParagraph"
-                            style={{
-                                marginLeft: "1.65pt",
-                                marginBottom: "0pt",
-                                lineHeight: "normal"
-                            }}
-                        >
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{ width: "53pt", padding: "0pt 5.4pt", verticalAlign: "top" }}
-                    >
-                        <p style={{ textAlign: "right" }}>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "159.3pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                &nbsp;&nbsp;&nbsp;{" "}
-                            </span>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>Kepala</span>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp; </span>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>Desa</span>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp; </span>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>Cepoko</span>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
-                            </span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "180.55pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{ width: "53pt", padding: "0pt 5.4pt", verticalAlign: "top" }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "159.3pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "180.55pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p
-                            className="ListParagraph"
-                            style={{ marginBottom: "0pt", lineHeight: "normal" }}
-                        >
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{ width: "53pt", padding: "0pt 5.4pt", verticalAlign: "top" }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "159.3pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "180.55pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p
-                            className="ListParagraph"
-                            style={{ marginBottom: "0pt", lineHeight: "normal" }}
-                        >
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{ width: "53pt", padding: "0pt 5.4pt", verticalAlign: "top" }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "159.3pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "180.55pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
+
+                        {/* 4. Jarak vertikal yang lebih baik */}
+                        <div style={{ height: "80px" }}></div>
+
+                        <p style={{ margin: 0, padding: 0 }}>
                             <strong>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
+                                <u>MUHAMMAD HISAM ASZAINI</u>
                             </strong>
                         </p>
-                    </td>
-                    <td
-                        style={{ width: "53pt", padding: "0pt 5.4pt", verticalAlign: "top" }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp; </span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "159.3pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <strong>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                    &nbsp;&nbsp;
-                                </span>
-                            </strong>
-                            <strong>
-                                <u>
-                                    <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                        PIRNGADI, S.Sos
-                                    </span>
-                                </u>
-                            </strong>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "180.55pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <strong>
-                                <span style={{ color: "#ff0000" }}>&nbsp;</span>
-                            </strong>
-                        </p>
-                    </td>
-                    <td
-                        style={{ width: "53pt", padding: "0pt 5.4pt", verticalAlign: "top" }}
-                    >
-                        <p>&nbsp;</p>
-                    </td>
-                    <td
-                        style={{
-                            width: "159.3pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>&nbsp;</p>
                     </td>
                 </tr>
             </tbody>

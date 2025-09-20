@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePengajuanSuratQueries } from '../hooks/PengajuanSurat/usePengajuanSuratQueries';
 import { SuratTemplateRenderer } from '../components/SuratTemplateRender';
-// import { ProcessSuratModal } from '../components/pengajuanSurat/template/ProcessSuratModal';
+import { ProcessSuratModal } from '../components/pengajuanSurat/template/ProcessSuratModal';
 import { usePengajuanSuratManagement } from '../hooks/PengajuanSurat/usePengajuanSuratManagement';
 import { Toaster } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
@@ -65,14 +65,14 @@ export function DetailPengajuanSuratPage() {
         <>
             <Toaster richColors position="top-right" />
 
-            {/* {user?.role === "ADMIN" && (
+            {user?.role === "ADMIN" && (
                 <ProcessSuratModal
                     isOpen={management.isProcessModalOpen}
                     onClose={management.closeProcessModal}
                     data={management.processingData}
                     onSuccess={management.handleSuccess}
                 />
-            )} */}
+            )}
 
             {/* Panel Aksi / Kontrol Dokumen */}
             <div className="w-full mx-auto bg-white rounded-xl shadow-lg p-5 sm:p-6 mb-8 print:hidden">

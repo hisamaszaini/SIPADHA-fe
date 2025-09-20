@@ -237,6 +237,11 @@ const baseDetailPengajuanSuratSchema = z.object({
     updatedAt: z.string().datetime(),
     penduduk: pendudukDetailSchema,
     target: pendudukDetailSchema.nullable(),
+    setting: z.object({
+        namaKepdes: z.string(),
+        nikKepdes: z.string(),
+        alamatKepdes: z.string(),
+    })
 });
 
 export const detailPengajuanSuratSchema = z.discriminatedUnion("jenis", [

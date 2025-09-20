@@ -749,7 +749,7 @@ export function TemplateKeteranganTmMobil({ data }: { data: DetailPengajuanSurat
                             <strong>
                                 <u>
                                     <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                        PIRNGADI, S.Sos
+                                        {data.setting.namaKepdes}
                                     </span>
                                 </u>
                             </strong>

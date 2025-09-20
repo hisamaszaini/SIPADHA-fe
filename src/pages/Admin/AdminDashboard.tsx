@@ -14,8 +14,10 @@ import ButtonCard from "../../components/ui/ButtonCard"
 import { useDashboardData } from "../../hooks/useDashboardData"
 import Chart from "chart.js/auto"
 import { jenisSuratOptions, statusSuratOptions } from "../../constant/suratOption"
+import { useNavigate } from "react-router-dom"
 
 const AdminDashboard: React.FC = () => {
+  const navigate = useNavigate();
   const {
     data: dashboardData,
     isLoading: isLoadingDashboard,
@@ -25,8 +27,8 @@ const AdminDashboard: React.FC = () => {
   const doughnutRef = useRef<HTMLCanvasElement | null>(null)
   const barRef = useRef<HTMLCanvasElement | null>(null)
 
-const doughnutChartRef = useRef<Chart<any> | null>(null);
-const barChartRef = useRef<Chart<any> | null>(null);
+  const doughnutChartRef = useRef<Chart<any> | null>(null);
+  const barChartRef = useRef<Chart<any> | null>(null);
 
 
   const getStatusLabel = (value: string): string => {
@@ -142,7 +144,7 @@ const barChartRef = useRef<Chart<any> | null>(null);
         <StatCard
           title="Total Penduduk"
           value={dashboardData?.data.stats.totalPenduduk ?? 0}
-          subtitle={`L ${dashboardData?.data.penduduk.Laki_laki} / P ${dashboardData?.data.penduduk.Perempuan}`}
+          subtitle={`${dashboardData?.data.penduduk.Laki_laki} Laki-laki / ${dashboardData?.data.penduduk.Perempuan} Perempuan`}
           icon={Users}
           gradientClass="gradient-purple"
           animationDelay="0.2s"
@@ -186,6 +188,7 @@ const barChartRef = useRef<Chart<any> | null>(null);
               label="Buat Surat"
               icon={<PlusIcon className="w-8 h-8 mb-2" />}
               variant="emerald"
+              onClick={() => navigate('/admin/layanan-surat/pengajuan-masuk')}
             />
             <ButtonCard
               label="Validasi"
@@ -193,14 +196,16 @@ const barChartRef = useRef<Chart<any> | null>(null);
               variant="blue"
             />
             <ButtonCard
-              label="Tambah Warga"
+              label="Tambah Penduduk"
               icon={<UserPlusIcon className="w-8 h-8 mb-2" />}
               variant="purple"
+              onClick={() => navigate('/admin/data-master/penduduk')}
             />
             <ButtonCard
-              label="Laporan"
+              label="Tambah Kartu Keluarga"
               icon={<FileText className="w-8 h-8 mb-2" />}
               variant="orange"
+              onClick={() => navigate('/admin/data-master/kartukeluarga')}
             />
           </div>
         </div>

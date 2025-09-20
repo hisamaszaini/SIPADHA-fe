@@ -81,17 +81,15 @@ const MainLayout: React.FC = () => {
                 onLogoutClick={openLogoutModal}
             />
 
-            {/* Overlay with improved animation */}
+            {/* Overlay */}
             <div
-                className={`fixed inset-0 bg-black/60 z-20 lg:hidden transition-opacity duration-300 ${isSidebarOpen
-                    ? 'opacity-100 pointer-events-auto'
-                    : 'opacity-0 pointer-events-none'
+                className={`fixed inset-0 bg-black/60 z-20 lg:hidden transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                     }`}
                 onClick={closeSidebar}
                 aria-hidden="true"
             />
 
-            <div className="flex flex-1 flex-col overflow-auto">
+            <div className="flex flex-1 flex-col">
                 <Header
                     user={user}
                     onMenuClick={openSidebar}
@@ -103,6 +101,12 @@ const MainLayout: React.FC = () => {
                     <Outlet />
                 </main>
 
+                <footer className="h-16 flex items-center justify-center px-6 bg-white/90 font-semibold backdrop-blur-sm border-t border-gray-200 text-sm text-gray-500">
+                    <span>© 2025 SIPANDHA. All rights reserved. </span>
+                    <span className="hidden sm:block">
+                        Dibuat dengan ❤️ di Ponorogo, KKN Tematik 5 Universitas Muhammadiyah Ponorogo
+                    </span>
+                </footer>
 
                 <ConfirmationModal
                     isOpen={isLogoutModalOpen}
@@ -115,7 +119,6 @@ const MainLayout: React.FC = () => {
                 />
             </div>
         </div>
-
     );
 };
 

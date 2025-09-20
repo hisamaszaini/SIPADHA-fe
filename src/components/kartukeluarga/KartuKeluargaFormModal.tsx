@@ -9,6 +9,7 @@ import type { Penduduk } from '../../types/penduduk.types';
 import pendudukService from '../../services/pendudukService';
 import { toast } from 'sonner';
 import { Button } from '../ui/Button';
+import { formatDateForInput } from '../../utils/date';
 
 type FormData = Omit<CreateKartuKeluargaWithKepalaDto, 'tanggalLahir'> & { tanggalLahir: string };
 
@@ -18,15 +19,6 @@ interface KartuKeluargaFormModalProps {
   onSave: (formData: any, id: number | null) => Promise<void>;
   editingKk: KartuKeluarga | null;
 }
-
-const formatDateForInput = (isoDate: string | Date | undefined): string => {
-  if (!isoDate) return '';
-  try {
-    return new Date(isoDate).toISOString().split('T')[0];
-  } catch (e) {
-    return '';
-  }
-};
 
 const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen, onClose, onSave, editingKk }) => {
   const isEditing = !!editingKk;

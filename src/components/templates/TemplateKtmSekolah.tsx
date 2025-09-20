@@ -881,7 +881,7 @@ export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSura
                                 <strong>
                                     <u>
                                         <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                            PIRNGADI, S.Sos
+                                            {data.setting.namaKepdes}
                                         </span>
                                     </u>
                                 </strong>

@@ -1173,7 +1173,7 @@ export function TemplateKeteranganUsaha({ data }: { data: DetailPengajuanSuratSc
                   <strong>
                     <u>
                       <span style={{ fontFamily: '"Bookman Old Style", "URW Bookman L", "Times New Roman", serif' }}>
-                        PIRNGADI, S.Sos
+                        {data.setting.namaKepdes}
                       </span>
                     </u>
                   </strong>

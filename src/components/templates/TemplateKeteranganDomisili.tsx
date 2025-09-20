@@ -167,7 +167,7 @@ export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPeng
                     >
                         <p style={{ textAlign: "justify", lineHeight: "115%" }}>
                             <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                PIRNGADI, S Sos
+                                {data.setting.namaKepdes}
                             </span>
                         </p>
                     </td>
@@ -204,7 +204,7 @@ export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPeng
                     >
                         <p style={{ textAlign: "justify", lineHeight: "115%" }}>
                             <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                350202 170562 0001
+                                {data.setting.nikKepdes}
                             </span>
                         </p>
                     </td>
@@ -555,7 +555,7 @@ export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPeng
         </p>
         <table
             style={{
-                width: "90%", // 1. Buat lebar tabel penuh
+                width: "100%", // 1. Buat lebar tabel penuh
                 borderCollapse: "collapse",
                 fontFamily: '"Bookman Old Style", serif'
             }}
@@ -592,7 +592,7 @@ export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPeng
 
                         <p style={{ margin: 0, padding: 0 }}>
                             <strong>
-                                <u>MUHAMMAD HISAM ASZAINI</u>
+                                <u>{data.setting.namaKepdes}</u>
                             </strong>
                         </p>
                     </td>

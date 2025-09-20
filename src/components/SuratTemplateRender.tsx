@@ -36,6 +36,7 @@ export function SuratTemplateRenderer({ data }: SuratTemplateRendererProps) {
             break;
 
         case 'KETERANGAN_DOMISILI':
+            console.log(data.dataPermohonan.keterangan);
             TemplateComponent = <TemplateKeteranganDomisili data={data} />;
             break;
 

@@ -952,7 +952,7 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
             </span>
             <strong>
                 <u>
-                    <span style={{ fontFamily: "Tahoma", marginLeft: "75pt", textAlign: "center" }}>PIRNGADI,S.Sos</span>
+                    <span style={{ fontFamily: "Tahoma", marginLeft: "75pt", textAlign: "center" }}>{data.setting.namaKepdes}</span>
                 </u>
             </strong>
         </p>

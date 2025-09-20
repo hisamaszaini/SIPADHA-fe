@@ -122,7 +122,7 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
                         <p style={{ lineHeight: "115%" }}>
                             <strong>
                                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                    PIRNGADI,S.Sos
+                                    {data.setting.namaKepdes}
                                 </span>
                             </strong>
                         </p>
@@ -160,7 +160,7 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
                     >
                         <p style={{ lineHeight: "115%" }}>
                             <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                3502021705620001
+                                {data.setting.nikKepdes}
                             </span>
                         </p>
                     </td>
@@ -233,14 +233,8 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
                         }}
                     >
                         <p style={{ lineHeight: "115%" }}>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>RT 02</span>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp; </span>
                             <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                RW 01 Dukuh Krajan
-                            </span>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp; </span>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                Desa Cepoko, Kecamatan Ngrayun, Kabupaten Ponorogo
+                                {data.setting.alamatKepdes}
                             </span>
                         </p>
                     </td>
@@ -483,215 +477,48 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
         <p>
             <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
         </p>
-        <table style={{ padding: "0pt", borderCollapse: "collapse" }}>
+
+<table
+            style={{
+                width: "100%", // 1. Buat lebar tabel penuh
+                borderCollapse: "collapse",
+                fontFamily: '"Bookman Old Style", serif'
+            }}
+        >
             <tbody>
                 <tr>
+                    {/* Kolom kiri (bisa kosong atau diisi konten) */}
                     <td
                         style={{
-                            width: "148.8pt",
-                            padding: "0pt 5.4pt",
+                            width: "50%", // 2. Gunakan persentase
                             verticalAlign: "top"
                         }}
                     >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
+                        {/* Konten sisi kiri jika ada */}
                     </td>
+
+                    {/* Kolom kanan untuk tanda tangan */}
                     <td
                         style={{
-                            width: "128.25pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
+                            width: "50%", // 2. Gunakan persentase
+                            verticalAlign: "top",
+                            textAlign: "center" // 3. Gunakan text-align untuk perataan
                         }}
                     >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
+                        <p style={{ margin: 0, padding: 0 }}>
+                            Ponorogo, {formatTanggal(data.createdAt)}
                         </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "169.35pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                Cepoko, {formatTanggal(data.createdAt)}
-                            </span>
+                        <p style={{ margin: 0, padding: 0 }}>
+                            Kepala Desa Cepoko
                         </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "148.8pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p style={{ textAlign: "center" }}>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "128.25pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "169.35pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                Kepala Desa Cepoko
-                            </span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "148.8pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "128.25pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "169.35pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "148.8pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p style={{ fontSize: "11pt" }}>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "128.25pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p style={{ fontSize: "11pt" }}>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "169.35pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p style={{ fontSize: "11pt" }}>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                        style={{
-                            width: "148.8pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "128.25pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                    </td>
-                    <td
-                        style={{
-                            width: "169.35pt",
-                            padding: "0pt 5.4pt",
-                            verticalAlign: "top"
-                        }}
-                    >
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                        <p>
+
+                        {/* 4. Jarak vertikal yang lebih baik */}
+                        <div style={{ height: "80px" }}></div>
+
+                        <p style={{ margin: 0, padding: 0 }}>
                             <strong>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                    PIRNGADI,S.Sos
-                                </span>
+                                <u>{data.setting.namaKepdes}</u>
                             </strong>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                        </p>
-                        <p>
-                            <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
                         </p>
                     </td>
                 </tr>

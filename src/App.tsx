@@ -19,6 +19,7 @@ import AdminUsers from './pages/Admin/AdminUsers';
 import { AdminPengajuanSuratPage } from './pages/Admin/AdminPengajuanSurat';
 import { DetailPengajuanSuratPage } from './pages/DetailPengajuanSuratPage';
 import { WargaPengajuanSuratPage } from './pages/Warga/WargaPengajuanSurat';
+import AdminSetting from './pages/Admin/AdminSetting';
 // import NotFound from './pages/NotFound';
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
               }
             >
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/setting" element={<AdminSetting />} />
               <Route path="/admin/data-master/users" element={<AdminUsers />} />
               <Route path="/admin/data-master/wilayah" element={<AdminDukuh />} />
               <Route path="/admin/data-master/kartukeluarga" element={<AdminKartuKeluarga />} />

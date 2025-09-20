@@ -8,6 +8,7 @@ import TextInput from '../ui/TextInput';
 import { agamaOptions, hubunganKeluargaOptions, jenisKelaminOptions, pendidikanOptions, statusPerkawinanOptions } from '../../constant/pendudukOption';
 import { toast } from 'sonner';
 import { Button } from '../ui/Button';
+import { formatDateForInput } from '../../utils/date';
 
 type FormData = Omit<PendudukDto, 'tanggalLahir'> & { tanggalLahir: string };
 
@@ -18,15 +19,6 @@ interface PendudukFormModalProps {
     editingPenduduk: Penduduk | null;
 }
 
-const formatDateForInput = (isoDate: string | Date | undefined): string => {
-    if (!isoDate) return '';
-    try {
-        return new Date(isoDate).toISOString().split('T')[0];
-    } catch (e) {
-        return '';
-    }
-};
-
 const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, onSave, editingPenduduk }) => {
     const isEditing = !!editingPenduduk;
 
@@ -35,8 +27,8 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
     } = useWilayahContext();
 
     const initialFormState: FormData = {
-        nik: '', nama: '', tempatLahir: '', tanggalLahir: '', jenisKelamin: 'Laki-laki',
-        agama: 'Islam', statusPerkawinan: 'Belum Kawin', pendidikan: '', pekerjaan: '',
+        nik: '', nama: '', tempatLahir: '', tanggalLahir: '', jenisKelamin: '',
+        agama: '', statusPerkawinan: '', pendidikan: '', pekerjaan: '',
         hubunganDalamKeluarga: '', kartuKeluargaId: 0,
     };
 

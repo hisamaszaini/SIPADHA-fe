@@ -30,6 +30,15 @@ export function formatTanggalSingkat(date?: Date | string, locale = "id-ID"): st
   }).format(d);
 }
 
+export const formatDateForInput = (isoDate: string | Date | undefined): string => {
+    if (!isoDate) return '';
+    try {
+        return new Date(isoDate).toISOString().split('T')[0];
+    } catch (e) {
+        return '';
+    }
+};
+
 export function hitungUmur(tanggalLahir?: Date | string): number | null {
   if (!tanggalLahir) return null;
 

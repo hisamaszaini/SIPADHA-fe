@@ -10,6 +10,7 @@ import {
   User,
   User2,
   LogOut,
+  Settings,
 } from "lucide-react";
 import type { UserRole } from "../types/user.types";
 
@@ -35,13 +36,14 @@ export const menuConfig: Record<UserRole, NavigationItem[]> = {
         { label: 'Jenis Surat', path: '/admin/layanan-surat/jenis-surat', icon: File },
       ],
     },
-    { label: 'Profil Saya', path: '/profile', icon: User },
+    { label: 'Pengaturan Administrasi', path: '/admin/setting', icon: Settings },
+    { label: 'Pengaturan Akun', path: '/profile', icon: User },
     { label: 'Logout', icon: LogOut, isLogout: true },
   ],
   WARGA: [
     { label: 'Dashboard', path: '/warga/dashboard', icon: Home },
     { label: 'Pengajuan Surat', path: '/warga/pengajuan-surat', icon: FileText },
-    { label: 'Profil Saya', path: '/profile', icon: User },
+    { label: 'Pengaturan Akun', path: '/profile', icon: User },
     { label: 'Logout', icon: LogOut, isLogout: true },
   ],
   PENGURUS: [

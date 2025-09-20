@@ -40,16 +40,16 @@ const JenisSuratTable: React.FC<JenisSuratTableProps> = ({
     return (
         <>
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto bg-white rounded-lg shadow">
+            <div className="hidden md:block overflow-x-auto border-y border-gray-200 rounded-lg shadow-md">
                 <table className="min-w-full text-left text-sm text-gray-900">
                     <thead className="bg-gray-50">
                         <tr className="text-xs font-medium uppercase tracking-wider text-gray-500">
-                            <th className="px-6 py-3 w-16">No.</th>
+                            <th className="px-6 py-4 w-16">No.</th>
                             <SortableHeader columnKey="kode" onSort={onSort} queryParams={queryParams}>Kode</SortableHeader>
                             <SortableHeader columnKey="namaSurat" onSort={onSort} queryParams={queryParams}>Nama Surat</SortableHeader>
-                            <th className="px-6 py-3">Deskripsi</th>
-                            <th className="px-6 py-3">File</th>
-                            <th className="px-6 py-3 text-right">Aksi</th>
+                            <th className="px-6 py-4">Deskripsi</th>
+                            <th className="px-6 py-4">File</th>
+                            <th className="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">

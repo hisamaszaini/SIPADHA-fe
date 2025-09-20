@@ -30,7 +30,7 @@ const RwTable: React.FC<RwTableProps> = ({ rwList, isLoading, meta, onEdit, onDe
     return (
         <>
             {/* Desktop Table View (hidden on small screens) */}
-            <div className="hidden md:block overflow-x-auto">
+            <div className="hidden md:block overflow-x-auto border-y border-gray-200 rounded-lg shadow-md">
                 <table className="min-w-full text-left text-sm text-gray-900">
                     <thead className="bg-gray-50">
                         <tr className="text-xs font-medium uppercase tracking-wider text-gray-500">

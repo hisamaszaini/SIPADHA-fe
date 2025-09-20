@@ -55,7 +55,7 @@ export default function PengajuanSuratTable({
 
   const getLabel = (value: string) =>
     jenisSuratOptions.find(opt => opt.value === value)?.label ?? value;
-  
+
   const ActionButtons = ({ item, isMobile = false }: { item: FindAllPengajuanSuratResponseSchema, isMobile?: boolean }) => (
     <div className={`flex items-center gap-2 ${isMobile ? 'flex-wrap' : ''}`}>
       {user?.role === "ADMIN" && onProcess && (
@@ -87,7 +87,7 @@ export default function PengajuanSuratTable({
           <span>Detail</span>
         </Link>
       )}
-      
+
       {isMobile && <div className="flex-grow"></div>}
 
       {!isMobile && <div className="h-5 w-px bg-gray-200 mx-1"></div>}
@@ -113,16 +113,16 @@ export default function PengajuanSuratTable({
   return (
     <div className="bg-white rounded-lg shadow">
       {/* Desktop Table View */}
-      <div className="hidden md:block overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto border-y border-gray-200">
         <table className="min-w-full text-left text-sm text-gray-900">
           <thead className="bg-gray-50">
             <tr className="text-xs font-medium uppercase tracking-wider text-gray-500">
-              <th className="p-3 text-center font-bold">No.</th>
+              <th className="px-3 py-4 text-center font-bold">No.</th>
               <SortableHeader column="penduduk.nama" label="NAMA PEMOHON" />
-              <th className="p-3 text-left font-bold max-w-24">JENIS SURAT</th>
-              <th className="p-3 text-left font-bold">STATUS</th>
+              <th className="px-3 text-left font-bold max-w-24">JENIS SURAT</th>
+              <th className="px-3 text-left font-bold">STATUS</th>
               <SortableHeader column="createdAt" label="TANGGAL DIBUAT" />
-              <th className="p-3 font-bold">AKSI</th>
+              <th className="px-3 font-bold">AKSI</th>
             </tr>
           </thead>
           <tbody>
@@ -164,32 +164,32 @@ export default function PengajuanSuratTable({
               <div key={item.id} className="bg-white">
                 {/* Card Header with your gradient style */}
                 <div className="bg-gradient-to-r from-indigo-50 to-blue-50 px-4 py-3">
-                    <div className="flex justify-between items-start gap-3">
-                        <div className="flex items-start gap-3 flex-1">
-                            <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-md font-semibold text-sm">
-                               {meta ? (meta.page - 1) * meta.limit + index + 1 : index + 1}
-                            </span>
-                            <div className="flex-1">
-                                <h3 className="font-bold text-base text-indigo-800">{getLabel(item.jenis)}</h3>
-                            </div>
-                        </div>
-                         <span className={`px-2 py-1 text-xs font-semibold rounded-full flex-shrink-0 ${statusStyles[item.statusSurat] || 'bg-gray-100 text-gray-800'}`}>
-                            {item.statusSurat}
-                        </span>
+                  <div className="flex justify-between items-start gap-3">
+                    <div className="flex items-start gap-3 flex-1">
+                      <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-md font-semibold text-sm">
+                        {meta ? (meta.page - 1) * meta.limit + index + 1 : index + 1}
+                      </span>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-base text-indigo-800">{getLabel(item.jenis)}</h3>
+                      </div>
                     </div>
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full flex-shrink-0 ${statusStyles[item.statusSurat] || 'bg-gray-100 text-gray-800'}`}>
+                      {item.statusSurat}
+                    </span>
+                  </div>
                 </div>
                 {/* Card Body & Footer */}
                 <div className="p-4 space-y-4">
-                    <div className="text-sm text-gray-600 space-y-1">
-                      <p>
-                        <span className="font-semibold text-gray-800">{item.penduduk.nama}</span>
-                        <span className="text-gray-500"> ({item.penduduk.nik})</span>
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        Tanggal: {new Date(item.createdAt).toLocaleDateString('id-ID')}
-                      </p>
-                    </div>
-                    <ActionButtons item={item} isMobile={true} />
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <p>
+                      <span className="font-semibold text-gray-800">{item.penduduk.nama}</span>
+                      <span className="text-gray-500"> ({item.penduduk.nik})</span>
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Tanggal: {new Date(item.createdAt).toLocaleDateString('id-ID')}
+                    </p>
+                  </div>
+                  <ActionButtons item={item} isMobile={true} />
                 </div>
               </div>
             ))}

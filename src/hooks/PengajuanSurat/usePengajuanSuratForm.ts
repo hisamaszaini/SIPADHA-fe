@@ -77,7 +77,6 @@ export const getInitialValues = (
         }
 
       default:
-        // Fallback untuk jenis surat yang belum ditangani
         throw new Error("Jenis surat tidak didukung dalam mode edit.");
     }
   }
@@ -154,13 +153,11 @@ export const usePengajuanSuratForm = ({
 
   const form = useForm<fullCreatePengajuanSuratDto>({
     resolver: zodResolver(fullCreatePengajuanSuratSchema as any),
-    // `values` akan me-reset form jika `defaultValues` berubah. Cocok untuk kasus ini.
-    values: defaultValues,
+    values: defaultValues, //Reset Form
   });
 
   const { setError } = form;
 
-  // Helper untuk menangani error dari API (misal: validasi backend)
   const handleApiError = (error: any) => {
     console.error('API Error:', error);
     const messages = error.response?.data?.message;

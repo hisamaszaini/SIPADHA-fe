@@ -273,6 +273,29 @@ export const detailPengajuanSuratSchema = z.discriminatedUnion("jenis", [
 
 export type DetailPengajuanSuratSchema = z.infer<typeof detailPengajuanSuratSchema>;
 
+// =======================
+// Update Status Pengajuan
+// =======================
+
+export const updateStatusSuratSchema = z.object({
+    statusSurat: statusSuratEnum,
+    catatan: z
+        .string()
+        .max(255)
+        .trim()
+        .optional()
+}).superRefine((val, ctx) => {
+    if (val.statusSurat === 'DITOLAK' && !val.catatan?.trim()) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['catatan'],
+            message: 'Catatan wajib diisi jika status ditolak',
+        });
+    }
+});
+
+export type UpdateStatusSuratDto = z.infer<typeof updateStatusSuratSchema>;
+
 export interface PengajuanSuratQueryParams {
     page?: number;
     limit?: number;

@@ -1,5 +1,5 @@
 import type { ApiResponse } from "../types/api.types";
-import type { DetailPengajuanSuratSchema, FindAllPengajuanSuratResponseSchema, fullCreatePengajuanSuratDto, PengajuanSuratQueryParams, UpdatePengajuanSuratDto } from "../types/pengajuanSurat.types";
+import type { DetailPengajuanSuratSchema, FindAllPengajuanSuratResponseSchema, fullCreatePengajuanSuratDto, PengajuanSuratQueryParams, UpdatePengajuanSuratDto, UpdateStatusSuratDto } from "../types/pengajuanSurat.types";
 import api from "./api";
 
 export const pengajuanSuratService = {
@@ -20,6 +20,11 @@ export const pengajuanSuratService = {
 
     async update(id: number, data: UpdatePengajuanSuratDto): Promise<ApiResponse<DetailPengajuanSuratSchema>>{
         const response = await api.patch(`/pengajuan-surat/${id}`, data);
+        return response.data;
+    },
+
+    async updateStatus(id: number, data: UpdateStatusSuratDto): Promise<ApiResponse<DetailPengajuanSuratSchema>>{
+        const response = await api.patch(`/pengajuan-surat/${id}/validasi`, data);
         return response.data;
     },
 

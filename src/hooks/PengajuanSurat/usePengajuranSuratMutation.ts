@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import type { fullCreatePengajuanSuratDto, UpdatePengajuanSuratDto } from '../../types/pengajuanSurat.types';
+import type { fullCreatePengajuanSuratDto, UpdatePengajuanSuratDto, UpdateStatusSuratDto } from '../../types/pengajuanSurat.types';
 import { pengajuanSuratService } from '../../services/pengajuanSuratService';
 
 /**
@@ -33,7 +33,7 @@ export function usePengajuanSuratMutations() {
    * Mutasi untuk memperbarui entri pengajuan surat yang sudah ada.
    */
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UpdatePengajuanSuratDto }) => 
+    mutationFn: ({ id, data }: { id: number; data: UpdatePengajuanSuratDto }) =>
       pengajuanSuratService.update(id, data),
     onSuccess: (variables) => {
       toast.success('Pengajuan surat berhasil diperbarui.');
@@ -62,9 +62,27 @@ export function usePengajuanSuratMutations() {
     },
   });
 
+  /**
+ * Mutasi untuk update status / validasi surat
+ */
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: UpdateStatusSuratDto }) =>
+      pengajuanSuratService.updateStatus(id, data),
+    onSuccess: (response) => {
+      toast.success(response.message || 'Status pengajuan surat berhasil diperbarui.');
+      invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: ['pengajuan-surat', response.data.id] });
+    },
+    onError: (error) => {
+      console.error('Update Status Pengajuan Surat failed:', error);
+      toast.error('Gagal memperbarui status pengajuan surat.');
+    },
+  });
+
   return {
     createMutation,
     updateMutation,
     removeMutation,
+    updateStatusMutation
   };
 }

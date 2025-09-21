@@ -1,22 +1,14 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
-import { statusSuratEnum } from '../../../types/pengajuanSurat.types';
-import type { MinimalProsesStatusSurat } from '../../../types/pengajuanSurat.types';
+import { updateStatusSuratSchema } from '../../../types/pengajuanSurat.types';
+import type { MinimalProsesStatusSurat, UpdateStatusSuratDto } from '../../../types/pengajuanSurat.types';
 import { usePengajuanSuratMutations } from '../../../hooks/PengajuanSurat/usePengajuranSuratMutation';
 import { Button } from '../../ui/Button';
 import { jenisSuratOptions, statusSuratOptions } from '../../../constant/suratOption';
 import SelectInput from '../../ui/SelectInput';
 
-const processSchema = z.object({
-  statusSurat: statusSuratEnum,
-  catatan: z.string().optional(),
-});
-type ProcessFormData = z.infer<typeof processSchema>;
-
-// Tipe props untuk modal
 interface ProcessSuratModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -25,32 +17,33 @@ interface ProcessSuratModalProps {
 }
 
 export function ProcessSuratModal({ isOpen, onClose, data, onSuccess }: ProcessSuratModalProps) {
-  const { updateMutation } = usePengajuanSuratMutations();
+  const { updateStatusMutation } = usePengajuanSuratMutations();
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ProcessFormData>({
-    resolver: zodResolver(processSchema),
+  } = useForm<UpdateStatusSuratDto>({
+    resolver: zodResolver(updateStatusSuratSchema),
   });
 
   // Reset form setiap kali modal dibuka dengan data baru
   useEffect(() => {
     if (data) {
       reset({
+        statusSurat: data.statusSurat,
         catatan: data.catatan || '',
       });
     }
   }, [data, reset]);
 
 
-  const onSubmit = (formData: ProcessFormData) => {
+  const onSubmit = (formData: UpdateStatusSuratDto) => {
     if (!data) return;
 
     // Panggil mutasi update dengan data dari form
-    updateMutation.mutate(
+    updateStatusMutation.mutate(
       { id: data.id, data: formData },
       {
         onSuccess: () => {
@@ -92,28 +85,33 @@ export function ProcessSuratModal({ isOpen, onClose, data, onSuccess }: ProcessS
             ))}
           </SelectInput>
           <div>
-            <label htmlFor="catatan" className="block text-sm font-medium text-gray-700 mb-1">Catatan (Opsional)</label>
+            <label htmlFor="catatan" className="block text-sm font-medium text-gray-700 mb-1">
+              Catatan (Opsional)
+            </label>
             <textarea
               id="catatan"
               rows={3}
               {...register('catatan')}
-              className={`w-full px-4 py-3 bg-white-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200 ${errors.catatan
-                ? 'border-red-500 ring-red-500 focus:border-red-500'
-                : 'border-blue-300 focus:ring-emerald-500 focus:border-emerald-500'}`} placeholder="Tambahkan catatan untuk pemohon atau arsip..."
+              className={`w-full px-4 py-3 bg-white-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200 ${errors.catatan ? 'border-red-500 ring-red-500 focus:border-red-500' : 'border-blue-300 focus:ring-emerald-500 focus:border-emerald-500'
+                }`}
+              placeholder="Tambahkan catatan untuk pemohon atau arsip..."
             />
+            {errors.catatan && (
+              <p className="text-sm text-red-500 mt-1">{errors.catatan.message}</p>
+            )}
           </div>
 
           <div className="flex justify-end gap-4 pt-4">
-            <Button type="button" variant="secondary" disabled={updateMutation.isPending} onClick={onClose}>
+            <Button type="button" variant="secondary" disabled={updateStatusMutation.isPending} onClick={onClose}>
               Batal
             </Button>
             <Button
               type="submit"
               variant="primary"
               icon="fas fa-save"
-              disabled={updateMutation.isPending}
+              disabled={updateStatusMutation.isPending}
             >
-              {updateMutation.isPending ? 'Menyimpan...' : 'Simpan'}
+              {updateStatusMutation.isPending ? 'Menyimpan...' : 'Simpan'}
             </Button>
           </div>
         </form>

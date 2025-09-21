@@ -57,8 +57,35 @@ export function DetailPengajuanSuratPage() {
         return <div className="p-6 text-center">Memuat data surat...</div>;
     }
 
-    if (isError || !suratData) {
-        return <div className="p-6 text-center text-red-500">Gagal memuat data atau surat tidak ditemukan.</div>;
+    if (isError) {
+        const apiError = (findOneQuery.error as any)?.response?.data;
+        const errorMessage = apiError?.message || "Terjadi kesalahan saat memuat data.";
+
+        if (apiError?.error?.code === "Forbidden") {
+            return (
+                <div className="p-6 text-center text-red-500 bg-white shadow-md rounded-lg">
+                    {errorMessage}
+                    <div className="mt-4">
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300"
+                        >
+                            Kembali
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div className="p-6 text-center text-red-500">
+                {errorMessage}
+            </div>
+        );
+    }
+
+    if (!suratData) {
+        return <div className="p-6 text-center text-red-500">Surat tidak ditemukan.</div>;
     }
 
     return (
@@ -98,13 +125,13 @@ export function DetailPengajuanSuratPage() {
 
                     <div className="flex w-full flex-col sm:flex-row sm:w-auto items-center gap-3">
                         {user?.role === "ADMIN" && (
-                        <button
-                            onClick={() => management.openProcessModal(suratData)}
-                            className="group w-full sm:w-auto bg-emerald-500 text-white px-5 py-2.5 rounded-lg font-semibold inline-flex items-center justify-center space-x-2 shadow-md hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-300 transition-all duration-300"
-                        >
-                            <i className="fas fa-cogs transition-transform duration-300 group-hover:rotate-90"></i>
-                            <span>Proses Surat</span>
-                        </button>)}
+                            <button
+                                onClick={() => management.openProcessModal(suratData)}
+                                className="group w-full sm:w-auto bg-emerald-500 text-white px-5 py-2.5 rounded-lg font-semibold inline-flex items-center justify-center space-x-2 shadow-md hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-300 transition-all duration-300"
+                            >
+                                <i className="fas fa-cogs transition-transform duration-300 group-hover:rotate-90"></i>
+                                <span>Proses Surat</span>
+                            </button>)}
 
                         <button
                             onClick={handlePrint}

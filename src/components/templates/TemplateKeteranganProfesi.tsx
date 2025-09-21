@@ -67,7 +67,7 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
         <p style={{ textAlign: "center" }}>
             <strong>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                    NOMOR: 470/ 361/405.29.02.10/2024
+                    NOMOR: 470/ 361/405.29.02.10/{new Date().getFullYear()}
                 </span>
             </strong>
         </p>
@@ -247,8 +247,7 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
         <p>
             <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
             <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                Menerangkan bahwa Surat Pernyataan yang dibuat pada tanggal 15 Oktober
-                2024 bahwa :
+                Menerangkan bahwa Surat Pernyataan yang dibuat pada tanggal {formatTanggal(data.createdAt)} bahwa :
             </span>
         </p>
         <table style={{ padding: "0pt", borderCollapse: "collapse" }}>

@@ -121,21 +121,35 @@ const AdminDashboard: React.FC = () => {
   if (isLoadingDashboard) return <p>Loading...</p>
   if (isErrorDashboard) return <p>Error loading dashboard data.</p>
 
+  const hariIni = dashboardData?.data.pengajuan?.perbandingan.hariIni ?? 0;
+  const kemarin = dashboardData?.data.pengajuan?.perbandingan.kemarin ?? 0;
+
+  const selisih = hariIni - kemarin;
+  const trend = kemarin > 0 ? ((hariIni - kemarin) / kemarin) * 100 : null;
+
+  const selesai = dashboardData?.data.pengajuan.distribusiStatus.SELESAI ?? 0;
+  const pending = dashboardData?.data.pengajuan.distribusiStatus.PENDING ?? 0;
+  const diproses = dashboardData?.data.pengajuan.distribusiStatus.DIPROSES ?? 0;
+
   return (
     <>
       {/* Stats Grid */}
       <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Pengajuan Baru"
-          value={dashboardData?.data.countPengajuan?.length ?? 0}
+          value={hariIni}
+          subtitle={ trend !== null
+              ? `${selisih >= 0 ? "Naik" : "Turun"} ${Math.abs(trend).toFixed(1)}% dibanding kemarin`
+              : "Belum ada data kemarin" }
           icon={PlusSquare}
           gradientClass="gradient-emerald"
           animationDelay="0s"
         />
 
         <StatCard
-          title="Dalam Proses"
-          value={12}
+          title="Pengajuan Selesai"
+          value={selesai}
+          subtitle={`${(selesai+pending+diproses)} Pengajuan / ${(pending+diproses)} Belum Selesai`}
           icon={RefreshCw}
           gradientClass="gradient-blue"
           animationDelay="0.1s"

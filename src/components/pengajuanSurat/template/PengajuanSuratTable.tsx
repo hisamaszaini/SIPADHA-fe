@@ -21,7 +21,6 @@ interface PengajuanSuratTableProps {
   sortOrder?: 'asc' | 'desc';
 }
 
-// Helper untuk styling badge status
 const statusStyles: Record<string, string> = {
   PENDING: 'bg-yellow-100 text-yellow-800',
   DIPROSES: 'bg-blue-100 text-blue-800',
@@ -118,9 +117,9 @@ export default function PengajuanSuratTable({
           <thead className="bg-gray-50">
             <tr className="text-xs font-medium uppercase tracking-wider text-gray-500">
               <th className="px-3 py-4 text-center font-bold">No.</th>
-              <SortableHeader column="penduduk.nama" label="NAMA PEMOHON" />
-              <th className="px-3 text-left font-bold max-w-24">JENIS SURAT</th>
-              <th className="px-3 text-left font-bold">STATUS</th>
+              <th className="px-3 py-4 font-bold min-w-36 text-left">NAMA PEMOHON</th>
+              <th className="px-3 font-bold w-48 text-left">JENIS SURAT</th>
+              <th className="px-3 text-center font-bold">STATUS</th>
               <SortableHeader column="createdAt" label="TANGGAL DIBUAT" />
               <th className="px-3 font-bold">AKSI</th>
             </tr>
@@ -136,7 +135,7 @@ export default function PengajuanSuratTable({
                   <td className="p-3 text-center">{meta ? (meta.page - 1) * meta.limit + index + 1 : index + 1}</td>
                   <td className="p-3 text-sm">{item.penduduk.nama} <br /> <span className="text-xs text-gray-500">{item.penduduk.nik}</span></td>
                   <td className="p-3">{getLabel(item.jenis)}</td>
-                  <td className="p-3">
+                  <td className="p-3 text-center">
                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${statusStyles[item.statusSurat] || 'bg-gray-100 text-gray-800'}`}>
                       {item.statusSurat}
                     </span>

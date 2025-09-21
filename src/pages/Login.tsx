@@ -62,7 +62,7 @@ const Login: React.FC = () => {
                   className="w-full pl-3 pr-3 py-3 bg-white/10 border border-white/30 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
                 />
               </div>
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+              {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
             </div>
 
             {/* Password */}
@@ -77,7 +77,7 @@ const Login: React.FC = () => {
                   className="w-full pl-3 pr-3 py-3 bg-white/10 border border-white/30 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
                 />
               </div>
-              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+              {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>}
             </div>
           </section>
 

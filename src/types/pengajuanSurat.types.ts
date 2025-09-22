@@ -75,13 +75,22 @@ export const keteranganDomisiliSchema = z.object({
     keterangan: z.string().nonempty('Keterangan tujuan pengajuan surat wajib diisi'),
 });
 
+export const keteranganAhliWarisSchema = z.object({
+    jenis: z.literal('KETERANGAN_AHLI_WARIS'),
+    targetId: z.preprocess((val) => { if (typeof val === 'string') { return val.trim() === '' ? NaN : Number(val); } return val; }, z.number('Anak wajib dipilih').int('targetId harus bilangan bulat').positive('Target wajib dipilih dan ID tidak valid'),),
+    hubungan: z.string().nonempty('Status hubungan wajib diisi'),
+    alamatTerakhir: z.string().optional(),
+    keterangan: z.string().nonempty('Keterangan tujuan pengajuan surat wajib diisi'),
+});
+
 export const createPengajuanSuratSchema = z.discriminatedUnion('jenis', [
     keteranganUsahaSchema,
     keteranganaTidakMampuSekolahSchema,
     keteranganSuamiIstriKeluarNegeriSchema,
     keteranganTidakMemilikiMobilSchema,
     keteranganProfesiSchema,
-    keteranganDomisiliSchema
+    keteranganDomisiliSchema,
+    keteranganAhliWarisSchema
 ]);
 
 export const fullCreatePengajuanSuratSchema = baseCreatePengajuanSuratSchema.and(createPengajuanSuratSchema);
@@ -128,6 +137,13 @@ const keteranganSuamiIstriKeluarNegeriResponseSchema = z.object({
 });
 
 const keteranganDomisiliResponseSchema = z.object({
+    keterangan: z.string(),
+});
+
+const keteranganAhliWarisResponseSchema = z.object({
+    targetId: z.number(),
+    hubungan: z.string(),
+    alamatTerakhir: z.string().nullable(),
     keterangan: z.string(),
 });
 
@@ -200,6 +216,10 @@ export const findAllPengajuanSuratResponseSchema = z.discriminatedUnion("jenis",
     basefindAllPengajuanSuratResponseSchema.extend({
         jenis: z.literal("KETERANGAN_DOMISILI"),
         dataPermohonan: keteranganDomisiliResponseSchema,
+    }),
+    basefindAllPengajuanSuratResponseSchema.extend({
+        jenis: z.literal("KETERANGAN_AHLI_WARIS"),
+        dataPermohonan: keteranganAhliWarisResponseSchema,
     })
 ]);
 
@@ -276,6 +296,10 @@ export const detailPengajuanSuratSchema = z.discriminatedUnion("jenis", [
     baseDetailPengajuanSuratSchema.extend({
         jenis: z.literal("KETERANGAN_DOMISILI"),
         dataPermohonan: keteranganDomisiliResponseSchema,
+    }),
+    baseDetailPengajuanSuratSchema.extend({
+        jenis: z.literal("KETERANGAN_AHLI_WARIS"),
+        dataPermohonan: keteranganAhliWarisResponseSchema,
     })
 ]);
 

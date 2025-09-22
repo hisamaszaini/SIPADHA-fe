@@ -9,6 +9,7 @@ import { Button } from '../ui/Button';
 import { jenisSuratOptions, lingkupSuratOptions } from '../../constant/suratOption';
 import { KeteranganSuamiIstriKeluarNegeriFields } from './fields/SuamiIstriKeluarNegeriFields';
 import { KeteranganDomisiliFields } from './fields/KeteranganDomisili';
+import { KeteranganAhliWarisFields } from './fields/KeteranganAhliWaris';
 
 interface PengajuanSuratFormModalProps {
     isOpen: boolean;
@@ -79,17 +80,6 @@ export function PengajuanSuratFormModal({
                 </div>
 
                 <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} className="space-y-4 p-6 overflow-y-auto">
-                    <PendudukSelect
-                        label="Pemohon"
-                        value={pendudukOptions.find(p => p.id === Number(watch('pendudukId'))) || null}
-                        onChange={(val) => setValue('pendudukId', val ? Number(val.id) : 0, { shouldValidate: true })}
-                        options={pendudukOptions}
-                        onSearchChange={onPendudukSearchChange}
-                        searchTerm={pendudukSearch}
-                        isLoading={isPendudukLoading}
-                        error={errors.pendudukId?.message as string}
-                    />
-
                     <SelectInput
                         id="jenis"
                         label="Jenis Surat"
@@ -105,6 +95,17 @@ export function PengajuanSuratFormModal({
                             </option>
                         ))}
                     </SelectInput>
+
+                    <PendudukSelect
+                        label="Pemohon"
+                        value={pendudukOptions.find(p => p.id === Number(watch('pendudukId'))) || null}
+                        onChange={(val) => setValue('pendudukId', val ? Number(val.id) : 0, { shouldValidate: true })}
+                        options={pendudukOptions}
+                        onSearchChange={onPendudukSearchChange}
+                        searchTerm={pendudukSearch}
+                        isLoading={isPendudukLoading}
+                        error={errors.pendudukId?.message as string}
+                    />
 
                     <SelectInput
                         id="lingkup"
@@ -148,13 +149,16 @@ export function PengajuanSuratFormModal({
                         <KeteranganDomisiliFields form={form} />
                     )}
 
-                    {/* Tombol Aksi */}
-                    {/* <div className="flex justify-end gap-4 pt-4" >
-                        <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 rounded-md" > Batal </button>
-                        < button type="submit" disabled={isLoading} className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-blue-300" >
-                            {isLoading ? 'Menyimpan...' : 'Simpan'}
-                        </button>
-                    </div> */}
+                    {watchedJenis === "KETERANGAN_AHLI_WARIS" && (
+                        <KeteranganAhliWarisFields
+                            form={form}
+                            targetOptions={targetOptions}
+                            targetSearch={targetSearch}
+                            onTargetSearchChange={onTargetSearchChange}
+                            isTargetLoading={isTargetLoading}
+                        />
+                    )}
+
                     <div className="flex gap-3 justify-end mt-10">
                         <Button type="button" variant="secondary" onClick={onClose}>
                             Batal

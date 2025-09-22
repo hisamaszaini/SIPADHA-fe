@@ -77,6 +77,16 @@ export const getInitialValues = (
           keterangan: pengajuan.dataPermohonan.keterangan,
         }
 
+      case 'KETERANGAN_AHLI_WARIS':
+        return {
+          ...baseFields,
+          jenis: 'KETERANGAN_AHLI_WARIS',
+          targetId: pengajuan.targetId || 0,
+          hubungan: pengajuan.dataPermohonan.hubungan,
+          alamatTerakhir: pengajuan.dataPermohonan.alamatTerakhir || '',
+          keterangan: pengajuan.dataPermohonan.keterangan,
+        }
+
       default:
         throw new Error("Jenis surat tidak didukung dalam mode edit.");
     }

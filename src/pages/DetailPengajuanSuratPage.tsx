@@ -11,13 +11,45 @@ export function DetailPengajuanSuratPage() {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-
     const management = usePengajuanSuratManagement();
     const pengajuanSuratId = Number(id);
 
     const { findOneQuery } = usePengajuanSuratQueries({ pengajuanSuratId });
     const { data: response, isLoading, isError } = findOneQuery;
     const suratData = response?.data;
+
+
+    // const handleDownloadDocx = async () => {
+    //     const printContent = document.getElementById("printArea");
+    //     if (!printContent) {
+    //         console.error("Elemen 'printArea' tidak ditemukan.");
+    //         return;
+    //     }
+
+    //     const fullHtml = `
+    //     <!DOCTYPE html>
+    //     <html>
+    //         <head>
+    //             <meta charset="UTF-8">
+    //             <title>Cetak Surat</title>
+    //             ${document.head.innerHTML}
+    //         </head>
+    //         <body>
+    //             ${printContent.innerHTML}
+    //         </body>
+    //     </html>
+    // `;
+
+    //     const htmlDocx = await import('html-docx-js/dist/html-docx.cjs');
+
+    //     try {
+    //         const converted = htmlDocx.asBlob(fullHtml); // hasil berupa Blob
+    //         saveAs(converted, `surat-${suratData?.id || 'preview'}.docx`);
+    //     } catch (error) {
+    //         console.error("Terjadi kesalahan saat membuat file DOCX:", error);
+    //     }
+    // };
+
 
     const handlePrint = () => {
         const printContent = document.getElementById("printArea");
@@ -140,6 +172,14 @@ export function DetailPengajuanSuratPage() {
                             <i className="fas fa-print transition-transform duration-300 group-hover:scale-110"></i>
                             <span>Cetak</span>
                         </button>
+
+                        {/* <button
+                            onClick={() => handleDownloadDocx()}
+                            className="group w-full sm:w-auto bg-yellow-500 text-white px-5 py-2.5 rounded-lg font-semibold inline-flex items-center justify-center space-x-2 shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-4 focus:ring-yellow-300 transition-all duration-300"
+                        >
+                            <i className="fas fa-download transition-transform duration-300 group-hover:scale-110"></i>
+                            <span>Download DOCX</span>
+                        </button> */}
                     </div>
                 </div>
             </div>

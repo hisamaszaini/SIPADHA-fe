@@ -5,8 +5,12 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  optimizeDeps: {
+    exclude: ['html-to-docx', 'xmlbuilder2', 'html-to-vdom'],
+  },
   server: {
     host: "0.0.0.0",
-    port: 5174
+    port: 5174,
+    allowedHosts: ['sipandha.hisam.my.id', 'localhost'],
   },
 })

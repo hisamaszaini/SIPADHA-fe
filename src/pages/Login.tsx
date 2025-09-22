@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { loginSchema, type LoginData } from '../types/auth.types';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '../components/ui/Button';
+import { Loader2, UserPlus } from 'lucide-react';
 
 const Login: React.FC = () => {
   const [error, setError] = useState("");
@@ -30,7 +32,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative glass-effect">
       {/* Floating shapes */}
       <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-white/10 rounded-full floating-animation" style={{ animationDelay: "-2s" }} />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-2xl floating-animation" style={{ animationDuration: "15s" }} />
@@ -81,13 +83,28 @@ const Login: React.FC = () => {
             </div>
           </section>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400 focus:ring-offset-gray-900 transition-transform duration-300"
-          >
-            {isSubmitting ? "Logging in..." : "Masuk"}
-          </button>
+          <div className="pt-2 space-y-4">
+            <Button
+              type="submit"
+              variant="primary" // Pastikan variant ini ada di komponen Button Anda
+              className="w-full" // Membuat tombol menjadi full-width
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <UserPlus className="mr-2 h-4 w-4" />
+              )}
+              {isSubmitting ? 'Sedang login...' : 'Login'}
+            </Button>
+
+            <p className="text-center text-sm text-white/80">
+              Belum punya akun?{" "}
+              <Link to="/register" className="font-semibold text-white hover:underline focus:outline-none focus:ring-2 focus:ring-white rounded">
+                Daftar di sini
+              </Link>
+            </p>
+          </div>
         </form>
       </main>
     </div>

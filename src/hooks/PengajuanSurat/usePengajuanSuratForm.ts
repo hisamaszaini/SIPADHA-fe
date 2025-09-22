@@ -81,9 +81,12 @@ export const getInitialValues = (
         return {
           ...baseFields,
           jenis: 'KETERANGAN_AHLI_WARIS',
-          targetId: pengajuan.targetId || 0,
+          namaAhli: pengajuan.dataPermohonan.namaAhli,
+          tempatLahir: pengajuan.dataPermohonan.tempatLahir,
+          tanggalLahir: new Date(pengajuan.dataPermohonan.tanggalLahir),
+          jenisKelamin: pengajuan.dataPermohonan.jenisKelamin,
           hubungan: pengajuan.dataPermohonan.hubungan,
-          alamatTerakhir: pengajuan.dataPermohonan.alamatTerakhir || '',
+          alamat: pengajuan.dataPermohonan.alamat,
           keterangan: pengajuan.dataPermohonan.keterangan,
         }
 
@@ -150,7 +153,7 @@ interface UsePengajuanSuratFormProps {
 
 export const usePengajuanSuratForm = ({
   pengajuan,
-  jenisUntukBuat = 'KETERANGAN_USAHA', // Default jenis
+  jenisUntukBuat = 'KETERANGAN_USAHA',
   onSuccess,
 }: UsePengajuanSuratFormProps) => {
 
@@ -165,7 +168,7 @@ export const usePengajuanSuratForm = ({
 
   const form = useForm<fullCreatePengajuanSuratDto>({
     resolver: zodResolver(fullCreatePengajuanSuratSchema as any),
-    values: defaultValues, //Reset Form
+    values: defaultValues,
   });
 
   const { setError } = form;

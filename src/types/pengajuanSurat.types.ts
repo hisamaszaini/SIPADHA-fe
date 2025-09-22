@@ -77,10 +77,13 @@ export const keteranganDomisiliSchema = z.object({
 
 export const keteranganAhliWarisSchema = z.object({
     jenis: z.literal('KETERANGAN_AHLI_WARIS'),
-    targetId: z.preprocess((val) => { if (typeof val === 'string') { return val.trim() === '' ? NaN : Number(val); } return val; }, z.number('Anak wajib dipilih').int('targetId harus bilangan bulat').positive('Target wajib dipilih dan ID tidak valid'),),
+    namaAhli: z.string().nonempty('Nama ahli waris wajib diisi'),
+    tempatLahir: z.string().nonempty("Tempat lahir ahli waris wajib diisi"),
+    tanggalLahir: z.coerce.date('Tanggal lahir wajib diisi'),
+    jenisKelamin: z.enum(['Laki-laki', 'Perempuan']),
     hubungan: z.string().nonempty('Status hubungan wajib diisi'),
-    alamatTerakhir: z.string().optional(),
-    keterangan: z.string().nonempty('Keterangan tujuan pengajuan surat wajib diisi'),
+    alamat: z.string().nonempty("Alamat ahli waris wajib diisi"),
+    keterangan: z.string().nonempty('Keterangan pengajuan surat wajib diisi')
 });
 
 export const createPengajuanSuratSchema = z.discriminatedUnion('jenis', [
@@ -141,9 +144,12 @@ const keteranganDomisiliResponseSchema = z.object({
 });
 
 const keteranganAhliWarisResponseSchema = z.object({
-    targetId: z.number(),
+    namaAhli: z.string(),
+    tempatLahir: z.string(),
+    tanggalLahir: z.iso.datetime(),
+    jenisKelamin: z.enum(['Laki-laki', 'Perempuan']),
     hubungan: z.string(),
-    alamatTerakhir: z.string().nullable(),
+    alamat: z.string(),
     keterangan: z.string(),
 });
 

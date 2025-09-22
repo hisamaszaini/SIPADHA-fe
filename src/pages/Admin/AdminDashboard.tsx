@@ -137,7 +137,7 @@ const AdminDashboard: React.FC = () => {
       <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Pengajuan Baru"
-          value={hariIni.toLocaleString()}
+          value={hariIni.toLocaleString("en-US")}
           subtitle={ trend !== null
               ? `${selisih >= 0 ? "Naik" : "Turun"} ${Math.abs(trend).toFixed(1)}% dibanding kemarin`
               : "Belum ada data kemarin" }
@@ -148,8 +148,8 @@ const AdminDashboard: React.FC = () => {
 
         <StatCard
           title="Pengajuan Selesai"
-          value={selesai.toLocaleString()}
-          subtitle={`${(selesai+pending+diproses).toLocaleString()} Pengajuan / ${(pending+diproses).toLocaleString()} Belum Selesai`}
+          value={selesai.toLocaleString("en-US")}
+          subtitle={`${(selesai+pending+diproses).toLocaleString("en-US")} Pengajuan / ${(pending+diproses).toLocaleString("en-US")} Belum Selesai`}
           icon={RefreshCw}
           gradientClass="gradient-blue"
           animationDelay="0.1s"
@@ -157,8 +157,8 @@ const AdminDashboard: React.FC = () => {
 
         <StatCard
           title="Total Penduduk"
-          value={dashboardData?.data.stats.totalPenduduk ?? 0}
-          subtitle={`${(dashboardData?.data.penduduk.Laki_laki ?? 0).toLocaleString()} Laki-laki / ${(dashboardData?.data.penduduk.Perempuan ?? 0).toLocaleString()} Perempuan`}
+          value={(dashboardData?.data.stats.totalPenduduk ?? 0).toLocaleString("en-US")}
+          subtitle={`${(dashboardData?.data.penduduk.Laki_laki ?? 0).toLocaleString("en-US")} Laki-laki / ${(dashboardData?.data.penduduk.Perempuan ?? 0).toLocaleString("en-US")} Perempuan`}
           icon={Users}
           gradientClass="gradient-purple"
           animationDelay="0.2s"
@@ -166,7 +166,7 @@ const AdminDashboard: React.FC = () => {
 
         <StatCard
           title="Kepala Keluarga"
-          value={(dashboardData?.data.stats.countKk ?? 0).toLocaleString()}
+          value={(dashboardData?.data.stats.countKk ?? 0).toLocaleString("en-US")}
           icon={Home}
           gradientClass="gradient-orange"
           animationDelay="0.3s"

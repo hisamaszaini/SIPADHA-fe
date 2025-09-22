@@ -96,17 +96,6 @@ export function PengajuanSuratFormModal({
                         ))}
                     </SelectInput>
 
-                    <PendudukSelect
-                        label="Pemohon"
-                        value={pendudukOptions.find(p => p.id === Number(watch('pendudukId'))) || null}
-                        onChange={(val) => setValue('pendudukId', val ? Number(val.id) : 0, { shouldValidate: true })}
-                        options={pendudukOptions}
-                        onSearchChange={onPendudukSearchChange}
-                        searchTerm={pendudukSearch}
-                        isLoading={isPendudukLoading}
-                        error={errors.pendudukId?.message as string}
-                    />
-
                     <SelectInput
                         id="lingkup"
                         label="Lingkup Surat"
@@ -120,6 +109,38 @@ export function PengajuanSuratFormModal({
                             </option>
                         ))}
                     </SelectInput>
+
+                    {watchedJenis === "KETERANGAN_AHLI_WARIS" ? (
+                        <PendudukSelect
+                            label="Yang Mewariskan"
+                            value={
+                                pendudukOptions.find(p => p.id === Number(watch('pendudukId'))) || null
+                            }
+                            onChange={(val) =>
+                                setValue('pendudukId', val ? Number(val.id) : 0, { shouldValidate: true })
+                            }
+                            options={pendudukOptions}
+                            onSearchChange={onPendudukSearchChange}
+                            searchTerm={pendudukSearch}
+                            isLoading={isPendudukLoading}
+                            error={errors.pendudukId?.message as string}
+                        />
+                    ) : (
+                        <PendudukSelect
+                            label="Pemohon"
+                            value={
+                                pendudukOptions.find(p => p.id === Number(watch('pendudukId'))) || null
+                            }
+                            onChange={(val) =>
+                                setValue('pendudukId', val ? Number(val.id) : 0, { shouldValidate: true })
+                            }
+                            options={pendudukOptions}
+                            onSearchChange={onPendudukSearchChange}
+                            searchTerm={pendudukSearch}
+                            isLoading={isPendudukLoading}
+                            error={errors.pendudukId?.message as string}
+                        />
+                    )}
 
                     {watchedJenis === "KETERANGAN_USAHA" && (
                         <KeteranganUsahaFields form={form} />
@@ -152,10 +173,6 @@ export function PengajuanSuratFormModal({
                     {watchedJenis === "KETERANGAN_AHLI_WARIS" && (
                         <KeteranganAhliWarisFields
                             form={form}
-                            targetOptions={targetOptions}
-                            targetSearch={targetSearch}
-                            onTargetSearchChange={onTargetSearchChange}
-                            isTargetLoading={isTargetLoading}
                         />
                     )}
 

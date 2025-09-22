@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
 import AuthInput from "../components/ui/AuthInput";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Impor Link
 import { Loader2, UserPlus } from "lucide-react";
+import { Button } from "../components/ui/Button";
 
 interface RegisterWargaForm {
     nik: string;
@@ -31,7 +32,10 @@ export default function RegisterPage() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        setErrors({ ...errors, [e.target.name]: undefined });
+        // Hapus error untuk field yang sedang diubah
+        if (errors[e.target.name as keyof RegisterWargaForm]) {
+            setErrors({ ...errors, [e.target.name]: undefined });
+        }
         setGlobalError(null);
     };
 
@@ -41,7 +45,6 @@ export default function RegisterPage() {
         setErrors({});
         setGlobalError(null);
 
-        // Validasi frontend confirm password
         if (formData.password !== formData.confirmPassword) {
             setErrors({ confirmPassword: "Konfirmasi password tidak cocok" });
             setLoading(false);
@@ -49,15 +52,15 @@ export default function RegisterPage() {
         }
 
         try {
+            // Ganti URL ini dengan environment variable jika memungkinkan
             await axios.post("http://localhost:3000/auth/registerWarga", formData);
-            toast.success("Registrasi berhasil, silakan login.");
+            toast.success("Registrasi berhasil! Anda akan dialihkan ke halaman login.");
             setTimeout(() => {
                 navigate("/login");
-            }, 3000);
+            }, 2000); // Waktu dialihkan bisa lebih cepat
         } catch (err: any) {
             if (err.response?.data?.message) {
                 const msg = err.response.data.message;
-
                 if (typeof msg === "string") {
                     setGlobalError(msg);
                 } else if (typeof msg === "object") {
@@ -76,7 +79,8 @@ export default function RegisterPage() {
     return (
         <>
             <Toaster richColors position="top-right" />
-            <div className="flex min-h-screen flex-col lg:flex-row">
+            <div className="flex min-h-screen flex-col lg:flex-row glass-effect">
+                {/* Elemen dekorasi latar belakang */}
                 <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-white/10 rounded-full floating-animation" style={{ animationDelay: "-2s" }} />
                 <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-2xl floating-animation" style={{ animationDuration: "15s" }} />
                 <div className="absolute top-10 right-20 w-48 h-48 bg-white/10 rounded-xl floating-animation" style={{ animationDelay: "-5s", animationDuration: "18s" }} />
@@ -124,23 +128,29 @@ export default function RegisterPage() {
                                 </div>
                             )}
                         </section>
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400 focus:ring-offset-gray-900 transition-transform duration-300 disabled:opacity-50 disabled:scale-100"
-                        >
-                            {isLoading ? (
-                                <>
-                                    <Loader2 className="h-5 w-5 animate-spin" />
-                                    Mendaftar...
-                                </>
-                            ) : (
-                                <>
-                                    <UserPlus className="h-5 w-5" />
-                                    Daftar Akun
-                                </>
-                            )}
-                        </button>
+
+                        <div className="pt-2 space-y-4">
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                className="w-full"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                ) : (
+                                    <UserPlus className="mr-2 h-4 w-4" />
+                                )}
+                                {isLoading ? 'Mendaftar...' : 'Daftar Akun'}
+                            </Button>
+
+                            <p className="text-center text-sm text-white/80">
+                                Sudah punya akun?{" "}
+                                <Link to="/login" className="font-semibold text-white hover:underline focus:outline-none focus:ring-2 focus:ring-white rounded">
+                                    Masuk di sini
+                                </Link>
+                            </p>
+                        </div>
                     </form>
                 </main>
             </div>

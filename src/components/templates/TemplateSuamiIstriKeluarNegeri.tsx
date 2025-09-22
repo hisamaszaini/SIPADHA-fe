@@ -91,6 +91,9 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
             </span>
             <span style={{ fontFamily: "Tahoma" }}>/ 405.29.02.10/{tahunSurat}</span>
         </p>
+        <p>
+            <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
+        </p>
         <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
             <span style={{ fontFamily: "Tahoma" }}>
                 Yang bertanda tangan di bawah ini Kepala
@@ -107,57 +110,55 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
         <p style={{ textAlign: "justify" }}>
             <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
         </p>
+
         <table style={{ fontFamily: "Tahoma", borderCollapse: "collapse", marginLeft: "45pt" }}>
             <tbody>
                 <tr>
-                    <td style={{ width: "160pt", verticalAlign: "top" }}>Nama</td>
-                    <td style={{ width: "10px", verticalAlign: "top" }}>:</td>
-                    <td style={{ verticalAlign: "top" }}>
-                        <strong>{data.penduduk.nama?.toUpperCase()}</strong>
+                    <td style={{ width: "160pt", verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Nama</td>
+                    <td style={{ width: "10px", verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>
+                        <strong style={{ lineHeight: 1.2 }}> {data.penduduk.nama?.toUpperCase()}</strong>
                     </td>
                 </tr>
 
                 <tr>
-                    <td style={{ verticalAlign: "top" }}>Jenis Kelamin</td>
-                    <td style={{ verticalAlign: "top" }}>:</td>
-                    <td style={{ verticalAlign: "top" }}>
-                        <span style={{ textDecoration: data.penduduk.jenisKelamin !== "Laki-laki" ? "line-through" : "none" }}>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Jenis Kelamin</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>
+                        <span style={{ textDecoration: data.penduduk.jenisKelamin !== "Laki-laki" ? "line-through" : "none", lineHeight: 1.2 }}>
                             Laki-laki
                         </span> /
-                        <span style={{ textDecoration: data.penduduk.jenisKelamin !== "Perempuan" ? "line-through" : "none" }}>
+                        <span style={{ textDecoration: data.penduduk.jenisKelamin !== "Perempuan" ? "line-through" : "none", lineHeight: 1.2 }}>
                             Perempuan
                         </span>
                     </td>
                 </tr>
 
                 <tr>
-                    <td style={{ verticalAlign: "top" }}>Tempat Tanggal Lahir / Umur</td>
-                    <td style={{ verticalAlign: "top" }}>:</td>
-                    <td style={{ verticalAlign: "top" }}>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Tempat Tanggal Lahir / Umur</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>
                         {data.penduduk.tempatLahir}, {formatTanggalSingkat(data.penduduk.tanggalLahir).replaceAll('/', '-')}
                     </td>
                 </tr>
 
                 <tr>
-                    <td style={{ verticalAlign: "top" }}>Warga Negara</td>
-                    <td style={{ verticalAlign: "top" }}>:</td>
-                    <td style={{ verticalAlign: "top" }}>Indonesia</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Warga Negara</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Indonesia</td>
                 </tr>
 
                 <tr>
-                    <td style={{ verticalAlign: "top" }}>Pekerjaan</td>
-                    <td style={{ verticalAlign: "top" }}>:</td>
-                    <td style={{ verticalAlign: "top" }}>{data.penduduk.pekerjaan}</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Pekerjaan</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>{data.penduduk.pekerjaan}</td>
                 </tr>
 
                 <tr>
-                    <td style={{ verticalAlign: "top" }}>Alamat</td>
-                    <td style={{ verticalAlign: "top" }}>:</td>
-                    <td style={{ verticalAlign: "top" }}>
-                        RT {data.penduduk.kartuKeluarga.rt.nomor}
-                        RW {data.penduduk.kartuKeluarga.rt.rw.nomor}
-                        Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa Cepoko,
-                        Kecamatan Ngrayun, Kabupaten Ponorogo
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Alamat</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>
+                        RT {data.penduduk.kartuKeluarga.rt.nomor} RW {data.penduduk.kartuKeluarga.rt.rw.nomor} Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa Cepoko, Kecamatan Ngrayun, Kabupaten Ponorogo
                     </td>
                 </tr>
             </tbody>
@@ -177,62 +178,55 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
         <p style={{ textAlign: "justify" }}>
             <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
         </p>
-        <table style={{ marginLeft: "45pt", fontFamily: "Tahoma", borderCollapse: "collapse" }}>
+
+        <table style={{ fontFamily: "Tahoma", borderCollapse: "collapse", marginLeft: "45pt" }}>
             <tbody>
                 <tr>
-                    <td style={{ width: "160pt", verticalAlign: "top" }}>Nama</td>
-                    <td style={{ width: "10px" }}>:</td>
-                    <td><strong>{data.target?.nama?.toUpperCase()}</strong></td>
+                    <td style={{ width: "160pt", verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Nama</td>
+                    <td style={{ width: "10px", verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>
+                        <strong style={{ lineHeight: 1.2 }}> {data.penduduk.nama?.toUpperCase()}</strong>
+                    </td>
                 </tr>
+
                 <tr>
-                    <td>Jenis Kelamin</td>
-                    <td>:</td>
-                    <td>
-                        <span style={{ textDecoration: data.target?.jenisKelamin !== "Laki-laki" ? "line-through" : "none" }}>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Jenis Kelamin</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>
+                        <span style={{ textDecoration: data.penduduk.jenisKelamin !== "Laki-laki" ? "line-through" : "none", lineHeight: 1.2 }}>
                             Laki-laki
                         </span> /
-                        <span style={{ textDecoration: data.target?.jenisKelamin !== "Perempuan" ? "line-through" : "none" }}>
+                        <span style={{ textDecoration: data.penduduk.jenisKelamin !== "Perempuan" ? "line-through" : "none", lineHeight: 1.2 }}>
                             Perempuan
                         </span>
                     </td>
                 </tr>
+
                 <tr>
-                    <td style={{ verticalAlign: "top" }}>Tempat, Tanggal Lahir / Umur</td>
-                    <td style={{ verticalAlign: "top" }}>:</td>
-                    <td style={{ verticalAlign: "top" }}>
-                        {data.target?.tempatLahir}, {formatTanggalSingkat(data.target?.tanggalLahir).replaceAll('/', '-')}
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Tempat Tanggal Lahir / Umur</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>
+                        {data.penduduk.tempatLahir}, {formatTanggalSingkat(data.penduduk.tanggalLahir).replaceAll('/', '-')}
                     </td>
                 </tr>
+
                 <tr>
-                    <td>Warga Negara</td>
-                    <td>:</td>
-                    <td>Indonesia</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Warga Negara</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Indonesia</td>
                 </tr>
+
                 <tr>
-                    <td>Pekerjaan</td>
-                    <td>:</td>
-                    <td>Petani</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Pekerjaan</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>{data.penduduk.pekerjaan}</td>
                 </tr>
+
                 <tr>
-                    <td>Alamat</td>
-                    <td>:</td>
-                    <td>
-                        RT {data.penduduk.kartuKeluarga.rt.nomor}
-                        RW {data.penduduk.kartuKeluarga.rt.rw.nomor}
-                        Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa Cepoko,
-                        Kecamatan Ngrayun, Kabupaten Ponorogo
-                    </td>
-                </tr>
-                <tr>
-                    <td style={{ verticalAlign: "top" }}>Keterangan</td>
-                    <td style={{ verticalAlign: "top" }}>:</td>
-                    <td style={{ verticalAlign: "top" }}>
-                        <em>
-                            YANG BERSANGKUTAN a.n <strong>{data.target?.nama?.toUpperCase()}</strong>{" "}
-                            {data.target?.jenisKelamin === "Perempuan" ? "(ISTRI)" : "(SUAMI)"} SEJAK TAHUN{" "}
-                            {dataPermohonan.tahun} BEKERJA SEBAGAI TKI DI NEGARA{" "}
-                            {(dataPermohonan.negaraTujuan).toUpperCase()}
-                        </em>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>Alamat</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>:</td>
+                    <td style={{ verticalAlign: "top", lineHeight: 1.2, padding: 0 }}>
+                        RT {data.penduduk.kartuKeluarga.rt.nomor} RW {data.penduduk.kartuKeluarga.rt.rw.nomor} Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa Cepoko, Kecamatan Ngrayun, Kabupaten Ponorogo
                     </td>
                 </tr>
             </tbody>
@@ -316,10 +310,10 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
 
         <table
             style={{
-                width: "100%",
                 marginLeft: "45pt",
                 borderCollapse: "collapse",
-                fontFamily: '"Bookman Old Style", serif'
+                fontFamily: "Tahoma",
+                lineHeight: "1"
             }}
         >
             <tbody>
@@ -327,7 +321,7 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
                     {/* Kolom kiri (bisa kosong atau diisi konten) */}
                     <td
                         style={{
-                            width: "40%", // 2. Gunakan persentase
+                            width: "45%", // 2. Gunakan persentase
                             verticalAlign: "top",
                             marginLeft: "200pt"
                         }}

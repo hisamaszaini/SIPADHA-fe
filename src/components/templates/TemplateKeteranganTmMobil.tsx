@@ -87,11 +87,6 @@ export function TemplateKeteranganTmMobil({ data }: { data: DetailPengajuanSurat
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
             </strong>
         </p>
-        <p style={{ fontSize: "14pt" }}>
-            <strong>
-                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-            </strong>
-        </p>
         <p>
             <span style={{ fontFamily: '"Bookman Old Style"' }}>
                 Yang bertanda tangan dibawah ini Kami Kepala Desa Cepoko, Kecamatan

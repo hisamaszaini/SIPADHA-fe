@@ -1,5 +1,6 @@
 import "../assets/surat.css";
 import type { DetailPengajuanSuratSchema } from '../types/pengajuanSurat.types';
+import { TemplateKeteranganAhliWaris } from "./templates/TemplateKeteranganAhliWaris";
 import { TemplateKeteranganDomisili } from "./templates/TemplateKeteranganDomisili";
 import { TemplateKeteranganProfesi } from "./templates/TemplateKeteranganProfesi";
 import { TemplateKeteranganTmMobil } from "./templates/TemplateKeteranganTmMobil";
@@ -37,6 +38,10 @@ export function SuratTemplateRenderer({ data }: SuratTemplateRendererProps) {
 
         case 'KETERANGAN_DOMISILI':
             TemplateComponent = <TemplateKeteranganDomisili data={data} />;
+            break;
+
+        case 'KETERANGAN_AHLI_WARIS':
+            TemplateComponent = <TemplateKeteranganAhliWaris data={data} />;
             break;
 
         default:

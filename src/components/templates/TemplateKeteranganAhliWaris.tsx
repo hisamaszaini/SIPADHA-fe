@@ -1,6 +1,6 @@
 import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
 import { formatTanggalSingkat } from '../../utils/date';
-export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPengajuanSuratSchema, { jenis: "KETERANGAN_AHLI_WARIS" }>; }) {
+export function TemplateKeteranganAhliWaris({ data, }: { data: Extract<DetailPengajuanSuratSchema, { jenis: "KETERANGAN_AHLI_WARIS" }>; }) {
     const lokasi = data.lingkup;
     const lokasiSurat = lokasi === "DESA" ? "Cepoko" : "Ponorogo";
     const tahunSurat = new Date().getFullYear();

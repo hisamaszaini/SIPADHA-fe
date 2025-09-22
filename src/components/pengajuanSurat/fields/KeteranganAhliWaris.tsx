@@ -39,6 +39,14 @@ export function KeteranganAhliWarisFields({
             />
 
             <TextInput
+                id="hubungan"
+                label="Hubungan dengan Almarhum"
+                placeholder="Contoh: Anak Kandung"
+                {...register("hubungan")}
+                error={errors.hubungan?.message as string}
+            />
+
+            <TextInput
                 id="alamatTerakhir"
                 label="Alamat Ahli Waris / Almarhum"
                 placeholder="Alamat terakhir tempat tinggal atau domisili"

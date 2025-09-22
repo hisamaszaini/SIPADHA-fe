@@ -1,7 +1,10 @@
 import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
-import { formatTanggalSingkat } from '../../utils/date';
+import { formatTanggal, formatTanggalSingkat } from '../../utils/date';
 export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: DetailPengajuanSuratSchema }) {
     const dataPermohonan = data.dataPermohonan as any;
+    const lokasi = data.lingkup;
+    const lokasiSurat = lokasi === "DESA" ? "Cepoko" : "Ponorogo";
+    const tahunSurat = new Date().getFullYear();
 
     return (<>
         <div style={{
@@ -86,7 +89,7 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
             <span style={{ fontFamily: "Tahoma" }}>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
             </span>
-            <span style={{ fontFamily: "Tahoma" }}>/ 405.29.02.10/2025</span>
+            <span style={{ fontFamily: "Tahoma" }}>/ 405.29.02.10/{tahunSurat}</span>
         </p>
         <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
             <span style={{ fontFamily: "Tahoma" }}>
@@ -104,231 +107,62 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
         <p style={{ textAlign: "justify" }}>
             <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
         </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>N a m a</span>
-            <span
-                style={{
-                    width: "12.06pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span
-                style={{ width: "28.5pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <strong>
-                <span style={{ fontFamily: "Tahoma" }}>{(data.penduduk.nama).toUpperCase()}</span>
-            </strong>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>Jenis Kelamin</span>
-            <span
-                style={{
-                    width: "27.22pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            {/* Laki-laki */}
-            <span
-                style={{
-                    fontFamily: "Tahoma",
-                    textDecoration: data.penduduk.jenisKelamin !== "Laki-laki" ? "line-through" : "none",
-                }}
-            >
-                Laki-laki
-            </span>
+        <table style={{ fontFamily: "Tahoma", borderCollapse: "collapse", marginLeft: "45pt" }}>
+            <tbody>
+                <tr>
+                    <td style={{ width: "160pt", verticalAlign: "top" }}>Nama</td>
+                    <td style={{ width: "10px", verticalAlign: "top" }}>:</td>
+                    <td style={{ verticalAlign: "top" }}>
+                        <strong>{data.penduduk.nama?.toUpperCase()}</strong>
+                    </td>
+                </tr>
 
-            <span style={{ fontFamily: "Tahoma" }}> / </span>
+                <tr>
+                    <td style={{ verticalAlign: "top" }}>Jenis Kelamin</td>
+                    <td style={{ verticalAlign: "top" }}>:</td>
+                    <td style={{ verticalAlign: "top" }}>
+                        <span style={{ textDecoration: data.penduduk.jenisKelamin !== "Laki-laki" ? "line-through" : "none" }}>
+                            Laki-laki
+                        </span> /
+                        <span style={{ textDecoration: data.penduduk.jenisKelamin !== "Perempuan" ? "line-through" : "none" }}>
+                            Perempuan
+                        </span>
+                    </td>
+                </tr>
 
-            {/* Perempuan */}
-            <span
-                style={{
-                    fontFamily: "Tahoma",
-                    textDecoration: data.penduduk.jenisKelamin !== "Perempuan" ? "line-through" : "none",
-                }}
-            >
-                Perempuan
-            </span>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>Tempat Tanggal Lahir / Umur</span>
-            <span
-                style={{
-                    width: "15.77pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;&nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}> &nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>{data.penduduk.tempatLahir}, {formatTanggalSingkat(data.penduduk.tanggalLahir).replaceAll('/', '-')}</span>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>Warga Negara</span>
-            <span
-                style={{
-                    width: "22.99pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Indonesia</span>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>Pekerjaan</span>
-            <span
-                style={{ width: "1.78pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>{data.penduduk.pekerjaan}</span>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>Alamat</span>
-            <span
-                style={{
-                    width: "17.37pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-            <span style={{ fontFamily: "Tahoma" }}>
-                {" "} RT {data.penduduk.kartuKeluarga.rt.nomor} RW {data.penduduk.kartuKeluarga.rt.rw.nomor} Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa Cepoko,
-            </span>
-        </p>
-        <p style={{ textAlign: "justify" }}>
-            <span
-                style={{ width: "45pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "54pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-            <span style={{ fontFamily: "Tahoma" }}>Kecamatan Ngrayun, Kabupaten</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Ponorogo.</span>
-        </p>
+                <tr>
+                    <td style={{ verticalAlign: "top" }}>Tempat Tanggal Lahir / Umur</td>
+                    <td style={{ verticalAlign: "top" }}>:</td>
+                    <td style={{ verticalAlign: "top" }}>
+                        {data.penduduk.tempatLahir}, {formatTanggalSingkat(data.penduduk.tanggalLahir).replaceAll('/', '-')}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style={{ verticalAlign: "top" }}>Warga Negara</td>
+                    <td style={{ verticalAlign: "top" }}>:</td>
+                    <td style={{ verticalAlign: "top" }}>Indonesia</td>
+                </tr>
+
+                <tr>
+                    <td style={{ verticalAlign: "top" }}>Pekerjaan</td>
+                    <td style={{ verticalAlign: "top" }}>:</td>
+                    <td style={{ verticalAlign: "top" }}>{data.penduduk.pekerjaan}</td>
+                </tr>
+
+                <tr>
+                    <td style={{ verticalAlign: "top" }}>Alamat</td>
+                    <td style={{ verticalAlign: "top" }}>:</td>
+                    <td style={{ verticalAlign: "top" }}>
+                        RT {data.penduduk.kartuKeluarga.rt.nomor}
+                        RW {data.penduduk.kartuKeluarga.rt.rw.nomor}
+                        Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa Cepoko,
+                        Kecamatan Ngrayun, Kabupaten Ponorogo
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         <p style={{ textAlign: "justify" }}>
             <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
         </p>
@@ -338,410 +172,72 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
                 terikat
             </span>
             <span style={{ fontFamily: "Tahoma" }}>&nbsp;&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Perkawinan yang syah dengan :</span>
+            <span style={{ fontFamily: "Tahoma" }}>Perkawinan yang sah dengan :</span>
         </p>
         <p style={{ textAlign: "justify" }}>
             <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
         </p>
-        <p style={{ textAlign: "justify" }}>
-            <span
-                style={{ width: "45pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>N a m a</span>
-            <span
-                style={{
-                    width: "12.06pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <strong>
-                <span style={{ fontFamily: "Tahoma" }}>{(data.target?.nama)?.toUpperCase()}</span>
-            </strong>
-        </p>
-        <p style={{ textAlign: "justify" }}>
-            <span
-                style={{ width: "45pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>Jenis</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Kelamin</span>
-            <span
-                style={{
-                    width: "23.47pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span
-                style={{
-                    fontFamily: "Tahoma",
-                    textDecoration: data.target?.jenisKelamin !== "Laki-laki" ? "line-through" : "none",
-                }}
-            >
-                Laki-laki
-            </span>
+        <table style={{ marginLeft: "45pt", fontFamily: "Tahoma", borderCollapse: "collapse" }}>
+            <tbody>
+                <tr>
+                    <td style={{ width: "160pt", verticalAlign: "top" }}>Nama</td>
+                    <td style={{ width: "10px" }}>:</td>
+                    <td><strong>{data.target?.nama?.toUpperCase()}</strong></td>
+                </tr>
+                <tr>
+                    <td>Jenis Kelamin</td>
+                    <td>:</td>
+                    <td>
+                        <span style={{ textDecoration: data.target?.jenisKelamin !== "Laki-laki" ? "line-through" : "none" }}>
+                            Laki-laki
+                        </span> /
+                        <span style={{ textDecoration: data.target?.jenisKelamin !== "Perempuan" ? "line-through" : "none" }}>
+                            Perempuan
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style={{ verticalAlign: "top" }}>Tempat, Tanggal Lahir / Umur</td>
+                    <td style={{ verticalAlign: "top" }}>:</td>
+                    <td style={{ verticalAlign: "top" }}>
+                        {data.target?.tempatLahir}, {formatTanggalSingkat(data.target?.tanggalLahir).replaceAll('/', '-')}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Warga Negara</td>
+                    <td>:</td>
+                    <td>Indonesia</td>
+                </tr>
+                <tr>
+                    <td>Pekerjaan</td>
+                    <td>:</td>
+                    <td>Petani</td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>:</td>
+                    <td>
+                        RT {data.penduduk.kartuKeluarga.rt.nomor}
+                        RW {data.penduduk.kartuKeluarga.rt.rw.nomor}
+                        Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa Cepoko,
+                        Kecamatan Ngrayun, Kabupaten Ponorogo
+                    </td>
+                </tr>
+                <tr>
+                    <td style={{ verticalAlign: "top" }}>Keterangan</td>
+                    <td style={{ verticalAlign: "top" }}>:</td>
+                    <td style={{ verticalAlign: "top" }}>
+                        <em>
+                            YANG BERSANGKUTAN a.n <strong>{data.target?.nama?.toUpperCase()}</strong>{" "}
+                            {data.target?.jenisKelamin === "Perempuan" ? "(ISTRI)" : "(SUAMI)"} SEJAK TAHUN{" "}
+                            {dataPermohonan.tahun} BEKERJA SEBAGAI TKI DI NEGARA{" "}
+                            {(dataPermohonan.negaraTujuan).toUpperCase()}
+                        </em>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-            <span style={{ fontFamily: "Tahoma" }}> / </span>
-
-            {/* Perempuan */}
-            <span
-                style={{
-                    fontFamily: "Tahoma",
-                    textDecoration: data.target?.jenisKelamin !== "Perempuan" ? "line-through" : "none",
-                }}
-            >
-                Perempuan
-            </span>
-        </p>
-        <p style={{ textAlign: "justify" }}>
-            <span
-                style={{ width: "45pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>Tempat Tanggal Lahir / Umur</span>
-            <span
-                style={{
-                    width: "15.77pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>{data.target?.tempatLahir}, {formatTanggalSingkat(data.target?.tanggalLahir).replaceAll('/', '-')}</span>
-        </p>
-        <p style={{ textAlign: "justify" }}>
-            <span
-                style={{ width: "45pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>Warga Negara</span>
-            <span
-                style={{
-                    width: "22.99pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Indonesia</span>
-        </p>
-        <p style={{ textAlign: "justify" }}>
-            <span
-                style={{ width: "45pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}> Pekerjaan</span>
-            <span
-                style={{ width: "7.03pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Petani</span>
-        </p>
-        <p style={{ textAlign: "justify" }}>
-            <span
-                style={{ width: "45pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>Alamat</span>
-            <span
-                style={{
-                    width: "17.37pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>
-                {" "} RT {data.penduduk.kartuKeluarga.rt.nomor} RW {data.penduduk.kartuKeluarga.rt.rw.nomor} Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-            <span style={{ fontFamily: "Tahoma" }}>Cepoko,</span>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span
-                style={{ width: "54pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>{" "} Kecamatan</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Ngrayun,</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Kabupaten</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Ponorogo.</span>
-        </p>
-        <p style={{ marginLeft: "45pt" }}>
-            <span style={{ fontFamily: "Tahoma" }}>Keterangan</span>
-            <span
-                style={{ width: "2.36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>:</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>YANG</span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>BERSANGKUTAN</span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>a.n</span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-            </em>
-            <strong>
-                <em>
-                    <span style={{ fontFamily: "Tahoma" }}>{(data.target?.nama)?.toUpperCase()}</span>
-                </em>
-            </strong>
-        </p>
-        <p style={{ marginLeft: "45pt" }}>
-            <em>
-                <span
-                    style={{ width: "54pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span
-                    style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span
-                    style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span
-                    style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span
-                    style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>&nbsp;&nbsp;&nbsp; </span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>
-                    {data.target?.jenisKelamin === "Perempuan" ? "(ISTRI)" : "(SUAMI)"} SEJAK TAHUN {dataPermohonan.tahun}
-                </span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>BEKERJA</span>
-            </em>
-        </p>
-        <p style={{ marginLeft: "45pt" }}>
-            <em>
-                <span
-                    style={{ width: "54pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span
-                    style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span
-                    style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span
-                    style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span
-                    style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-                >
-                    &nbsp;
-                </span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}> </span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>SEBAGAI TKI DI NEGARA</span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            </em>
-            <em>
-                <span style={{ fontFamily: "Tahoma" }}>{(dataPermohonan.negaraTujuan).toUpperCase()}.</span>
-            </em>
-        </p>
         <p style={{ marginLeft: "45pt" }}>
             <em>
                 <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
@@ -816,145 +312,66 @@ export function TemplateKeteranganSuamiIstriKeluarNegeri({ data }: { data: Detai
             <span style={{ fontFamily: "Tahoma" }}>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
-            <span style={{ fontFamily: "Tahoma" }}>Cepoko,</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>{formatTanggalSingkat(data.createdAt).replaceAll("/", " / ")}</span>
         </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>Pemegang Surat</span>
-            <span
-                style={{
-                    width: "11.65pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>Kepala</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Desa</span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-            <span style={{ fontFamily: "Tahoma" }}>Cepoko</span>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span
-                style={{ width: "54pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "9pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp; </span>
-        </p>
-        <p style={{ textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-        </p>
-        <p style={{ marginLeft: "45pt", textAlign: "justify" }}>
-            <span style={{ fontFamily: "Tahoma" }}>&nbsp;</span>
-        </p>
-        <p style={{ marginLeft: "45pt", marginTop: "25pt", textAlign: "justify" }}>
-            <strong>
-                <u>
-                    <span style={{ fontFamily: "Tahoma" }}>{(data.penduduk.nama).toUpperCase()}</span>
-                </u>
-            </strong>
-            <span
-                style={{
-                    width: "16.27pt",
-                    fontFamily: "Tahoma",
-                    display: "inline-block"
-                }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span
-                style={{ width: "36pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <span style={{ fontFamily: "Tahoma" }}>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
-            </span>
-            <span
-                style={{ width: "2.25pt", fontFamily: "Tahoma", display: "inline-block" }}
-            >
-                &nbsp;
-            </span>
-            <strong>
-                <u>
-                    <span style={{ fontFamily: "Tahoma", marginLeft: "75pt", textAlign: "center" }}>{data.setting.namaKepdes}</span>
-                </u>
-            </strong>
-        </p>
+
+        <table
+            style={{
+                width: "100%",
+                marginLeft: "45pt",
+                borderCollapse: "collapse",
+                fontFamily: '"Bookman Old Style", serif'
+            }}
+        >
+            <tbody>
+                <tr>
+                    {/* Kolom kiri (bisa kosong atau diisi konten) */}
+                    <td
+                        style={{
+                            width: "40%", // 2. Gunakan persentase
+                            verticalAlign: "top",
+                            marginLeft: "200pt"
+                        }}
+                    >
+                        <p style={{ margin: 0, padding: 0 }}>
+                            &nbsp;
+                        </p>
+                        <p style={{ margin: 0, padding: 0 }}>
+                            Pemegang Surat
+                        </p>
+                        <div style={{ height: "80px" }}></div>
+                        <p style={{ margin: 0, padding: 0 }}>
+                            <strong>
+                                <u>{(data.penduduk.nama).toUpperCase()}</u>
+                            </strong>
+                        </p>
+                    </td>
+
+                    {/* Kolom kanan untuk tanda tangan */}
+                    <td
+                        style={{
+                            width: "50%", // 2. Gunakan persentase
+                            verticalAlign: "top",
+                            textAlign: "center" // 3. Gunakan text-align untuk perataan
+                        }}
+                    >
+                        <p style={{ margin: 0, padding: 0 }}>
+                            {lokasiSurat}, {formatTanggal(data.createdAt)}
+                        </p>
+                        <p style={{ margin: 0, padding: 0 }}>
+                            Kepala Desa Cepoko
+                        </p>
+
+                        {/* 4. Jarak vertikal yang lebih baik */}
+                        <div style={{ height: "80px" }}></div>
+
+                        <p style={{ margin: 0, padding: 0 }}>
+                            <strong>
+                                <u>{data.setting.namaKepdes}</u>
+                            </strong>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </>);
 };

@@ -1,6 +1,9 @@
 import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
 import { formatTanggalSingkat } from '../../utils/date';
 export function TemplateKeteranganTmMobil({ data }: { data: DetailPengajuanSuratSchema }) {
+    const lokasi = data.lingkup;
+    const lokasiSurat = lokasi === "DESA" ? "Cepoko" : "Ponorogo";
+    const tahunSurat = new Date().getFullYear();
 
     return (<>
         <div style={{
@@ -75,7 +78,7 @@ export function TemplateKeteranganTmMobil({ data }: { data: DetailPengajuanSurat
             </strong>
             <strong>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                    /405.29.02.10/2024
+                    /405.29.02.10/{tahunSurat}
                 </span>
             </strong>
         </p>
@@ -549,7 +552,7 @@ export function TemplateKeteranganTmMobil({ data }: { data: DetailPengajuanSurat
                     >
                         <p>
                             <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                Cepoko, {formatTanggalSingkat(data.createdAt).replaceAll("/", " –")}
+                                {lokasiSurat}, {formatTanggalSingkat(data.createdAt).replaceAll("/", " – ")}
                             </span>
                         </p>
                     </td>

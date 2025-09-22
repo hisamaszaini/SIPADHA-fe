@@ -1,6 +1,9 @@
 import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
 import { formatTanggal, hitungUmur } from '../../utils/date';
 export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSuratSchema }) {
+    const lokasi = data.lingkup;
+    const lokasiSurat = lokasi === "DESA" ? "Cepoko" : "Ponorogo";
+    const tahunSurat = new Date().getFullYear();
 
     return (<>
         <div style={{
@@ -67,7 +70,7 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
         <p style={{ textAlign: "center" }}>
             <strong>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                    NOMOR: 470/ 361/405.29.02.10/{new Date().getFullYear()}
+                    NOMOR: 470/ 361/405.29.02.10/{tahunSurat}
                 </span>
             </strong>
         </p>
@@ -477,7 +480,7 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
             <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
         </p>
 
-<table
+        <table
             style={{
                 width: "100%", // 1. Buat lebar tabel penuh
                 borderCollapse: "collapse",
@@ -505,7 +508,7 @@ export function TemplateKeteranganProfesi({ data }: { data: DetailPengajuanSurat
                         }}
                     >
                         <p style={{ margin: 0, padding: 0 }}>
-                            Ponorogo, {formatTanggal(data.createdAt)}
+                            {lokasiSurat}, {formatTanggal(data.createdAt)}
                         </p>
                         <p style={{ margin: 0, padding: 0 }}>
                             Kepala Desa Cepoko

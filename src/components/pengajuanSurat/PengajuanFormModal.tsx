@@ -6,7 +6,7 @@ import SelectInput from '../ui/SelectInput';
 import { KeteranganUsahaFields } from './fields/KeteranganUsahaFields';
 import { KeteranganTidakMampuSekolahFields } from './fields/SKTMSekolahFields';
 import { Button } from '../ui/Button';
-import { jenisSuratOptions } from '../../constant/suratOption';
+import { jenisSuratOptions, lingkupSuratOptions } from '../../constant/suratOption';
 import { KeteranganSuamiIstriKeluarNegeriFields } from './fields/SuamiIstriKeluarNegeriFields';
 import { KeteranganDomisiliFields } from './fields/KeteranganDomisili';
 
@@ -100,6 +100,20 @@ export function PengajuanSuratFormModal({
                         })}
                     >
                         {jenisSuratOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </SelectInput>
+
+                    <SelectInput
+                        id="lingkup"
+                        label="Lingkup Surat"
+                        error={errors.lingkup?.message}
+                        {...register("lingkup")}
+                    >
+                        <option>--- Pilih Lingkup Surat ---</option>
+                        {lingkupSuratOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                                 {opt.label}
                             </option>

@@ -59,16 +59,15 @@ export function KeteranganTidakMampuSekolahFields({
       <TextInput
         id="penghasilan"
         label="Penghasilan Orang Tua / Wali"
-        placeholder="Contoh: Kurang dari Rp 2.000.000 per bulan"
+        placeholder="Contoh: Rp2.000.000"
         {...register("penghasilan")}
         error={errors.penghasilan?.message as string}
       />
 
       <TextInput
         id="keterangan"
-        label="Keterangan Tambahan"
-        placeholder="Contoh: Untuk pengajuan beasiswa KIP"
-        helpText="Jelaskan tujuan atau kondisi yang relevan."
+        label="Keterangan Pembayaran Gaji"
+        placeholder="Contoh: 1 bulan sekali"
         {...register("keterangan")}
         error={errors.keterangan?.message as string}
       />

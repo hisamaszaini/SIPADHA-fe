@@ -1,6 +1,10 @@
 import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
 import { formatTanggal, formatTanggalSingkat } from '../../utils/date';
 export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPengajuanSuratSchema, { jenis: "KETERANGAN_DOMISILI" }>; }) {
+    const lokasi = data.lingkup;
+    const lokasiSurat = lokasi === "DESA" ? "Cepoko" : "Ponorogo";
+    const tahunSurat = new Date().getFullYear();
+
     return (<>
         <div style={{
             lineHeight: "1.2"
@@ -93,7 +97,7 @@ export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPeng
             <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;&nbsp; </span>
             <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
             <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                /405.29.02.10/2025
+                /405.29.02.10/{tahunSurat}
             </span>
         </p>
         <p style={{ textAlign: "center" }}>
@@ -581,7 +585,7 @@ export function TemplateKeteranganDomisili({ data, }: { data: Extract<DetailPeng
                         }}
                     >
                         <p style={{ margin: 0, padding: 0 }}>
-                            Ponorogo, {formatTanggal(data.createdAt)}
+                            {lokasiSurat}, {formatTanggal(data.createdAt)}
                         </p>
                         <p style={{ margin: 0, padding: 0 }}>
                             Kepala Desa Cepoko

@@ -1,6 +1,9 @@
 import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
 import { formatTanggalSingkat } from '../../utils/date';
 export function TemplateKeteranganUsaha({ data }: { data: DetailPengajuanSuratSchema }) {
+  const lokasi = data.lingkup;
+  const lokasiSurat = lokasi === "DESA" ? "Cepoko" : "Ponorogo";
+  const tahunSurat = new Date().getFullYear();
   const dataPermohonan = data.dataPermohonan as any;
 
   return (
@@ -97,7 +100,7 @@ export function TemplateKeteranganUsaha({ data }: { data: DetailPengajuanSuratSc
           </span>
           <span style={{ fontFamily: '"Bookman Old Style", "URW Bookman L", "Times New Roman", serif' }}>&nbsp;</span>
           <span style={{ fontFamily: '"Bookman Old Style", "URW Bookman L", "Times New Roman", serif' }}>
-            /405.29.02.10/2025
+            /405.29.02.10/{tahunSurat}
           </span>
         </p>
         <p style={{ textAlign: "center" }}>
@@ -955,7 +958,7 @@ export function TemplateKeteranganUsaha({ data }: { data: DetailPengajuanSuratSc
               >
                 <p>
                   <span style={{ fontFamily: '"Bookman Old Style", "URW Bookman L", "Times New Roman", serif' }}>
-                    Ponorogo, {formatTanggalSingkat(data.createdAt).replaceAll("/", " –")}</span>
+                    {lokasiSurat}, {formatTanggalSingkat(data.createdAt).replaceAll("/", " –")}</span>
                 </p>
               </td>
             </tr>

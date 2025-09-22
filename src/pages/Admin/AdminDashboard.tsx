@@ -158,7 +158,7 @@ const AdminDashboard: React.FC = () => {
         <StatCard
           title="Total Penduduk"
           value={dashboardData?.data.stats.totalPenduduk ?? 0}
-          subtitle={`${dashboardData?.data.penduduk.Laki_laki} Laki-laki / ${dashboardData?.data.penduduk.Perempuan} Perempuan`}
+          subtitle={`${dashboardData?.data.penduduk.Laki_laki ?? 0} Laki-laki / ${dashboardData?.data.penduduk.Perempuan ?? 0} Perempuan`}
           icon={Users}
           gradientClass="gradient-purple"
           animationDelay="0.2s"

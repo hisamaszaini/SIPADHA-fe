@@ -1,8 +1,12 @@
 import type { DetailPengajuanSuratSchema } from '../../types/pengajuanSurat.types';
 import { formatTanggal, formatTanggalSingkat } from '../../utils/date';
-export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSuratSchema, { jenis: "KETERANGAN_TIDAK_MAMPU_SEKOLAH" }>;
+export function TemplateKtmSekolah({ data }: {
+    data: Extract<DetailPengajuanSuratSchema, { jenis: "KETERANGAN_TIDAK_MAMPU_SEKOLAH" }>;
 }) {
-  const dataPermohonan = data.dataPermohonan;
+    const dataPermohonan = data.dataPermohonan;
+    const lokasi = data.lingkup;
+    const lokasiSurat = lokasi === "DESA" ? "Cepoko" : "Ponorogo";
+    const tahunSurat = new Date().getFullYear();
 
     return (<>
         <div className='page'>
@@ -78,7 +82,7 @@ export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSura
                 </strong>
                 <strong>
                     <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                        /405.29.02.10/2025
+                        /405.29.02.10/{tahunSurat}
                     </span>
                 </strong>
             </p>
@@ -376,11 +380,11 @@ export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSura
             </p>
             <p>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                    Adalah benar-benar sebagai warga RT 01
+                    Adalah benar-benar sebagai warga RT {data.penduduk.kartuKeluarga.rt.nomor}
                 </span>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp; </span>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                    RW 01 Dukuh Krajan
+                    RW {data.penduduk.kartuKeluarga.rt.rw.nomor} Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama}
                 </span>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp; </span>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>
@@ -652,250 +656,43 @@ export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSura
             <p>
                 <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
             </p>
-            <table style={{ padding: "0pt", borderCollapse: "collapse" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: '"Bookman Old Style"', padding: 0 }}>
                 <tbody>
                     <tr>
-                        <td
-                            style={{
-                                width: "148.8pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "128.25pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "169.35pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                    Cepoko, {formatTanggal(data.createdAt)}
-                                </span>
-                            </p>
+                        <td style={{ width: "40%", verticalAlign: "top", lineHeight: 1, padding: 0 }}>&nbsp;</td>
+                        <td style={{ width: "20%", verticalAlign: "top", lineHeight: 1, padding: 0 }}></td>
+                        <td style={{ width: "40%", verticalAlign: "top", lineHeight: 1, padding: 0, textAlign: "right" }}>
+                            {lokasiSurat}, {formatTanggal(data.createdAt)}
                         </td>
                     </tr>
+
                     <tr>
-                        <td
-                            style={{
-                                width: "148.8pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "center" }}>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                    Tanda Tangan/Cap Jempol
-                                </span>
-                            </p>
+                        <td style={{ width: "40%", verticalAlign: "top", lineHeight: 1, padding: 0, textAlign: "center" }}>
+                            Tanda Tangan / Cap Jempol
                         </td>
-                        <td
-                            style={{
-                                width: "128.25pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "169.35pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                    Kepala Desa Cepoko
-                                </span>
-                            </p>
+                        <td style={{ width: "20%", verticalAlign: "top", lineHeight: 1, padding: 0 }}></td>
+                        <td style={{ width: "40%", verticalAlign: "top", lineHeight: 1, padding: 0, textAlign: "center" }}>
+                            Kepala Desa Cepoko
                         </td>
                     </tr>
+
                     <tr>
-                        <td
-                            style={{
-                                width: "148.8pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "128.25pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "169.35pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
+                        <td style={{ width: "40%", verticalAlign: "top", lineHeight: 1, padding: 0, height: "70pt" }}>&nbsp;</td>
+                        <td style={{ width: "20%", verticalAlign: "top", lineHeight: 1, padding: 0 }}></td>
+                        <td style={{ width: "40%", verticalAlign: "top", lineHeight: 1, padding: 0 }}>&nbsp;</td>
                     </tr>
+
                     <tr>
-                        <td
-                            style={{
-                                width: "148.8pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ fontSize: "11pt" }}>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
+                        <td style={{ width: "40%", verticalAlign: "top", lineHeight: 1, padding: 0, textAlign: "center" }}>
+                            <strong>
+                                <u>{(data.penduduk.nama).toUpperCase()}</u>
+                            </strong>
                         </td>
-                        <td
-                            style={{
-                                width: "128.25pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ fontSize: "11pt" }}>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "169.35pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ fontSize: "11pt" }}>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "148.8pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "128.25pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "169.35pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "148.8pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "center" }}>
-                                <strong>
-                                    <u>
-                                        <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                            {(data.penduduk.nama).toUpperCase()}
-                                        </span>
-                                    </u>
-                                </strong>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "128.25pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "169.35pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <strong>
-                                    <u>
-                                        <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                                            {data.setting.namaKepdes}
-                                        </span>
-                                    </u>
-                                </strong>
-                            </p>
-                            <p>
-                                <strong>
-                                    <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                                </strong>
-                            </p>
-                            <p>
-                                <strong>
-                                    <span style={{ fontFamily: '"Bookman Old Style"' }}>&nbsp;</span>
-                                </strong>
-                            </p>
+                        <td style={{ width: "20%", verticalAlign: "top", lineHeight: 1, padding: 0 }}></td>
+                        <td style={{ width: "40%", verticalAlign: "top", lineHeight: 1, padding: 0, textAlign: "center" }}>
+                            <strong>
+                                <u>{data.setting.namaKepdes}</u>
+                            </strong>
                         </td>
                     </tr>
                 </tbody>
@@ -986,7 +783,7 @@ export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSura
                 </strong>
                 <strong>
                     <span style={{ fontFamily: '"Bookman Old Style"' }}>
-                        /405.29.02.10/2025
+                        /405.29.02.10/{tahunSurat}
                     </span>
                 </strong>
             </p>
@@ -997,379 +794,35 @@ export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSura
                 Yang bertanda tangan dibawah ini
                 <span style={{ width: "15.39pt", display: "inline-block" }}>&nbsp;</span>:
             </p>
-            <table
-                style={{ width: "481.95pt", padding: "0pt", borderCollapse: "collapse" }}
-            >
+            <table style={{ marginLeft: "5pt", fontFamily: "Arial, Tahoma", borderCollapse: "collapse", width: "100%" }}>
                 <tbody>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Nama</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify", fontSize: "10pt" }}>
-                                <span style={{ fontFamily: "Arial" }}>{(data.penduduk.nama).toUpperCase()}</span>
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ fontSize: "11pt" }}>
-                                <span>
-                                    Tempat dan Tanggal Lahir
-                                </span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "10.5pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span>:</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "281.5pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span>
-                                    {data.penduduk.tempatLahir}, {formatTanggalSingkat(data.penduduk.tanggalLahir).replaceAll('/', '-')}
-                                </span>
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Jenis Kelamin</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.penduduk.jenisKelamin}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Status Perkawinan</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.penduduk.statusPerkawinan}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Kewarganegaraan</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Indonesia</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Agama</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.penduduk.agama}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Pekerjaan</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.penduduk.pekerjaan}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Nomor DRT / KK</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.penduduk.kartuKeluarga.noKk}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Nomor&nbsp; NIK</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.penduduk.nik}</p>
-                        </td>
-                    </tr>
- 
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Alamat</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>
-                                Dukuh Krajan RT 001 RW 001, Desa Cepoko,
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>
-                                Kecamatan Ngrayun, Kabupaten Ponorogo
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                        </td>
-                    </tr>
+                    {[
+                        ["Nama", data.penduduk.nama.toUpperCase()],
+                        ["Tempat dan Tanggal Lahir", `${data.penduduk.tempatLahir}, ${formatTanggalSingkat(data.penduduk.tanggalLahir).replaceAll('/', '-')}`],
+                        ["Jenis Kelamin", data.penduduk.jenisKelamin],
+                        ["Status Perkawinan", data.penduduk.statusPerkawinan],
+                        ["Kewarganegaraan", "Indonesia"],
+                        ["Agama", data.penduduk.agama],
+                        ["Pekerjaan", data.penduduk.pekerjaan],
+                        ["Nomor DRT / KK", data.penduduk.kartuKeluarga.noKk],
+                        ["Nomor NIK", data.penduduk.nik],
+                        ["Alamat", `Dukuh ${data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} RT ${data.penduduk.kartuKeluarga.rt.nomor} RW ${data.penduduk.kartuKeluarga.rt.rw.nomor}, Desa Cepoko, Kecamatan Ngrayun, Kabupaten Ponorogo`],
+                    ].map(([label, value]) => (
+                        <tr key={label}>
+                            <td style={{ width: "150pt", verticalAlign: "top", lineHeight: 1, padding: 0, margin: 0 }}>
+                                <p style={{ margin: 0, lineHeight: 1 }}>{label}</p>
+                            </td>
+                            <td style={{ width: "20px", verticalAlign: "top", lineHeight: 1, padding: 0, margin: 0 }}>
+                                <p style={{ margin: 0, lineHeight: 1 }}>:</p>
+                            </td>
+                            <td style={{ verticalAlign: "top", lineHeight: 1, padding: 0, margin: 0 }}>
+                                <p style={{ margin: 0, lineHeight: 1 }}>{value}</p>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
+
             <p style={{ textAlign: "justify" }}>
                 Dengan ini menerangkan bahwa penghasilan saya&nbsp; :
             </p>
@@ -1442,385 +895,36 @@ export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSura
                 Adalah benar – benar orang tua / wali dari&nbsp; :
             </p>
             <p style={{ textAlign: "justify", fontSize: "5pt" }}>&nbsp;</p>
-            <table
-                style={{ width: "481.95pt", padding: "0pt", borderCollapse: "collapse" }}
-            >
+            <table style={{ marginLeft: "5pt", fontFamily: "Tahoma", borderCollapse: "collapse", width: "100%" }}>
                 <tbody>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Nama</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.target?.nama}</p>
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ fontSize: "11pt" }}>
-                                <span>
-                                    Tempat dan Tanggal Lahir
-                                </span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "10.5pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span>:</span>
-                            </p>
-                        </td>
-                        <td
-                            style={{
-                                width: "281.5pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p>
-                                <span>
-                                    {data.target?.tempatLahir}, {formatTanggalSingkat(data.target?.tanggalLahir).replaceAll('/', '-')}
-                                </span>
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Jenis Kelamin</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.target?.jenisKelamin}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Status Perkawinan</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.target?.statusPerkawinan}</p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Kewarganegaraan</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Indonesia</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Agama</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.target?.agama}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Pekerjaan</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.target?.pekerjaan}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Nomor&nbsp; NIK</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>{data.target?.nik}</p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Alamat</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>
-                                Dukuh Krajan RT 001 RW 001, Desa Cepoko,
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>
-                                Kecamatan Ngrayun, Kabupaten Ponorogo
-                            </p>
-                        </td>
-                    </tr>
-
-<tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "bottom"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Pada Sekolah/ Universitas</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>:</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>
-                                {dataPermohonan.institusi}
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td
-                            style={{
-                                width: "134.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "6.75pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "308.1pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>
-                                RT {data.penduduk.kartuKeluarga.rt.nomor} RW {data.penduduk.kartuKeluarga.rt.rw.nomor} Dukuh {data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} Desa Cepoko, Kecamatan Ngrayun, Kabupaten Ponorogo
-                            </p>
-                        </td>
-                    </tr>
+                    {[
+                        ["Nama", data.target?.nama],
+                        ["Tempat dan Tanggal Lahir", `${data.target?.tempatLahir}, ${formatTanggalSingkat(data.target?.tanggalLahir).replaceAll('/', '-')}`],
+                        ["Jenis Kelamin", data.target?.jenisKelamin],
+                        ["Status Perkawinan", data.target?.statusPerkawinan],
+                        ["Kewarganegaraan", "Indonesia"],
+                        ["Agama", data.target?.agama],
+                        ["Pekerjaan", data.target?.pekerjaan],
+                        ["Nomor NIK", data.target?.nik],
+                        ["Alamat", `Dukuh ${data.penduduk.kartuKeluarga.rt.rw.dukuh.nama} RT ${data.penduduk.kartuKeluarga.rt.nomor} RW ${data.penduduk.kartuKeluarga.rt.rw.nomor}, Desa Cepoko, Kecamatan Ngrayun, Kabupaten Ponorogo`],
+                        ["Pada Sekolah/ Universitas", dataPermohonan.institusi],
+                        ["", data.dataPermohonan.alamatSiswa]
+                    ].map(([label, value], i) => (
+                        <tr key={i}>
+                            <td style={{ width: "150pt", verticalAlign: "top", lineHeight: "1", padding: "0" }}>
+                                <p style={{ margin: 0, lineHeight: "1.2" }}>{label}</p>
+                            </td>
+                            <td style={{ width: "20px", verticalAlign: "top", lineHeight: "1", padding: "0" }}>
+                                <p style={{ margin: 0, lineHeight: "1.2" }}>:</p>
+                            </td>
+                            <td style={{ verticalAlign: "top", lineHeight: "1", padding: "0" }}>
+                                <p style={{ margin: 0, lineHeight: "1.2" }}>{value}</p>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
+
             <p style={{ textAlign: "justify" }}>&nbsp;</p>
             <p style={{ textAlign: "justify" }}>
                 Demikian surat keterangan penghasilan ini saya buat dengan sebenar –
@@ -1829,190 +933,46 @@ export function TemplateKtmSekolah({ data }: { data: Extract<DetailPengajuanSura
             </p>
             <table
                 style={{
-                    width: "389.8pt",
-                    marginLeft: "92.15pt",
-                    padding: "0pt",
-                    borderCollapse: "collapse"
+                    width: "100%", // 1. Buat lebar tabel penuh
+                    borderCollapse: "collapse",
+                    fontFamily: '"Arial", "Tahoma"'
                 }}
             >
                 <tbody>
                     <tr>
+                        {/* Kolom kiri (bisa kosong atau diisi konten) */}
                         <td
                             style={{
-                                width: "166.4pt",
-                                padding: "0pt 5.4pt",
+                                width: "50%", // 2. Gunakan persentase
                                 verticalAlign: "top"
                             }}
                         >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
+                            {/* Konten sisi kiri jika ada */}
                         </td>
+
+                        {/* Kolom kanan untuk tanda tangan */}
                         <td
                             style={{
-                                width: "31.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
+                                width: "35%", // 2. Gunakan persentase
+                                verticalAlign: "top",
+                                textAlign: "center"
                             }}
                         >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "159.3pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Ponorogo, {formatTanggal(data.createdAt)}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "166.4pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "31.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "159.3pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>Kepala Desa Cepoko</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "166.4pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "31.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "159.3pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "166.4pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "31.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "159.3pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "166.4pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "31.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "159.3pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                width: "166.4pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "31.7pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "middle"
-                            }}
-                        >
-                            <p>&nbsp;</p>
-                        </td>
-                        <td
-                            style={{
-                                width: "159.3pt",
-                                padding: "0pt 5.4pt",
-                                verticalAlign: "top"
-                            }}
-                        >
-                            <p style={{ textAlign: "justify" }}>
+                            <p style={{ margin: 0, padding: 0 }}>
+                                {lokasiSurat}, {formatTanggal(data.createdAt)}
+                            </p>
+                            <p style={{ margin: 0, padding: 0 }}>
+                                Kepala Desa Cepoko
+                            </p>
+
+                            {/* 4. Jarak vertikal yang lebih baik */}
+                            <div style={{ height: "80px" }}></div>
+
+                            <p style={{ margin: 0, padding: 0 }}>
                                 <strong>
-                                    <u>PIRNGADI ,S.Sos</u>
+                                    <u>{data.setting.namaKepdes}</u>
                                 </strong>
                             </p>
-                            <p style={{ textAlign: "justify" }}>&nbsp;</p>
                         </td>
                     </tr>
                 </tbody>

@@ -26,6 +26,11 @@ export const jenisSuratService = {
         return response.data;
     },
 
+    async findAllOptions(): Promise<ApiResponse<JenisSurat[]>> {
+        const response = await api.get('/jenis-surat/all');
+        return response.data;
+    },
+
     async findAll(params: JenisSuratQueryParams): Promise<ApiResponse<JenisSurat[]>> {
         const response = await api.get('/jenis-surat', { params });
         return response.data;

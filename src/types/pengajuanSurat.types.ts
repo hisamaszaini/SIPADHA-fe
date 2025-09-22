@@ -11,8 +11,13 @@ export const jenisSuratEnum = z.enum([
     'KETERANGAN_PROFESI',
     'KETERANGAN_DOMISILI'
 ]);
+export const LingkupSuratEnum = z.enum([
+    'DESA',
+    'KOTA'
+]);
 
 export type PilihanJenisSurat = z.infer<typeof jenisSuratEnum>;
+export type LingkupSurat = z.infer<typeof LingkupSuratEnum>;
 
 // ===============
 // CREATE Schema
@@ -20,11 +25,12 @@ export type PilihanJenisSurat = z.infer<typeof jenisSuratEnum>;
 
 export const baseCreatePengajuanSuratSchema = z.object({
     pendudukId: z
-        .number({ error: 'Target wajib dipilih' })
+        .number({ error: 'Pemohon wajib dipilih' })
         .refine((val) => val !== null && val > 0, {
-            message: 'Target wajib dipilih',
+            message: 'Pemohon wajib dipilih',
         }),
     statusSurat: statusSuratEnum,
+    lingkup: LingkupSuratEnum.refine((val) => !!val, { message: "Lingkup wajib dipilih" }),
 });
 
 export const keteranganUsahaSchema = z.object({
@@ -148,6 +154,7 @@ export const basefindAllPengajuanSuratResponseSchema = z.object({
     targetId: z.number().nullable(),
     jenisSuratId: z.number().nullable(),
     statusSurat: statusSuratEnum,
+    lingkup: LingkupSuratEnum,
     catatan: z.string().nullable(),
     fileHasil: z.string().nullable(),
     createdById: z.number(),
@@ -228,6 +235,7 @@ const baseDetailPengajuanSuratSchema = z.object({
     targetId: z.number().nullable(),
     jenisSuratId: z.number().nullable(),
     statusSurat: statusSuratEnum,
+    lingkup: LingkupSuratEnum,
     catatan: z.string().nullable(),
     fileHasil: z.string().nullable(),
     createdById: z.number(),

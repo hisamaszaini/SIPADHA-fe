@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { fullCreatePengajuanSuratSchema, type DetailPengajuanSuratSchema, type fullCreatePengajuanSuratDto, type PengajuanSuratFormInput, type PilihanJenisSurat } from '../../types/pengajuanSurat.types';
+import { fullCreatePengajuanSuratSchema, type DetailPengajuanSuratSchema, type fullCreatePengajuanSuratDto, type LingkupSurat, type PengajuanSuratFormInput, type PilihanJenisSurat } from '../../types/pengajuanSurat.types';
 import { usePengajuanSuratMutations } from './usePengajuranSuratMutation';
 
 /**
@@ -19,6 +19,7 @@ export const getInitialValues = (
     const baseFields = {
       pendudukId: pengajuan.pendudukId ?? 0,
       statusSurat: pengajuan.statusSurat,
+      lingkup: pengajuan.lingkup,
     };
 
     switch (pengajuan.jenis) {
@@ -85,6 +86,7 @@ export const getInitialValues = (
   const baseCreateFields = {
     pendudukId: 0,
     statusSurat: 'PENDING' as const,
+    lingkup: 'KOTA' as LingkupSurat,
   };
 
   switch (jenisUntukBuat) {

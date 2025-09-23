@@ -5,6 +5,8 @@ import { menuConfig } from '../../config/menuConfig';
 import type { NavigationItem } from '../../types/navigation.types';
 import { useAuth } from '../../contexts/AuthContext';
 
+const DROPDOWNS_ALWAYS_OPEN = true;
+
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -16,31 +18,34 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onLogoutClick }) => 
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const { user } = useAuth();
 
-  // Pastikan user sudah ada
-  const role = user?.role ?? 'WARGA'; // default WARGA jika null
+  const role = user?.role ?? 'WARGA';
 
   useEffect(() => {
-    const newOpenMenus: string[] = [];
-    menuConfig[role]?.forEach(item => {
-      if (item.children) {
-        const match = item.children.find(child => child.path === location.pathname);
-        if (match) newOpenMenus.push(item.label);
-      }
-    });
-    setOpenMenus(newOpenMenus);
+    if (!DROPDOWNS_ALWAYS_OPEN) {
+      const newOpenMenus: string[] = [];
+      menuConfig[role]?.forEach(item => {
+        if (item.children) {
+          const match = item.children.find(child => child.path === location.pathname);
+          if (match) newOpenMenus.push(item.label);
+        }
+      });
+      setOpenMenus(newOpenMenus);
+    }
   }, [location.pathname, role]);
 
   const toggleMenu = (label: string) => {
-    setOpenMenus(prev =>
-      prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label]
-    );
+    if (!DROPDOWNS_ALWAYS_OPEN) {
+      setOpenMenus(prev =>
+        prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label]
+      );
+    }
   };
 
   const renderItem = (item: NavigationItem) => {
     const Icon = item.icon || LucideIcons.Home;
 
     if (item.children) {
-      const isMenuOpen = openMenus.includes(item.label);
+      const isMenuOpen = DROPDOWNS_ALWAYS_OPEN ? true : openMenus.includes(item.label);
       const isChildActive = item.children.some(child => child.path === location.pathname);
 
       return (
@@ -50,6 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onLogoutClick }) => 
             className={`flex w-full items-center rounded-lg p-3 text-base font-medium transition-colors ${isChildActive ? 'bg-white/10 text-white' : 'text-white hover:bg-white/10 hover:text-white'
               }`}
             aria-expanded={isMenuOpen}
+            style={{ cursor: DROPDOWNS_ALWAYS_OPEN ? 'default' : 'pointer' }}
           >
             <div className="relative">
               <Icon className="h-6 w-6" />
@@ -60,10 +66,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onLogoutClick }) => 
               )}
             </div>
             <span className="ml-3 flex-1 text-left">{item.label}</span>
-            <LucideIcons.ChevronDown
-              className={`h-5 w-5 shrink-0 transform transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''
-                }`}
-            />
+            {!DROPDOWNS_ALWAYS_OPEN && (
+              <LucideIcons.ChevronDown
+                className={`h-5 w-5 shrink-0 transform transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''
+                  }`}
+              />
+            )}
           </button>
 
           <div

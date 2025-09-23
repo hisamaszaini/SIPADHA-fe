@@ -5,18 +5,28 @@ import type { Dukuh } from '../../types/dukuh.types';
 import TextInput from '../ui/TextInput';
 import SelectInput from '../ui/SelectInput';
 import { Button } from '../ui/Button';
+import { createRwSchema } from '../../types/rw.types';
 
 interface RwFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (formData: CreateRwDto | Partial<CreateRwDto>, id: number | null) => Promise<void>;
+  onSave: (
+    formData: CreateRwDto | Partial<CreateRwDto>,
+    id: number | null
+  ) => Promise<void>;
   editingRw: RwDetail | null;
   dukuhList: Dukuh[];
 }
 
 const initialFormState = { nomor: '', dukuhId: '' };
 
-const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, editingRw, dukuhList }) => {
+const RwFormModal: React.FC<RwFormModalProps> = ({
+  isOpen,
+  onClose,
+  onSave,
+  editingRw,
+  dukuhList,
+}) => {
   const [formData, setFormData] = useState(initialFormState);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -37,12 +47,14 @@ const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, edit
     }
   }, [editingRw, isOpen]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (fieldErrors[name]) {
-      setFieldErrors(prev => {
+      setFieldErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[name];
         return newErrors;
@@ -52,11 +64,20 @@ const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, edit
   };
 
   const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!formData.nomor.trim()) newErrors.nomor = 'Nomor RW wajib diisi.';
-    else if (!/^\d{1,3}$/.test(formData.nomor)) newErrors.nomor = 'Nomor RW harus berupa 1-3 digit angka.';
-    if (!formData.dukuhId) newErrors.dukuhId = 'Induk Dukuh wajib dipilih.';
-    return newErrors;
+    const result = createRwSchema.safeParse({
+      nomor: formData.nomor,
+      dukuhId: formData.dukuhId ? Number(formData.dukuhId) : undefined,
+    });
+
+    if (!result.success) {
+      const errors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as string;
+        errors[field] = issue.message;
+      });
+      return errors;
+    }
+    return {};
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -78,14 +99,17 @@ const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, edit
 
     try {
       await onSave(payload, editingRw ? editingRw.id : null);
-      toast.success(`RW berhasil ${editingRw ? 'diperbarui' : 'ditambahkan'}`);
+      toast.success(
+        `RW berhasil ${editingRw ? 'diperbarui' : 'ditambahkan'}`
+      );
       onClose();
     } catch (err: any) {
       const response = err?.response?.data;
       if (response?.message && typeof response.message === 'object') {
         setFieldErrors(response.message);
       } else {
-        const msg = response?.message || 'Terjadi kesalahan. Silakan coba lagi.';
+        const msg =
+          response?.message || 'Terjadi kesalahan. Silakan coba lagi.';
         setGlobalError(msg);
         toast.error(msg);
       }
@@ -97,7 +121,10 @@ const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, edit
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4" onClick={onClose}>
+    <div
+      className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4"
+      onClick={onClose}
+    >
       <div
         className="bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[95vh] flex flex-col overflow-y-auto scrollbar-hide-y"
         onClick={(e) => e.stopPropagation()}
@@ -109,7 +136,12 @@ const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, edit
         </div>
         <form onSubmit={handleSubmit} className="space-y-4 p-6 overflow-y-auto">
           {globalError && (
-            <div className="bg-red-100 text-red-700 px-4 py-2 rounded-md" role="alert">{globalError}</div>
+            <div
+              className="bg-red-100 text-red-700 px-4 py-2 rounded-md"
+              role="alert"
+            >
+              {globalError}
+            </div>
           )}
 
           <TextInput
@@ -135,14 +167,23 @@ const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, edit
             disabled={isSaving}
             required
           >
-            <option value="" disabled>-- Pilih Dukuh --</option>
+            <option value="" disabled>
+              -- Pilih Dukuh --
+            </option>
             {dukuhList.map((dukuh) => (
-              <option key={dukuh.id} value={dukuh.id}>{dukuh.nama}</option>
+              <option key={dukuh.id} value={dukuh.id}>
+                {dukuh.nama}
+              </option>
             ))}
           </SelectInput>
 
           <div className="flex gap-3 justify-end mt-10">
-            <Button type="button" variant="secondary" disabled={isSaving} onClick={onClose}>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={isSaving}
+              onClick={onClose}
+            >
               Batal
             </Button>
             <Button
@@ -151,7 +192,11 @@ const RwFormModal: React.FC<RwFormModalProps> = ({ isOpen, onClose, onSave, edit
               icon="fas fa-save"
               disabled={isSaving}
             >
-              {isSaving ? 'Menyimpan...' : editingRw ? 'Perbarui' : 'Simpan'}
+              {isSaving
+                ? 'Menyimpan...'
+                : editingRw
+                ? 'Perbarui'
+                : 'Simpan'}
             </Button>
           </div>
         </form>

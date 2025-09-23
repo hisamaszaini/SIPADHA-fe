@@ -61,7 +61,7 @@ const PendudukTable: React.FC<PendudukTableProps> = ({ pendudukList, isLoading, 
                             : pendudukList.map((penduduk, index) => (
                                 <tr key={penduduk.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{index + 1}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{penduduk.nama}</td>
+                                    <td className="px-6 py-4 max-w-sm break-words text-sm font-medium text-gray-900">{penduduk.nama}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{penduduk.nik}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{penduduk.jenisKelamin}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatTanggal(penduduk.tanggalLahir)}</td>
@@ -101,7 +101,7 @@ const PendudukTable: React.FC<PendudukTableProps> = ({ pendudukList, isLoading, 
                                                     {index + 1}
                                                 </span>
                                                 <div className="flex-1">
-                                                    <p className="font-bold text-gray-800">{penduduk.nama}</p>
+                                                    <p className="font-bold text-gray-800 break-words">{penduduk.nama}</p>
                                                     <p className="text-sm text-gray-500 font-mono">{penduduk.nik}</p>
                                                 </div>
                                             </div>

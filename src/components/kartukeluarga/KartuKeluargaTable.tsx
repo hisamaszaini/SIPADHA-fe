@@ -64,7 +64,7 @@ const KartuKeluargaTable: React.FC<KartuKeluargaTableProps> = ({
                             <tr key={kk.id} className="hover:bg-gray-50">
                                 <td className="px-6 py-4 text-gray-500">{startingNumber + index}</td>
                                 <td className="px-6 py-4 font-semibold text-gray-800">{kk.noKk}</td>
-                                <td className="px-6 py-4 font-medium">{kk.kepalaKeluarga?.nama ?? 'N/A'}</td>
+                                <td className="px-6 py-4 font-medium max-w-xs break-words">{kk.kepalaKeluarga?.nama ?? 'N/A'}</td>
                                 <td className="px-6 py-4 text-gray-600">{kk.alamat}</td>
                                 <td className="px-6 py-4 text-gray-600">{formatWilayah(kk)}</td>
                                 <td className="px-6 py-4 text-center font-medium">{kk._count.anggotaKeluarga}</td>
@@ -102,7 +102,7 @@ const KartuKeluargaTable: React.FC<KartuKeluargaTableProps> = ({
                                     {/* Main Info */}
                                     <div className="flex-1">
                                         <p className="font-semibold text-gray-800 text-sm">{kk.noKk}</p>
-                                        <p className="text-sm text-gray-600">{kk.kepalaKeluarga?.nama ?? 'N/A'}</p>
+                                        <p className="text-sm text-gray-600 break-words">{kk.kepalaKeluarga?.nama ?? 'N/A'}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2 flex-shrink-0">
@@ -124,7 +124,7 @@ const KartuKeluargaTable: React.FC<KartuKeluargaTableProps> = ({
                                 <span className="text-xs text-gray-500">Alamat</span>
                                 <span className="font-medium text-gray-800">{kk.alamat}</span>
                             </div>
-                             <div className="border-t border-gray-100"></div>
+                            <div className="border-t border-gray-100"></div>
                             <div className="flex justify-between items-center">
                                 <span className="text-gray-500">Wilayah:</span>
                                 <span className="font-medium text-gray-800 text-right">{formatWilayah(kk)}</span>

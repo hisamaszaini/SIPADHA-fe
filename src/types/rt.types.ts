@@ -54,20 +54,16 @@ export interface RtWithRelations extends Rt {
 /**
  * Tipe data untuk membuat RT baru.
  */
-export interface CreateRtDto {
-  nomor: string;
-  rwId: number;
-}
 
-/**
- * Tipe data untuk memperbarui RT.
- * Semua field bersifat opsional.
- */
-export type UpdateRtDto = Partial<CreateRtDto>;
+export const createRtSchema = z.object({
+  nomor: z.string().nonempty('Nomor RT tidak boleh kosong!').trim().regex(/^[0-9]+$/, 'Nomor RT hanya boleh mengandung angka'),
+  rwId: z.coerce.number().int().positive().refine((val) => !Number.isNaN(val), { message: "RW tidak valid!", })
+});
 
+export const updateRtSchema = createRtSchema.partial();
 
-// --- Tipe Parameter Query (Query Params) ---
-// Tipe untuk parameter yang bisa dikirim saat fetching data
+export type createRtDto = z.infer<typeof createRtSchema>;
+export type updateRtDto = z.infer<typeof updateRtSchema>;
 
 /**
  * Tipe untuk parameter query saat mengambil daftar RT.
@@ -87,10 +83,10 @@ export interface RtQueryParams {
 }
 
 export const rtDetailSchema = z.object({
-    id: z.number(),
-    nomor: z.string(),
-    rwId: z.number(),
-    createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime(),
-    rw: rwDetailSchema,
+  id: z.number(),
+  nomor: z.string(),
+  rwId: z.number(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  rw: rwDetailSchema,
 });

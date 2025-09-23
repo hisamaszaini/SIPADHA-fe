@@ -110,14 +110,8 @@ export default function RegisterPage() {
                             <p className="mt-2 text-sm text-white/80">Silakan isi data diri Anda</p>
                         </header>
                         <section className="space-y-4">
-                            <div className="flex flex-col md:flex-row md:space-x-4">
-                                <div className="md:w-1/2">
-                                    <AuthInput id="nik" name="nik" label="NIK" value={formData.nik} placeholder="Masukan NIK..." error={errors.nik} onChange={handleChange} />
-                                </div>
-                                <div className="md:w-1/2 mt-4 md:mt-0">
-                                    <AuthInput id="noHp" name="noHp" label="Nomor HP" value={formData.noHp} placeholder="Masukan Nomor HP..." error={errors.noHp} onChange={handleChange} />
-                                </div>
-                            </div>
+                            <AuthInput id="nik" name="nik" label="NIK" value={formData.nik} placeholder="Masukan NIK..." error={errors.nik} onChange={handleChange} />
+                            <AuthInput id="noHp" name="noHp" label="Nomor HP" value={formData.noHp} placeholder="Masukan Nomor HP..." error={errors.noHp} onChange={handleChange} />
                             <AuthInput type="email" id="email" name="email" label="Email" value={formData.email} placeholder="Masukan Email..." error={errors.email} onChange={handleChange} />
                             <AuthInput id="username" name="username" label="Username" value={formData.username} placeholder="Masukan Username..." error={errors.username} onChange={handleChange} />
                             <AuthInput type="password" id="password" name="password" label="Password" value={formData.password} placeholder="Masukan Password..." error={errors.password} onChange={handleChange} />

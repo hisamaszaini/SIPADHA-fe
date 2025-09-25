@@ -11,6 +11,7 @@ import {
   User2,
   LogOut,
   Settings,
+  ArrowLeftRight,
 } from "lucide-react";
 import type { UserRole } from "../types/user.types";
 
@@ -28,9 +29,13 @@ export const menuConfig: Record<UserRole, NavigationItem[]> = {
       ],
     },
     {
+      label: 'Import & Export',
+      path: '/admin/import-export',
+      icon: ArrowLeftRight,
+    },
+    {
       label: 'Layanan Surat',
       icon: FileText,
-      notification: 3,
       children: [
         { label: 'Pengajuan Masuk', path: '/admin/layanan-surat/pengajuan-masuk', icon: Inbox },
         { label: 'Jenis Surat', path: '/admin/layanan-surat/jenis-surat', icon: File },

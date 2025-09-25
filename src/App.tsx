@@ -20,6 +20,7 @@ import { AdminPengajuanSuratPage } from './pages/Admin/AdminPengajuanSurat';
 import { DetailPengajuanSuratPage } from './pages/DetailPengajuanSuratPage';
 import { WargaPengajuanSuratPage } from './pages/Warga/WargaPengajuanSurat';
 import AdminSetting from './pages/Admin/AdminSetting';
+import AdminImportExportPage from './pages/Admin/AdminImportExport';
 // import NotFound from './pages/NotFound';
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
               <Route path="/admin/layanan-surat/jenis-surat" element={<AdminJenisSurat />} />
               <Route path="/admin/layanan-surat/pengajuan-masuk" element={<AdminPengajuanSuratPage />} />
               <Route path="/admin/pengajuan-surat/:id" element={<DetailPengajuanSuratPage />} />
+              <Route path="/admin/import-export" element={<AdminImportExportPage />} />
             </Route>
 
             {/* Pengurus */}

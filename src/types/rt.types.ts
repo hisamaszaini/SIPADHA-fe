@@ -62,8 +62,8 @@ export const createRtSchema = z.object({
 
 export const updateRtSchema = createRtSchema.partial();
 
-export type createRtDto = z.infer<typeof createRtSchema>;
-export type updateRtDto = z.infer<typeof updateRtSchema>;
+export type CreateRtDto = z.infer<typeof createRtSchema>;
+export type UpdateRtDto = z.infer<typeof updateRtSchema>;
 
 /**
  * Tipe untuk parameter query saat mengambil daftar RT.

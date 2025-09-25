@@ -1,6 +1,6 @@
 import React, { useState, useEffect, type FormEvent, type ChangeEvent } from "react";
 import { toast } from "sonner";
-import type { Rt } from "../../types/rt.types";
+import type { CreateRtDto, Rt, UpdateRtDto } from "../../types/rt.types";
 import { useWilayahContext } from "../../contexts/wilayahContext";
 import SelectInput from "../ui/SelectInput";
 import TextInput from "../ui/TextInput";
@@ -8,15 +8,13 @@ import { Button } from "../ui/Button";
 import {
   createRtSchema,
   updateRtSchema,
-  type createRtDto,
-  type updateRtDto,
 } from "../../types/rt.types";
 
 interface RtFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (
-    formData: createRtDto | updateRtDto,
+    formData: CreateRtDto | UpdateRtDto,
     id: number | null
   ) => Promise<void>;
   editingRt: Rt | null;

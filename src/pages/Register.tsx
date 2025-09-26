@@ -95,7 +95,7 @@ export default function RegisterPage() {
                     </p>
                 </aside>
 
-                <main className="relative z-10 flex w-full items-center justify-center p-8 lg:w-1/2">
+                <main className="relative z-10 flex w-full items-center justify-center p-4 lg:w-1/2">
                     <form
                         className="w-full max-w-md p-8 space-y-6 rounded-2xl shadow-2xl glass-effect form-fade-in"
                         onSubmit={handleSubmit}

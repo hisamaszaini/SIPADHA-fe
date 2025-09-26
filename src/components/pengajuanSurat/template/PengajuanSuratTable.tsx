@@ -77,7 +77,7 @@ export default function PengajuanSuratTable({
         </Link>
       )}
 
-      {user?.role === "WARGA" && (
+      {/* {user?.role === "WARGA" && (
         <Link
           to={`/warga/pengajuan-surat/${item.id}`}
           className="inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50"
@@ -85,19 +85,20 @@ export default function PengajuanSuratTable({
           <i className="fa-solid fa-eye fa-sm text-gray-500"></i>
           <span>Detail</span>
         </Link>
-      )}
+      )} */}
 
       {isMobile && <div className="flex-grow"></div>}
 
       {!isMobile && <div className="h-5 w-px bg-gray-200 mx-1"></div>}
 
+      {user?.role === "WARGA" && item.statusSurat !== 'SELESAI' && (
       <button
         onClick={() => onEdit(item.id)}
         title="Edit Pengajuan"
         className="flex h-8 w-8 items-center justify-center rounded-lg text-amber-600 transition-all duration-200 hover:bg-amber-100"
       >
         <FileEdit className="h-5 w-5" />
-      </button>
+      </button>)}
 
       <button
         onClick={() => onDelete(item)}

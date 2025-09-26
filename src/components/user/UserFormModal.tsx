@@ -55,14 +55,12 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSave, 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        // Hapus global error saat pengguna mulai memperbaiki input
         if (globalError) {
             setGlobalError(null);
         }
 
         setFormData(prev => {
             const newFormData = { ...prev, [name]: value };
-            // Jika role diubah menjadi BUKAN WARGA, hapus NIK
             if (name === 'role' && value !== 'WARGA') {
                 newFormData.nik = '';
             }

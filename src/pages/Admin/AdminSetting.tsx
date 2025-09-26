@@ -39,6 +39,7 @@ export default function AdminSetting() {
                 alamatKepdes: setting.alamatKepdes,
                 tempatLahirKepdes: setting.tempatLahirKepdes,
                 tanggalLahirKepdes: formatDateForInput(setting.tanggalLahirKepdes),
+                nomorWa: setting.nomorWa,
                 endPointWa: setting.endPointWa,
             });
         }

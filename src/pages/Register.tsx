@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
 import AuthInput from "../components/ui/AuthInput";
-import { Link, useNavigate } from "react-router-dom"; // Impor Link
+import { Link, useNavigate } from "react-router-dom";
 import { Loader2, UserPlus } from "lucide-react";
 import { Button } from "../components/ui/Button";
 
@@ -32,7 +32,6 @@ export default function RegisterPage() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        // Hapus error untuk field yang sedang diubah
         if (errors[e.target.name as keyof RegisterWargaForm]) {
             setErrors({ ...errors, [e.target.name]: undefined });
         }
@@ -52,12 +51,14 @@ export default function RegisterPage() {
         }
 
         try {
-            // Ganti URL ini dengan environment variable jika memungkinkan
-            await axios.post("http://localhost:3000/auth/registerWarga", formData);
+            await axios.post(
+                `${import.meta.env.VITE_API_BASE_URL}/auth/registerWarga`,
+                formData
+            );
             toast.success("Registrasi berhasil! Anda akan dialihkan ke halaman login.");
             setTimeout(() => {
                 navigate("/login");
-            }, 2000); // Waktu dialihkan bisa lebih cepat
+            }, 2000);
         } catch (err: any) {
             if (err.response?.data?.message) {
                 const msg = err.response.data.message;
@@ -80,7 +81,6 @@ export default function RegisterPage() {
         <>
             <Toaster richColors position="top-right" />
             <div className="flex min-h-screen flex-col lg:flex-row glass-effect">
-                {/* Elemen dekorasi latar belakang */}
                 <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-white/10 rounded-full floating-animation" style={{ animationDelay: "-2s" }} />
                 <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-2xl floating-animation" style={{ animationDuration: "15s" }} />
                 <div className="absolute top-10 right-20 w-48 h-48 bg-white/10 rounded-xl floating-animation" style={{ animationDelay: "-5s", animationDuration: "18s" }} />

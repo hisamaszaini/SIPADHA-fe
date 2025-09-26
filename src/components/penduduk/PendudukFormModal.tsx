@@ -9,6 +9,7 @@ import { agamaOptions, hubunganKeluargaOptions, jenisKelaminOptions, pendidikanO
 import { toast } from 'sonner';
 import { Button } from '../ui/Button';
 import { formatDateForInput } from '../../utils/date';
+import SelectInput from '../ui/SelectInput';
 
 type FormData = Omit<PendudukDto, 'tanggalLahir'> & { tanggalLahir: string };
 
@@ -23,7 +24,6 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
     const isEditing = !!editingPenduduk;
 
     const {
-        // Asumsi context wilayah tidak perlu diubah
     } = useWilayahContext();
 
     const initialFormState: FormData = {
@@ -66,7 +66,6 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
         return () => clearTimeout(timer);
     }, [kkSearchTerm, isOpen]);
 
-    // useEffect untuk mengisi form saat mode edit atau membersihkan saat mode tambah
     useEffect(() => {
         if (isOpen) {
             if (isEditing && editingPenduduk) {
@@ -125,12 +124,10 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
         }
     };
 
-    // --- PERUBAHAN KUNCI 1: Satu handler untuk semua input ---
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
 
-        // Bonus: Menghapus error saat pengguna mulai mengetik
         if (errors[name]) {
             setErrors(prev => {
                 const newErrors = { ...prev };
@@ -143,20 +140,42 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setErrors({});
+
         try {
             const payload: PendudukDto = {
                 ...formData,
                 tanggalLahir: new Date(formData.tanggalLahir),
             };
-            await onSave(payload, isEditing ? editingPenduduk.id : null);
+
+            await onSave(payload, isEditing ? editingPenduduk?.id ?? null : null);
+
             toast.success(`Penduduk berhasil ${isEditing ? 'diperbarui' : 'ditambahkan'}`);
             onClose();
-        } catch (error) {
-            toast.error(`Gagal ${isEditing ? 'memperbarui' : 'menambahkan'} penduduk`);
+        } catch (err: any) {
+            console.error("Error submit penduduk:", err);
+
+            const apiError = err?.response?.data;
+
+            if (apiError?.error?.code === "VALIDATION_ERROR" && apiError?.error?.details) {
+                const fieldErrors: { [key: string]: string } = {};
+                for (const key in apiError.error.details) {
+                    fieldErrors[key] = apiError.error.details[key][0];
+                }
+                setErrors(fieldErrors);
+
+                toast.error("Periksa kembali data yang kamu isi.");
+            } else if (apiError?.error?.code === "Conflict") {
+                setErrors({ _global: apiError.message });
+                toast.error(apiError?.message || "Terjadi konflik data (misalnya NIK sudah terdaftar)");
+            } else {
+                toast.error(apiError?.message || `Gagal ${isEditing ? 'memperbarui' : 'menambahkan'} penduduk`);
+            }
         } finally {
             setIsSubmitting(false);
         }
     };
+
 
     if (!isOpen) return null;
 
@@ -207,20 +226,36 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
                                 <input type="date" name="tanggalLahir" value={formData.tanggalLahir} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.tanggalLahir ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`} />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
-                                <select name="jenisKelamin" value={formData.jenisKelamin} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.jenisKelamin ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}>
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
-                                    {jenisKelaminOptions.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Agama</label>
-                                <select name="agama" value={formData.agama} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.agama ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}>
-                                    <option value="">-- Pilih Agama --</option>
-                                    {agamaOptions.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
-                                </select>
-                            </div>
+                            <SelectInput
+                                id="jenisKelamin"
+                                name="jenisKelamin"
+                                label="Jenis Kelamin"
+                                value={formData.jenisKelamin}
+                                onChange={handleChange}
+                                error={errors.jenisKelamin}
+                            >
+                                <option value="">-- Pilih Jenis Kelamin --</option>
+                                {jenisKelaminOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </SelectInput>
+                            <SelectInput
+                                id="agama"
+                                name="agama"
+                                label="Agama"
+                                value={formData.agama}
+                                onChange={handleChange}
+                                error={errors.agama}
+                            >
+                                <option value="">-- Pilih Agama --</option>
+                                {agamaOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </SelectInput>
                         </fieldset>
 
                         {/* Kolom Kanan */}
@@ -232,8 +267,8 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                                     <div className="relative">
                                         <Combobox.Input
                                             className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.kartuKeluargaId
-                                                    ? 'border-red-500 ring-red-500'
-                                                    : 'border-gray-300 focus:ring-emerald-500 focus:border-emerald-500'
+                                                ? 'border-red-500 ring-red-500'
+                                                : 'border-gray-300 focus:ring-emerald-500 focus:border-emerald-500'
                                                 }`}
                                             onChange={(event) => setKkSearchTerm(event.target.value)}
                                             displayValue={(kk: KartuKeluargaSimple) => (kk ? kk.noKk || kk.noKk : '')}
@@ -292,27 +327,51 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                                     </div>
                                 </Combobox>
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Hubungan Dalam Keluarga</label>
-                                <select name="hubunganDalamKeluarga" value={formData.hubunganDalamKeluarga} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.hubunganDalamKeluarga ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}>
-                                    <option value="">-- Pilih Hubungan --</option>
-                                    {hubunganKeluargaOptions.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Status Perkawinan</label>
-                                <select name="statusPerkawinan" value={formData.statusPerkawinan} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.statusPerkawinan ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}>
-                                    <option value="">-- Pilih Perkawinan --</option>
-                                    {statusPerkawinanOptions.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Pendidikan Terakhir</label>
-                                <select name="pendidikan" value={formData.pendidikan} onChange={handleChange} className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 ${errors.pendidikan ? "border-red-500 ring-red-500" : "border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"}`}>
-                                    <option value="">-- Pilih Pendidikan --</option>
-                                    {pendidikanOptions.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
-                                </select>
-                            </div>
+                            <SelectInput
+                                id="hubunganDalamKeluarga"
+                                name="hubunganDalamKeluarga"
+                                label="Hubungan Dalam Keluarga"
+                                value={formData.hubunganDalamKeluarga}
+                                onChange={handleChange}
+                                error={errors.hubunganDalamKeluarga}
+                            >
+                                <option value="">-- Pilih Hubungan --</option>
+                                {hubunganKeluargaOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </SelectInput>
+                            <SelectInput
+                                id="statusPerkawinan"
+                                name="statusPerkawinan"
+                                label="Status Perkawinan"
+                                value={formData.statusPerkawinan}
+                                onChange={handleChange}
+                                error={errors.statusPerkawinan}
+                            >
+                                <option value="">-- Pilih Perkawinan --</option>
+                                {statusPerkawinanOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </SelectInput>
+                            <SelectInput
+                                id="pendidikan"
+                                name="pendidikan"
+                                label="Pendidikan Terakhir"
+                                value={formData.pendidikan}
+                                onChange={handleChange}
+                                error={errors.pendidikan}
+                            >
+                                <option value="">-- Pilih Pendidikan --</option>
+                                {pendidikanOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </SelectInput>
                             <TextInput
                                 id="pekerjaan"
                                 name="pekerjaan"
@@ -324,6 +383,12 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
                             />
                         </fieldset>
                     </div>
+
+                    {errors._global && (
+                        <div className="mb-3 rounded bg-red-100 p-2 text-sm text-red-700">
+                            {errors._global}
+                        </div>
+                    )}
 
                     <div className="flex gap-3 justify-end mt-10">
                         <Button type="button" variant="secondary" disabled={isSubmitting} onClick={onClose}>

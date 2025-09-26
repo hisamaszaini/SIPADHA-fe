@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
@@ -12,7 +12,7 @@ const AuthInput: React.FC<AuthInputProps> = ({
   label,
   error,
   helpText,
-  type = 'text',
+  type = "text",
   className,
   ...rest
 }) => {
@@ -22,35 +22,48 @@ const AuthInput: React.FC<AuthInputProps> = ({
   const describedByIds = [];
   if (helpText) describedByIds.push(helpId);
   if (error) describedByIds.push(errorId);
-  const ariaDescribedBy = describedByIds.length > 0 ? describedByIds.join(' ') : undefined;
+  const ariaDescribedBy =
+    describedByIds.length > 0 ? describedByIds.join(" ") : undefined;
 
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-white/90 mb-1">
+      <label
+        htmlFor={id}
+        className="text-sm font-medium text-white/90"
+      >
         {label}
       </label>
-      <input
-        id={id}
-        type={type}
-        aria-invalid={!!error}
-        aria-describedby={ariaDescribedBy}
-        className={`w-full px-4 py-3 bg-gray-50 border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200 ${error
-          ? 'border-red-500 ring-red-500 focus:border-red-500'
-          : 'border-gray-300 focus:ring-emerald-500 focus:border-emerald-500'
-          } ${className || ''}`}
-        {...rest}
-      />
+      <div className="mt-1 relative">
+        <input
+          id={id}
+          type={type}
+          aria-invalid={!!error}
+          aria-describedby={ariaDescribedBy}
+          className={`w-full pl-3 pr-3 py-3 rounded-md transition-all
+            bg-white/10 border border-white/30 text-white placeholder-white/60
+            focus:outline-none focus:ring-2 focus:ring-white/50
+            ${error ? "border-red-500 ring-red-500 focus:ring-red-500" : ""}
+            ${className || ""}`}
+          {...rest}
+        />
+      </div>
 
       {helpText && !error && (
-        <p id={helpId} className="text-gray-500 text-sm mt-1">
+        <p id={helpId} className="text-gray-400 text-sm mt-2">
           {helpText}
         </p>
       )}
 
       {error && (
-        <p id={errorId} className="text-red-600 text-sm mt-1" role="alert">
-          {error}
-        </p>
+        <div className="mt-2">
+          <p
+            id={errorId}
+            className="text-red-500 text-sm"
+            role="alert"
+          >
+            {error}
+          </p>
+        </div>
       )}
     </div>
   );

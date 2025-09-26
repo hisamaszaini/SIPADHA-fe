@@ -54,15 +54,12 @@ export function PengajuanSuratFormModal({
         onSuccess,
     });
 
-    // Ambil method yang dibutuhkan dari hook form
     const { register, watch, setValue, formState: { errors } } = form;
 
-    // Tonton perubahan 'jenis' untuk render field kondisional
     const watchedJenis = watch('jenis');
 
     useEffect(() => {
         if (!isEditMode) {
-            // Set nilai 'jenis' di form state saat dropdown berubah
             setValue('jenis', selectedJenis, { shouldValidate: true });
         }
     }, [selectedJenis, isEditMode, setValue]);

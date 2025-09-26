@@ -6,7 +6,7 @@ import { updateSettingSchema, type UpdateSettingDto } from "../../types/setting.
 import TextInput from "../../components/ui/TextInput";
 import SelectInput from "../../components/ui/SelectInput";
 import { Button } from "../../components/ui/Button";
-import { formatDateForInput } from "../../utils/date";
+import { formatDateForInput, formatDateForPayload } from "../../utils/date";
 
 const Icon = ({ className }: { className: string }) => (
     <i className={`${className} text-indigo-500`}></i>
@@ -44,10 +44,11 @@ export default function AdminSetting() {
         }
     }, [setting, reset]);
 
-    const onSubmit: SubmitHandler<UpdateSettingDto> = (data) => {
+    const onSubmit: SubmitHandler<UpdateSettingDto> = async (data) => {
+        const formattedTanggalLahir = await formatDateForPayload(data.tanggalLahirKepdes);
         const payload = {
             ...data,
-            tanggalLahirKepdes: `${data.tanggalLahirKepdes}T00:00:00`,
+            tanggalLahirKepdes: formattedTanggalLahir ?? undefined,
         };
 
         console.log(payload.tanggalLahirKepdes);
@@ -166,6 +167,14 @@ export default function AdminSetting() {
                                     type="date"
                                     {...register("tanggalLahirKepdes")}
                                     error={errors.tanggalLahirKepdes?.message}
+                                />
+
+                                <TextInput
+                                    id="nomorWa"
+                                    label="Nomor WhatsApp (Admin)"
+                                    type="number"
+                                    {...register("nomorWa")}
+                                    error={errors.nomorWa?.message}
                                 />
 
                                 <TextInput

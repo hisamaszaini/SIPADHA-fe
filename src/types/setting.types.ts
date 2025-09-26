@@ -7,6 +7,7 @@ export const settingResponseSchema = z.object({
     alamatKepdes: z.string(),
     tempatLahirKepdes: z.string(),
     tanggalLahirKepdes: z.string().datetime({ message: "Format tanggal dari server tidak valid" }),
+    nomorWa: z.string(),
     endPointWa: z.string(),
 });
 
@@ -19,6 +20,7 @@ export const updateSettingSchema = z.object({
     tanggalLahirKepdes: z.string()
         .nonempty("Tanggal lahir kepala desa wajib diisi")
         .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid (YYYY-MM-DD)"),
+    nomorWa: z.string().nonempty('Nomor Whatsapp Admin wajib diisi'),
     endPointWa: z.string().nonempty('Alamat API Endpoint Whatsapp wajib diisi'),
 }).partial();
 

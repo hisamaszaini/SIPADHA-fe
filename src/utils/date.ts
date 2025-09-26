@@ -31,12 +31,23 @@ export function formatTanggalSingkat(date?: Date | string, locale = "id-ID"): st
 }
 
 export const formatDateForInput = (isoDate: string | Date | undefined): string => {
-    if (!isoDate) return '';
-    try {
-        return new Date(isoDate).toISOString().split('T')[0];
-    } catch (e) {
-        return '';
-    }
+  if (!isoDate) return "";
+  try {
+    const d = new Date(isoDate);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  } catch {
+    return "";
+  }
+};
+
+export const formatDateForPayload = (dateStr: string | undefined): string | null => {
+  if (!dateStr) return null;
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const d = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
+  return d.toISOString();
 };
 
 export function hitungUmur(tanggalLahir?: Date | string): number | null {

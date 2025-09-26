@@ -33,7 +33,7 @@ export const getInitialValues = (
           perindustrian: pengajuan.dataPermohonan.perindustrian || '',
           jasa: pengajuan.dataPermohonan.jasa || '',
           lain: pengajuan.dataPermohonan.lain || '',
-          tahun: Number(pengajuan.dataPermohonan?.tahun) || 0,
+          tahun: Number(pengajuan.dataPermohonan?.tahun) || new Date().getFullYear(),
           alamatUsaha: pengajuan.dataPermohonan?.alamatUsaha || '',
         };
 
@@ -54,7 +54,7 @@ export const getInitialValues = (
           jenis: 'KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI',
           targetId: pengajuan.targetId || 0,
           negaraTujuan: pengajuan.dataPermohonan.negaraTujuan,
-          tahun: Number(pengajuan.dataPermohonan?.tahun) || 0,
+          tahun: Number(pengajuan.dataPermohonan?.tahun) || new Date().getFullYear(),
           keterangan: pengajuan.dataPermohonan.keterangan,
         }
 
@@ -114,7 +114,7 @@ export const getInitialValues = (
         jasa: '',
         lain: '',
         alamatUsaha: '',
-        tahun: 0,
+        tahun: new Date().getFullYear(),
       };
 
     case 'KETERANGAN_TIDAK_MAMPU_SEKOLAH':
@@ -140,7 +140,7 @@ export const getInitialValues = (
         jasa: '',
         lain: '',
         alamatUsaha: '',
-        tahun: 0,
+        tahun: new Date().getFullYear(),
       }
   }
 };

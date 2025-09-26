@@ -45,7 +45,7 @@ const Login: React.FC = () => {
           className="w-full max-w-md p-8 space-y-6 rounded-2xl shadow-2xl glass-effect form-fade-in"
         >
           <header className="text-center">
-            <h1 className="text-2xl font-bold text-white">Selamat Datang Kembali</h1>
+            <h1 className="text-2xl font-bold text-white">SIPANDHA DESA CEPOKO</h1>
             <p className="mt-2 text-sm text-white/80">Silakan masuk untuk melanjutkan.</p>
           </header>
 
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
                   className="w-full pl-3 pr-3 py-3 bg-white/10 border border-white/30 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
                 />
               </div>
-              {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
+              {errors.email && <div className='mt-2'><p className="text-red-500 text-sm mt-2">{errors.email.message}</p></div>}
             </div>
 
             {/* Password */}
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
                   className="w-full pl-3 pr-3 py-3 bg-white/10 border border-white/30 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
                 />
               </div>
-              {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>}
+              {errors.password && <div className='mt-2'><p className="text-red-500 text-sm">{errors.password.message}</p></div>}
             </div>
           </section>
 

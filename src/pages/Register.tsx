@@ -60,17 +60,22 @@ export default function RegisterPage() {
                 navigate("/login");
             }, 2000);
         } catch (err: any) {
-            if (err.response?.data?.message) {
-                const msg = err.response.data.message;
-                if (typeof msg === "string") {
-                    setGlobalError(msg);
-                } else if (typeof msg === "object") {
-                    setErrors(msg);
-                } else {
-                    setGlobalError("Terjadi kesalahan tak terduga.");
+            const res = err.response?.data;
+
+            if (res) {
+                const mainMessage = res.message || "Terjadi kesalahan tak terduga";
+
+                if (res.error?.code === "VALIDATION_ERROR" && res.error?.details) {
+                    setErrors(res.error.details);
+                    setGlobalError(null);
+                }
+                else {
+                    setGlobalError(mainMessage);
+                    setErrors({});
                 }
             } else {
                 setGlobalError("Tidak dapat terhubung ke server.");
+                setErrors({});
             }
         } finally {
             setLoading(false);
@@ -88,7 +93,7 @@ export default function RegisterPage() {
 
                 <aside className="relative z-10 hidden w-full p-12 lg:flex lg:w-1/2 flex-col items-center justify-center text-center">
                     <h1 className="text-4xl font-bold text-white tracking-tight">
-                        Portal Digital Desa Cepoko
+                        SIPANDHA Desa Cepoko
                     </h1>
                     <p className="mt-4 max-w-md text-lg text-white/80">
                         Satu akun untuk semua layanan desa. Daftar sekarang untuk memulai.
@@ -117,7 +122,7 @@ export default function RegisterPage() {
                             <AuthInput type="password" id="password" name="password" label="Password" value={formData.password} placeholder="Masukan Password..." error={errors.password} onChange={handleChange} />
                             <AuthInput type="password" id="confirmPassword" name="confirmPassword" label="Konfirmasi Password" value={formData.confirmPassword} placeholder="Ulangi Password..." error={errors.confirmPassword} onChange={handleChange} />
                             {globalError && (
-                                <div className="p-3 text-sm bg-red-500/20 text-red-300 rounded-lg">
+                                <div className="p-3 text-sm bg-red-500/80 text-white rounded-lg">
                                     {globalError}
                                 </div>
                             )}

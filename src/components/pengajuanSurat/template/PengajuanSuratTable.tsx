@@ -89,7 +89,7 @@ export default function PengajuanSuratTable({
 
       {isMobile && <div className="flex-grow"></div>}
 
-      {!isMobile && <div className="h-5 w-px bg-gray-200 mx-1"></div>}
+      {!isMobile && user?.role !== "WARGA" && <div className="h-5 w-px bg-gray-200 mx-1"></div>}
 
       {user?.role === "ADMIN" && (
         <button

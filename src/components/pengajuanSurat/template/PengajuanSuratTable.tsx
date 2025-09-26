@@ -91,14 +91,24 @@ export default function PengajuanSuratTable({
 
       {!isMobile && <div className="h-5 w-px bg-gray-200 mx-1"></div>}
 
+      {user?.role === "ADMIN" && (
+        <button
+          onClick={() => onEdit(item.id)}
+          title="Edit Pengajuan"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-amber-600 transition-all duration-200 hover:bg-amber-100"
+        >
+          <FileEdit className="h-5 w-5" />
+        </button>
+      )}
+
       {user?.role === "WARGA" && item.statusSurat !== 'SELESAI' && (
-      <button
-        onClick={() => onEdit(item.id)}
-        title="Edit Pengajuan"
-        className="flex h-8 w-8 items-center justify-center rounded-lg text-amber-600 transition-all duration-200 hover:bg-amber-100"
-      >
-        <FileEdit className="h-5 w-5" />
-      </button>)}
+        <button
+          onClick={() => onEdit(item.id)}
+          title="Edit Pengajuan"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-amber-600 transition-all duration-200 hover:bg-amber-100"
+        >
+          <FileEdit className="h-5 w-5" />
+        </button>)}
 
       <button
         onClick={() => onDelete(item)}

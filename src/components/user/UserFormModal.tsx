@@ -4,6 +4,7 @@ import { userRoleOptions, userStatusOptions } from '../../constant/userOption';
 import TextInput from '../ui/TextInput';
 import SelectInput from '../ui/SelectInput';
 import { Button } from '../ui/Button';
+import { toast } from 'sonner';
 
 interface UserFormModalProps {
     isOpen: boolean;
@@ -73,11 +74,13 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSave, 
         if (!formData.username.trim()) newErrors.username = "Username wajib diisi.";
         if (!formData.email.trim()) newErrors.email = "Email wajib diisi.";
 
-        if (!isEditing) {
-            if (!formData.password) newErrors.password = "Password wajib diisi.";
-            if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Konfirmasi password tidak cocok.";
-        } else if (formData.password && formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = "Konfirmasi password tidak cocok.";
+        if (formData.password) {
+            if (formData.password.length < 8) {
+                newErrors.password = "Password minimal 8 karakter.";
+            }
+            if (formData.password !== formData.confirmPassword) {
+                newErrors.confirmPassword = "Konfirmasi password tidak cocok.";
+            }
         }
 
         if (formData.role === 'WARGA' && (!formData.nik || formData.nik.length !== 16)) {
@@ -88,6 +91,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSave, 
         return Object.keys(newErrors).length === 0;
     };
 
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setGlobalError(null);
@@ -95,19 +99,24 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSave, 
 
         setIsSaving(true);
         try {
-            console.log(formData);
             await onSave(formData, isEditing && editingUser ? editingUser.id : null);
-        } catch (error: any) {
-            console.error("Gagal menyimpan:", error);
-
-            if (error.response && error.response.data && error.response.data.message) {
-                setGlobalError(error.response.data.message);
-            }
-            else if (error.message) {
-                setGlobalError(error.message);
-            }
-            else {
-                setGlobalError("Terjadi kesalahan yang tidak diketahui. Silakan coba lagi.");
+        } catch (err: any) {
+            console.error(err);
+            const apiError = err?.response?.data;
+            if (apiError?.error?.code === "VALIDATION_ERROR" && apiError?.error?.details) {
+                const fieldErrors: Record<string, string> = {};
+                for (const key in apiError.error.details) {
+                    fieldErrors[key] = apiError.error.details[key][0];
+                }
+                setErrors(fieldErrors);
+                toast.error("Periksa kembali data yang kamu isi.");
+            } else if (apiError?.error?.code === "Conflict") {
+                setErrors({ _global: apiError.message });
+                toast.error(apiError?.message || "Terjadi konflik data (misalnya NIK sudah terdaftar)");
+            } else {
+                toast.error(
+                    apiError?.message || `Gagal ${isEditing ? "memperbarui" : "menambahkan"} penduduk`
+                );
             }
         } finally {
             setIsSaving(false);

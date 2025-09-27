@@ -103,7 +103,7 @@ const MainLayout: React.FC = () => {
 
                 <footer className="flex items-center justify-center px-6 py-4 min-h-16 bg-white/90 font-medium backdrop-blur-sm border-t border-slate-200 text-sm text-slate-500 text-center">
                     <p>
-                        © 2025 SIPANDHA. Hak Cipta Dilindungi | Dibuat oleh KKN Tematik 5 UM Ponorogo
+                        © 2025 SIPANDHA. Hak Cipta Dilindungi | Dibuat oleh KKN Tematik 5 UMPO
                     </p>
                 </footer>
 

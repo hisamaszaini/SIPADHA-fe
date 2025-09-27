@@ -269,7 +269,7 @@ const DashboardWarga: React.FC = () => {
                 </div>
                 <div className="p-4">
                   <Link
-                    to={`/warga/pengajuan-surat/${p.id}`}
+                    to={`/warga/pengajuan-surat`}
                     className="inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50"
                   >
                     <i className="fa-solid fa-eye fa-sm text-gray-500"></i>

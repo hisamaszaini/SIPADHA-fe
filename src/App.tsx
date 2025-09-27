@@ -4,7 +4,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import MainLayout from './components/MainLayout';
 // Components & Pages
 import ProtectedRoute from './components/ProtectedRoute';
-import Login from './pages/Login';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import PengurusDashboard from './pages/PengurusDashboard';
 import WargaDashboard from './pages/WargaDashboard';
@@ -21,6 +20,8 @@ import { DetailPengajuanSuratPage } from './pages/DetailPengajuanSuratPage';
 import { WargaPengajuanSuratPage } from './pages/Warga/WargaPengajuanSurat';
 import AdminSetting from './pages/Admin/AdminSetting';
 import AdminImportExportPage from './pages/Admin/AdminImportExport';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/Login';
 // import NotFound from './pages/NotFound';
 
 function App() {
@@ -29,7 +30,8 @@ function App() {
       <Router>
         <Routes>
           {/* Public */}
-          <Route path="/login" element={<Login />} />
+          <Route path='/' element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Protected with layout */}
@@ -84,7 +86,6 @@ function App() {
               }
             >
               <Route path="/warga/pengajuan-surat" element={<WargaPengajuanSuratPage />} />
-              <Route path="/warga/pengajuan-surat/:id" element={<DetailPengajuanSuratPage />} />
               <Route path="/warga/*" element={<WargaDashboard />} />
             </Route>
           </Route>

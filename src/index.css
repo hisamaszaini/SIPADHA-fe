@@ -13,6 +13,12 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.glass-effect-card {
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 :root {
   --gradient-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
   --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
@@ -79,8 +85,15 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
 
 @keyframes pulse-glow {

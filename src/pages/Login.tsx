@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '../components/ui/Button';
 import { Loader2, UserPlus } from 'lucide-react';
 
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -111,4 +111,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

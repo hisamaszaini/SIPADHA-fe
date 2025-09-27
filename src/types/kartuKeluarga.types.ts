@@ -1,6 +1,72 @@
 import z from "zod";
-import type { Penduduk } from "./penduduk.types";
+// import { agamaEnum, hubunganDalamKeluargaEnum, jenisKelaminEnum, pendidikanEnum, statusPerkawinanEnum, type Penduduk } from "./penduduk.types";
 import { rtDetailSchema, type Rt } from "./rt.types";
+import type { Penduduk } from "./penduduk.types";
+
+// // ----------------------
+// // Schema 1: Kartu Keluarga
+// // ----------------------
+// export const createKartuKeluargaSchema = z.object({
+//   noKk: z.string()
+//     .nonempty('Nomor KK tidak boleh kosong')
+//     .min(16, 'Nomor KK minimal 16 digit')
+//     .regex(/^\d+$/, 'Nomor KK hanya boleh angka'),
+
+//   alamat: z.string().nonempty('Alamat wajib diisi').trim(),
+
+//   dukuhId: z.string()
+//     .nonempty('Dukuh wajib dipilih')
+//     .regex(/^\d+$/, 'Dukuh tidak valid')
+//     .transform(val => Number(val)),
+
+//   rwId: z.string()
+//     .nonempty('RW wajib dipilih')
+//     .regex(/^\d+$/, 'RW tidak valid')
+//     .transform(val => Number(val)),
+
+//   rtId: z.string()
+//     .nonempty('RT wajib dipilih')
+//     .regex(/^\d+$/, 'RT tidak valid')
+//     .transform(val => Number(val)),
+// });
+
+// // ----------------------
+// // Schema 2: Kartu Keluarga + Penduduk
+// // ----------------------
+// export const createKartuKeluargaWithPendudukSchema = createKartuKeluargaSchema.merge(
+//   z.object({
+//     nik: z.string()
+//       .nonempty('NIK tidak boleh kosong')
+//       .min(16, 'NIK minimal 16 digit')
+//       .regex(/^\d+$/, 'NIK hanya boleh angka')
+//       .trim(),
+
+//     nama: z.string().nonempty('Nama tidak boleh kosong').trim(),
+//     tempatLahir: z.string().nonempty('Tempat lahir wajib diisi').trim(),
+
+//     tanggalLahir: z.string()
+//       .nonempty('Tanggal lahir wajib diisi')
+//       .refine(val => !isNaN(Date.parse(val)), 'Tanggal lahir tidak valid'),
+
+//     jenisKelamin: jenisKelaminEnum,
+//     agama: agamaEnum,
+//     statusPerkawinan: statusPerkawinanEnum,
+//     pendidikan: pendidikanEnum,
+
+//     pekerjaan: z.string().trim().optional(),
+
+//     hubunganDalamKeluarga: hubunganDalamKeluargaEnum.optional().default('Kepala Keluarga'),
+//   })
+// );
+
+// export const updateKartuKeluargaWithKepalaSchema = createKartuKeluargaWithPendudukSchema.partial();
+
+// // ----------------------
+// // Typescript Types
+// // ----------------------
+// export type CreateKartuKeluargaDto = z.infer<typeof createKartuKeluargaSchema>;
+// export type CreateKartuKeluargaWithPendudukDto = z.infer<typeof createKartuKeluargaWithPendudukSchema>;
+// export type UpdateKartuKeluargaWithKepalaDto = z.infer<typeof updateKartuKeluargaWithKepalaSchema>;
 
 export interface CreateKartuKeluargaWithKepalaDto {
     noKk: string;

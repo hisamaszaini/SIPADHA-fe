@@ -2,14 +2,16 @@ import { DeleteConfirmationModal } from "../../components/pengajuanSurat/DeleteF
 import { PengajuanSuratFormModal } from "../../components/pengajuanSurat/PengajuanFormModal";
 import { PengajuanSuratFilters } from "../../components/pengajuanSurat/PengajuanSuratFilter";
 import PengajuanSuratTable from "../../components/pengajuanSurat/template/PengajuanSuratTable";
-import { ViewDetailsModal } from "../../components/pengajuanSurat/template/ViewDetailModal";
 import { usePengajuanSuratManagement } from "../../hooks/PengajuanSurat/usePengajuanSuratManagement";
 import { Button } from "../../components/ui/Button";
 
 
 export function WargaPengajuanSuratPage() {
     const management = usePengajuanSuratManagement();
-
+    const userRole = management.user?.role || 'WARGA';
+    const selectedPengajuan = management.editingData || management.viewingData || null;
+    const isViewOnly = userRole === 'WARGA' && selectedPengajuan?.statusSurat === 'SELESAI';
+    
     return (
         <div className="w-full mx-auto bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
             <header className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
@@ -42,7 +44,6 @@ export function WargaPengajuanSuratPage() {
                         onEdit={management.handleEdit}
                         onDelete={management.openDeleteModal}
                         onView={management.handleView}
-                        // onProcess={management.handleProcess}
                         sortBy={management.queryParams.sortBy}
                         sortOrder={management.queryParams.sortOrder}
                     />
@@ -65,6 +66,8 @@ export function WargaPengajuanSuratPage() {
                 targetSearch={management.targetSearch}
                 onTargetSearchChange={management.setTargetSearch}
                 isTargetLoading={management.isLoadingTarget}
+
+                isViewOnly={isViewOnly}
             />
 
             {/* Modal untuk Konfirmasi Hapus */}
@@ -74,14 +77,6 @@ export function WargaPengajuanSuratPage() {
                 onConfirm={() => management.handleDelete(management.dataToDelete!.id)}
                 itemName={management.dataToDelete?.penduduk.nama || ''}
                 isDeleting={management.isDeleting}
-            />
-
-            {/* Modal untuk Lihat Detail */}
-            <ViewDetailsModal
-                isOpen={management.isViewModalOpen}
-                onClose={management.closeViewModal}
-                data={management.viewingData}
-                isLoading={management.isLoadingDetail}
             />
         </div>
     );

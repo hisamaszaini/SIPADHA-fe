@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import pendudukService from '../services/pendudukService';
-import type { FindAllPendudukResponse, PendudukQueryParams, PendudukSortableKeys, PendudukDto } from '../types/penduduk.types';
+import type { FindAllPendudukResponse, PendudukQueryParams, PendudukSortableKeys, PendudukDto, CreatePendudukDto } from '../types/penduduk.types';
 import type { PaginationMeta } from '../types/api.types';
 
 export const usePendudukData = () => {
@@ -15,7 +15,7 @@ export const usePendudukData = () => {
             const response = await pendudukService.findAll(queryParams);
             setPendudukList(response.data);
             setPaginationMeta(response.meta || null);
-        } catch (error) { 
+        } catch (error) {
             console.error("Gagal memuat daftar penduduk:", error);
         }
         finally { setIsLoading(false); }
@@ -55,15 +55,19 @@ export const usePendudukData = () => {
         return await pendudukService.findOne(id);
     }, []);
 
-    const savePenduduk = useCallback(async (formData: PendudukDto, id: number | null) => {
-        if (id) {
-            await pendudukService.update(id, formData);
-            await fetchPendudukList();
-        } else {
-            await pendudukService.createPenduduk(formData);
-            setQueryParams(prev => ({ ...prev, page: 1 }));
-        }
-    }, [fetchPendudukList]);
+    const savePenduduk = useCallback(
+        async (formData: CreatePendudukDto | Partial<PendudukDto>, id: number | null) => {
+            if (id) {
+                await pendudukService.update(id, formData as CreatePendudukDto);
+                await fetchPendudukList();
+            } else {
+                await pendudukService.createPenduduk(formData as CreatePendudukDto);
+                setQueryParams(prev => ({ ...prev, page: 1 }));
+            }
+        },
+        [fetchPendudukList]
+    );
+
 
     const deletePenduduk = useCallback(async (id: number) => {
         if (window.confirm('Apakah Anda yakin ingin menghapus data penduduk ini?')) {

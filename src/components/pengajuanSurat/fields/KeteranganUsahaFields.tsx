@@ -1,18 +1,14 @@
 import type { UseFormReturn } from "react-hook-form";
 import TextInput from "../../ui/TextInput";
 
-// Tentukan tipe props agar komponen lebih kuat dan jelas
 interface KeteranganUsahaFieldsProps {
-  // Menerima seluruh instance form dari react-hook-form
   form: UseFormReturn<any>;
+  isViewOnly?: boolean;
 }
 
-export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
-  // Destructuring method yang dibutuhkan dari form instance
+export function KeteranganUsahaFields({ form, isViewOnly }: KeteranganUsahaFieldsProps) {
   const { register, formState: { errors } } = form;
 
-  // Cek jika ada error global dari Zod .refine()
-  // Error ini akan memiliki path 'root' atau 'root.message'
   const groupErrorMessage = errors.root?.message;
 
   return (
@@ -27,6 +23,7 @@ export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
         label="Jenis Usaha Pertanian"
         placeholder="Contoh: Tani Padi, Kebun Jagung"
         {...register("pertanian")}
+        disabled={isViewOnly}
         error={errors.pertanian?.message as string}
       />
 
@@ -35,6 +32,7 @@ export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
         label="Jenis Usaha Perdagangan"
         placeholder="Contoh: Toko Kelontong, Warung Makan"
         {...register("perdagangan")}
+        disabled={isViewOnly}
         error={errors.perdagangan?.message as string}
       />
 
@@ -43,6 +41,7 @@ export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
         label="Jenis Usaha Peternakan"
         placeholder="Contoh: Ternak Ayam Potong, Ternak Lele"
         {...register("peternakan")}
+        disabled={isViewOnly}
         error={errors.peternakan?.message as string}
       />
 
@@ -51,6 +50,7 @@ export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
         label="Jenis Usaha Perindustrian"
         placeholder="Contoh: Pembuatan Tahu, Kerajinan Kayu"
         {...register("perindustrian")}
+        disabled={isViewOnly}
         error={errors.perindustrian?.message as string}
       />
 
@@ -59,6 +59,7 @@ export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
         label="Jenis Usaha Jasa"
         placeholder="Contoh: Bengkel Motor, Jasa Jahit"
         {...register("jasa")}
+        disabled={isViewOnly}
         error={errors.jasa?.message as string}
       />
 
@@ -67,6 +68,7 @@ export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
         label="Jenis Usaha Lainnya"
         helpText="Opsional, jika usaha tidak termasuk kategori di atas."
         {...register("lain")}
+        disabled={isViewOnly}
         error={errors.lain?.message as string}
       />
 
@@ -74,6 +76,7 @@ export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
         id="alamatUsaha"
         label="Alamat Usaha"
         {...register("alamatUsaha")}
+        disabled={isViewOnly}
         error={errors.alamatUsaha?.message as string}
       />
 
@@ -82,6 +85,7 @@ export function KeteranganUsahaFields({ form }: KeteranganUsahaFieldsProps) {
         id="tahun"
         label="Tahun Mulai Usaha"
         {...register("tahun")}
+        disabled={isViewOnly}
         error={errors.tahun?.message as string}
       />
 

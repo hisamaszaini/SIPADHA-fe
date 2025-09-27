@@ -9,6 +9,7 @@ interface KeteranganTidakMampuSekolahFieldsProps {
   targetSearch: string;
   onTargetSearchChange: (value: string) => void;
   isTargetLoading: boolean;
+  isViewOnly?: boolean;
 }
 
 export function KeteranganTidakMampuSekolahFields({
@@ -17,6 +18,7 @@ export function KeteranganTidakMampuSekolahFields({
   targetSearch,
   onTargetSearchChange,
   isTargetLoading,
+  isViewOnly
 }: KeteranganTidakMampuSekolahFieldsProps) {
 
   const { register, formState: { errors }, watch, setValue } = form;
@@ -38,6 +40,7 @@ export function KeteranganTidakMampuSekolahFields({
         searchTerm={targetSearch}
         isLoading={isTargetLoading}
         error={errors.targetId?.message as string}
+        disabled={isViewOnly}
       />
 
       <TextInput
@@ -45,6 +48,7 @@ export function KeteranganTidakMampuSekolahFields({
         label="Nama Sekolah / Universitas"
         placeholder="Contoh: SMA Negeri 1 Model"
         {...register("institusi")}
+        disabled={isViewOnly}
         error={errors.institusi?.message as string}
       />
 
@@ -53,6 +57,7 @@ export function KeteranganTidakMampuSekolahFields({
         label="Alamat Siswa / Mahasiswa"
         placeholder="Alamat tempat tinggal siswa saat ini"
         {...register("alamatSiswa")}
+        disabled={isViewOnly}
         error={errors.alamatSiswa?.message as string}
       />
 
@@ -61,6 +66,7 @@ export function KeteranganTidakMampuSekolahFields({
         label="Penghasilan Orang Tua / Wali"
         placeholder="Contoh: Rp2.000.000"
         {...register("penghasilan")}
+        disabled={isViewOnly}
         error={errors.penghasilan?.message as string}
       />
 
@@ -69,6 +75,7 @@ export function KeteranganTidakMampuSekolahFields({
         label="Keterangan Pembayaran Gaji"
         placeholder="Contoh: 1 bulan sekali"
         {...register("keterangan")}
+        disabled={isViewOnly}
         error={errors.keterangan?.message as string}
       />
     </div>

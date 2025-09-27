@@ -4,12 +4,14 @@ interface SelectInputProps extends React.SelectHTMLAttributes<HTMLSelectElement>
   id: string;
   label: string;
   error?: string;
+  disabled?: boolean;
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({
   id,
   label,
   error,
+  disabled = false,
   className,
   children,
   ...rest
@@ -23,13 +25,16 @@ const SelectInput: React.FC<SelectInputProps> = ({
       </label>
       <select
         id={id}
+        disabled={disabled}
         aria-invalid={!!error}
         aria-describedby={error ? errorId : undefined}
-        className={`w-full px-4 py-3 bg-white border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200 ${
-          error
-            ? 'border-red-500 ring-red-500 focus:border-red-500'
-            : 'border-blue-300 focus:ring-emerald-500 focus:border-emerald-500'
-        } ${className || ''}`}
+        className={`w-full px-4 py-3 border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200
+    ${disabled
+            ? 'bg-gray-100 text-gray-500 cursor-not-allowed border-gray-200 focus:ring-0'
+            : error
+              ? 'border-red-500 ring-red-500 focus:border-red-500'
+              : 'bg-white border-blue-300 focus:ring-emerald-500 focus:border-emerald-500'
+          } ${className || ''}`}
         {...rest}
       >
         {children}

@@ -8,6 +8,7 @@ interface KeteranganSuamiIstriKeluarNegeriFieldsProps {
     targetSearch: string;
     onTargetSearchChange: (value: string) => void;
     isTargetLoading: boolean;
+    isViewOnly?: boolean;
 }
 
 export function KeteranganSuamiIstriKeluarNegeriFields({
@@ -16,6 +17,7 @@ export function KeteranganSuamiIstriKeluarNegeriFields({
     targetSearch,
     onTargetSearchChange,
     isTargetLoading,
+    isViewOnly
 }: KeteranganSuamiIstriKeluarNegeriFieldsProps) {
 
     const { register, formState: { errors }, watch, setValue } = form;
@@ -37,6 +39,7 @@ export function KeteranganSuamiIstriKeluarNegeriFields({
                 searchTerm={targetSearch}
                 isLoading={isTargetLoading}
                 error={errors.targetId?.message as string}
+                disabled={isViewOnly}
             />
 
             <TextInput
@@ -44,6 +47,7 @@ export function KeteranganSuamiIstriKeluarNegeriFields({
                 label="Negara Tujuan"
                 error={(errors as any).negaraTujuan?.message}
                 {...register("negaraTujuan")}
+                disabled={isViewOnly}
             />
             <TextInput
                 type="number"
@@ -51,12 +55,14 @@ export function KeteranganSuamiIstriKeluarNegeriFields({
                 label="Tahun berangkat"
                 error={(errors as any).tahun?.message}
                 {...register("tahun")}
+                disabled={isViewOnly}
             />
             <TextInput
                 id="keterangan"
                 label="Keperluan Pengajuan Surat"
                 {...register("keterangan")}
                 error={(errors as any).keterangan?.message}
+                disabled={isViewOnly}
             />
 
             {groupErrorMessage && (

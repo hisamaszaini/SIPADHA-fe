@@ -24,6 +24,7 @@ interface PengajuanSuratFormModalProps {
     targetSearch: string;
     onTargetSearchChange: (value: string) => void;
     isTargetLoading: boolean;
+    isViewOnly?: boolean;
 }
 
 export function PengajuanSuratFormModal({
@@ -39,6 +40,7 @@ export function PengajuanSuratFormModal({
     targetSearch,
     onTargetSearchChange,
     isTargetLoading,
+    isViewOnly = false,
 }: PengajuanSuratFormModalProps) {
 
     // console.log(`TargetOptions: ${JSON.stringify(targetOptions, null, 2)}`);
@@ -81,7 +83,7 @@ export function PengajuanSuratFormModal({
                         id="jenis"
                         label="Jenis Surat"
                         error={errors.jenis?.message}
-                        disabled={isEditMode}
+                        disabled={isEditMode || isLoading}
                         {...register("jenis", {
                             onChange: (e) => setSelectedJenis(e.target.value as PilihanJenisSurat)
                         })}
@@ -97,6 +99,7 @@ export function PengajuanSuratFormModal({
                         id="lingkup"
                         label="Lingkup Surat"
                         error={errors.lingkup?.message}
+                        disabled={isLoading || isViewOnly}
                         {...register("lingkup")}
                     >
                         <option>--- Pilih Lingkup Surat ---</option>
@@ -121,6 +124,7 @@ export function PengajuanSuratFormModal({
                             searchTerm={pendudukSearch}
                             isLoading={isPendudukLoading}
                             error={errors.pendudukId?.message as string}
+                            disabled={isLoading || isViewOnly}
                         />
                     ) : (
                         <PendudukSelect
@@ -136,16 +140,20 @@ export function PengajuanSuratFormModal({
                             searchTerm={pendudukSearch}
                             isLoading={isPendudukLoading}
                             error={errors.pendudukId?.message as string}
+                            disabled={isLoading || isViewOnly}
                         />
                     )}
 
                     {watchedJenis === "KETERANGAN_USAHA" && (
-                        <KeteranganUsahaFields form={form} />
+                        <KeteranganUsahaFields
+                        form={form}
+                        isViewOnly={isViewOnly} />
                     )}
 
                     {watchedJenis === "KETERANGAN_TIDAK_MAMPU_SEKOLAH" && (
                         <KeteranganTidakMampuSekolahFields
                             form={form}
+                            isViewOnly={isViewOnly}
                             targetOptions={targetOptions}
                             targetSearch={targetSearch}
                             onTargetSearchChange={onTargetSearchChange}
@@ -156,6 +164,7 @@ export function PengajuanSuratFormModal({
                     {watchedJenis === "KETERANGAN_SUAMI_ISTRI_KELUAR_NEGERI" && (
                         <KeteranganSuamiIstriKeluarNegeriFields
                             form={form}
+                            isViewOnly={isViewOnly}
                             targetOptions={targetOptions}
                             targetSearch={targetSearch}
                             onTargetSearchChange={onTargetSearchChange}
@@ -164,12 +173,15 @@ export function PengajuanSuratFormModal({
                     )}
 
                     {watchedJenis === "KETERANGAN_DOMISILI" && (
-                        <KeteranganDomisiliFields form={form} />
+                        <KeteranganDomisiliFields
+                        form={form}
+                        isViewOnly={isViewOnly} />
                     )}
 
                     {watchedJenis === "KETERANGAN_AHLI_WARIS" && (
                         <KeteranganAhliWarisFields
                             form={form}
+                            isViewOnly={isViewOnly}
                         />
                     )}
 
@@ -181,7 +193,7 @@ export function PengajuanSuratFormModal({
                             type="submit"
                             variant="primary"
                             icon="fas fa-save"
-                            disabled={isLoading}
+                            disabled={isLoading || isViewOnly}
                         >
                             {isLoading ? 'Menyimpan...' : isEditMode ? 'Perbarui' : 'Simpan'}
                         </Button>

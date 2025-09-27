@@ -4,7 +4,7 @@ import { usePendudukData } from '../../hooks/usePendudukData';
 import PendudukTable from '../../components/penduduk/PendudukTable';
 import { WilayahProvider } from '../../contexts/wilayahContext';
 import PendudukFilter from '../../components/penduduk/PendudukFilter';
-import type { FindAllPendudukResponse, Penduduk, PendudukDto } from '../../types/penduduk.types';
+import type { CreatePendudukDto, FindAllPendudukResponse, Penduduk, UpdatePendudukDto } from '../../types/penduduk.types';
 import PendudukFormModal from '../../components/penduduk/PendudukFormModal';
 import { Button } from '../../components/ui/Button';
 import { Pagination } from '../../components/ui/Pagination';
@@ -46,15 +46,23 @@ const PendudukPage: React.FC = () => {
         setEditingPenduduk(null);
     };
 
-    const handleSave = async (formData: PendudukDto, id: number | null) => {
+    const handleSave = async (formData: CreatePendudukDto | UpdatePendudukDto, id?: number | null) => {
         try {
-            await savePenduduk(formData, id);
+            if (id == null) {
+                const createDto: CreatePendudukDto = formData as CreatePendudukDto;
+                await savePenduduk(createDto, null);
+            } else {
+                const updateDto: UpdatePendudukDto = formData as UpdatePendudukDto;
+                await savePenduduk(updateDto, id);
+            }
             handleCloseModal();
         } catch (error) {
             console.error("Gagal menyimpan data penduduk:", error);
             throw error;
         }
     };
+
+
 
     return (
         <div className="w-full mx-auto bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">

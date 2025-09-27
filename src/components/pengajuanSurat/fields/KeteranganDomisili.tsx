@@ -3,9 +3,10 @@ import TextInput from "../../ui/TextInput";
 
 interface KeteranganDomisiliFieldsProps {
   form: UseFormReturn<any>;
+  isViewOnly?: boolean;
 }
 
-export function KeteranganDomisiliFields({ form }: KeteranganDomisiliFieldsProps) {
+export function KeteranganDomisiliFields({ form, isViewOnly }: KeteranganDomisiliFieldsProps) {
   const { register, formState: { errors } } = form;
   const groupErrorMessage = errors.root?.message;
 
@@ -20,6 +21,7 @@ export function KeteranganDomisiliFields({ form }: KeteranganDomisiliFieldsProps
         id="keterangan"
         label="Keterangan"
         {...register("keterangan")}
+        disabled={isViewOnly}
         error={errors.keterangan?.message as string}
       />
 

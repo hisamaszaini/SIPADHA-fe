@@ -1,6 +1,5 @@
 import React, { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
-
-import type { CreateKartuKeluargaWithKepalaDto, KartuKeluarga, PecahKkDto, UpdateKartuKeluargaWithKepalaDto } from '../../types/kartuKeluarga.types';
+import { createKartuKeluargaWithPendudukSchema, type CreateKartuKeluargaWithPendudukDto, type KartuKeluarga, type PecahKkDto } from '../../types/kartuKeluarga.types';
 import { useKartuKeluargaContext } from '../../contexts/kartuKeluargaContext';
 import TextInput from '../ui/TextInput';
 import SelectInput from '../ui/SelectInput';
@@ -11,7 +10,24 @@ import { toast } from 'sonner';
 import { Button } from '../ui/Button';
 import { formatDateForInput } from '../../utils/date';
 
-type FormData = Omit<CreateKartuKeluargaWithKepalaDto, 'tanggalLahir'> & { tanggalLahir: string };
+// Definisikan FormData dengan tipe string untuk enum fields
+type FormData = {
+  noKk: string;
+  alamat: string;
+  dukuhId: number;
+  rwId: number;
+  rtId: number;
+  nik: string;
+  nama: string;
+  tempatLahir: string;
+  tanggalLahir: string;
+  jenisKelamin: string;
+  agama: string;
+  statusPerkawinan: string;
+  pendidikan: string;
+  pekerjaan: string;
+  hubunganDalamKeluarga: string;
+};
 
 interface KartuKeluargaFormModalProps {
   isOpen: boolean;
@@ -33,19 +49,25 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
     isLoadingRt
   } = useKartuKeluargaContext();
 
-  const initialFormState: FormData = {
-    noKk: '', alamat: '', dukuhId: 0, rwId: 0, rtId: 0, nik: '', nama: '',
-    tempatLahir: '', tanggalLahir: '', jenisKelamin: '', agama: '',
-    statusPerkawinan: '', pendidikan: '', pekerjaan: '', hubunganDalamKeluarga: 'Kepala Keluarga',
-  };
-
   const [formData, setFormData] = useState<FormData>(initialFormState);
-  const [errors, setErrors] = useState<{ [key in keyof FormData]?: string }>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [globalError, setGlobalError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [foundPenduduk, setFoundPenduduk] = useState<Penduduk | null>(null);
   const [isCheckingNik, setIsCheckingNik] = useState(false);
+
+  // Calculate display data for kepala keluarga
+  const displayKepalaKeluarga = foundPenduduk ? {
+    nama: foundPenduduk.nama,
+    tempatLahir: foundPenduduk.tempatLahir,
+    tanggalLahir: formatDateForInput(foundPenduduk.tanggalLahir),
+    jenisKelamin: foundPenduduk.jenisKelamin,
+    agama: foundPenduduk.agama,
+    statusPerkawinan: foundPenduduk.statusPerkawinan,
+    pendidikan: foundPenduduk.pendidikan || '',
+    pekerjaan: foundPenduduk.pekerjaan || '',
+  } : formData;
 
   useEffect(() => {
     if (isOpen) {
@@ -71,12 +93,14 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
         setFormData(initialFormState);
       }
       setErrors({});
+      setGlobalError(null);
       setFoundPenduduk(null);
     }
-  }, [isOpen, isEditing, editingKk, handleDukuhChange]);
+  }, [isOpen, isEditing, editingKk]);
 
+  // NIK lookup effect
   useEffect(() => {
-    if (formData.nik.length !== 16) {
+    if (isEditing || formData.nik.length !== 16) {
       setFoundPenduduk(null);
       return;
     }
@@ -97,6 +121,7 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
     return () => clearTimeout(handler);
   }, [formData.nik, isEditing]);
 
+  // Load dependent selects when editing
   useEffect(() => {
     if (isOpen && isEditing && editingKk) {
       if (editingKk.dukuhId) {
@@ -111,108 +136,117 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     const isNumericField = ['dukuhId', 'rwId', 'rtId'].includes(name);
-    const numericValue = Number(value);
+    const numericValue = isNumericField ? Number(value) : value;
 
-    if (name === 'dukuhId') {
-      setFormData(prev => ({ ...prev, dukuhId: numericValue, rwId: 0, rtId: 0 }));
-      handleDukuhChange(numericValue || null);
-    } else if (name === 'rwId') {
-      setFormData(prev => ({ ...prev, rwId: numericValue, rtId: 0 }));
-      handleRwChange(numericValue || null);
-    } else {
-      setFormData(prev => ({ ...prev, [name]: isNumericField ? numericValue : value }));
+    setFormData(prev => {
+      const newFormData = { ...prev, [name]: numericValue };
+      
+      // Handle dependent selects
+      if (name === 'dukuhId') {
+        newFormData.rwId = 0;
+        newFormData.rtId = 0;
+        handleDukuhChange(Number(value) || null);
+      } else if (name === 'rwId') {
+        newFormData.rtId = 0;
+        handleRwChange(Number(value) || null);
+      }
+      
+      return newFormData;
+    });
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
-  const validate = (): boolean => {
-    const newErrors: { [key in keyof FormData]?: string } = {};
-    if (!formData.noKk || formData.noKk.length !== 16) newErrors.noKk = "Nomor KK harus 16 digit.";
-    if (!formData.alamat) newErrors.alamat = "Alamat wajib diisi.";
-    if (!formData.dukuhId) newErrors.dukuhId = "Dukuh wajib dipilih.";
-    if (!formData.rwId) newErrors.rwId = "RW wajib dipilih.";
-    if (!formData.rtId) newErrors.rtId = "RT wajib dipilih.";
-
-    if (!formData.nik || formData.nik.length !== 16) newErrors.nik = "NIK harus 16 digit.";
-
-    if (!foundPenduduk) {
-      if (!formData.nama) newErrors.nama = "Nama wajib diisi.";
-      if (!formData.tanggalLahir) newErrors.tanggalLahir = "Tanggal lahir wajib diisi.";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
+  const onFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    setGlobalError(null);
     setErrors({});
-
-    if (!validate()) return;
+    setGlobalError(null);
     setIsSubmitting(true);
 
-    let payload: CreateKartuKeluargaWithKepalaDto | UpdateKartuKeluargaWithKepalaDto | PecahKkDto;
-
-    if (isEditing && editingKk) {
-      payload = {
-        noKk: formData.noKk,
-        alamat: formData.alamat,
-        dukuhId: formData.dukuhId,
-        rwId: formData.rwId,
-        rtId: formData.rtId,
-        nik: formData.nik,
-        nama: formData.nama,
-        tempatLahir: formData.tempatLahir,
-        tanggalLahir: new Date(formData.tanggalLahir).toISOString(),
-        jenisKelamin: formData.jenisKelamin,
-        agama: formData.agama,
-        statusPerkawinan: formData.statusPerkawinan,
-        pendidikan: formData.pendidikan,
-        pekerjaan: formData.pekerjaan,
-        hubunganDalamKeluarga: formData.hubunganDalamKeluarga,
-        kepalaPendudukId: editingKk.kepalaPendudukId,
+    try {
+      // Prepare data for validation - convert tanggalLahir to Date string
+      const dataToValidate = {
+        ...formData,
+        tanggalLahir: new Date(formData.tanggalLahir).toISOString()
       };
-    } else {
-      if (foundPenduduk) {
+
+      // Validate form data using Zod schema
+      createKartuKeluargaWithPendudukSchema.parse(dataToValidate);
+
+      let payload: CreateKartuKeluargaWithPendudukDto | PecahKkDto;
+
+      if (isEditing && editingKk) {
         payload = {
           noKk: formData.noKk,
           alamat: formData.alamat,
           dukuhId: formData.dukuhId,
           rwId: formData.rwId,
           rtId: formData.rtId,
-          kepalaPendudukId: foundPenduduk.id,
+          nik: formData.nik,
+          nama: formData.nama,
+          tempatLahir: formData.tempatLahir,
+          tanggalLahir: new Date(formData.tanggalLahir).toISOString(),
+          jenisKelamin: formData.jenisKelamin as any, // Karena tipe string sudah sesuai dengan enum? Tapi Zod sudah validasi jadi aman
+          agama: formData.agama as any,
+          statusPerkawinan: formData.statusPerkawinan as any,
+          pendidikan: formData.pendidikan as any,
+          pekerjaan: formData.pekerjaan,
+          hubunganDalamKeluarga: formData.hubunganDalamKeluarga as any,
+          kepalaPendudukId: editingKk.kepalaPendudukId,
         };
       } else {
-        payload = {
-          ...formData,
-          tanggalLahir: new Date(formData.tanggalLahir).toISOString(),
-        };
-      }
-    }
-
-    try {
-      await onSave(payload, isEditing ? editingKk?.id : null);
-      toast.success(`Kartu Keluarga berhasil ${isEditing ? 'diperbarui' : 'ditambahkan'}`);
-    } catch (error: any) {
-      const apiError = error?.response?.data;
-      if (apiError?.error?.code === "VALIDATION_ERROR" && apiError?.error?.details) {
-        const fieldErrors: Record<string, string> = {};
-        for (const key in apiError.error.details) {
-          fieldErrors[key] = apiError.error.details[key][0];
+        if (foundPenduduk) {
+          payload = {
+            noKk: formData.noKk,
+            alamat: formData.alamat,
+            dukuhId: formData.dukuhId,
+            rwId: formData.rwId,
+            rtId: formData.rtId,
+            kepalaPendudukId: foundPenduduk.id,
+          };
+        } else {
+          payload = {
+            ...formData,
+            tanggalLahir: new Date(formData.tanggalLahir).toISOString(),
+            // Untuk enum fields, karena sudah divalidasi, kita bisa as any atau kita bisa lakukan type assertion
+          } as CreateKartuKeluargaWithPendudukDto;
         }
+      }
+
+      await onSave(payload, isEditing ? editingKk.id : null);
+      toast.success(`Kartu Keluarga berhasil ${isEditing ? 'diperbarui' : 'ditambahkan'}`);
+      onClose();
+    } catch (err: any) {
+      if (err.name === 'ZodError') {
+        // Handle validation errors
+        const fieldErrors: Record<string, string> = {};
+        err.errors.forEach((error: any) => {
+          if (error.path[0]) {
+            fieldErrors[error.path[0]] = error.message;
+          }
+        });
         setErrors(fieldErrors);
         toast.error("Periksa kembali data yang kamu isi.");
-
-      }
-      else if (apiError?.success === false && apiError?.message) {
-        setGlobalError(apiError.message);
-        toast.error(apiError.message);
-
-      }
-      else {
-        toast.error(`Gagal ${isEditing ? 'memperbarui' : 'menambahkan'} kartu keluarga`);
-        console.error(error);
+      } else {
+        // Handle API errors
+        const apiError = err?.response?.data;
+        if (apiError?.error?.code === "VALIDATION_ERROR" && apiError?.error?.details) {
+          const fieldErrors: Record<string, string> = {};
+          for (const key in apiError.error.details) {
+            fieldErrors[key] = apiError.error.details[key][0];
+          }
+          setErrors(fieldErrors);
+          toast.error("Periksa kembali data yang kamu isi.");
+        } else if (apiError?.error?.code === "Conflict") {
+          setGlobalError(apiError.message);
+          toast.error(apiError?.message || "Terjadi konflik data");
+        } else {
+          setGlobalError(apiError?.message || `Gagal ${isEditing ? "memperbarui" : "menambahkan"} kartu keluarga`);
+          toast.error(apiError?.message || `Gagal ${isEditing ? "memperbarui" : "menambahkan"} kartu keluarga`);
+        }
       }
     } finally {
       setIsSubmitting(false);
@@ -220,17 +254,6 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
   };
 
   if (!isOpen) return null;
-
-  const displayKepalaKeluarga = foundPenduduk ? {
-    nama: foundPenduduk.nama,
-    tempatLahir: foundPenduduk.tempatLahir,
-    tanggalLahir: formatDateForInput(foundPenduduk.tanggalLahir),
-    jenisKelamin: foundPenduduk.jenisKelamin,
-    agama: foundPenduduk.agama,
-    statusPerkawinan: foundPenduduk.statusPerkawinan,
-    pendidikan: foundPenduduk.pendidikan || '',
-    pekerjaan: foundPenduduk.pekerjaan || '',
-  } : formData;
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4" onClick={onClose}>
@@ -240,12 +263,17 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
       >
         <div className="py-4 px-6 border-b border-gray-200">
           <h3 className="text-2xl font-bold text-gray-800">
-            {isEditing ? 'Edit Kartu Keluarga' : 'Tambah Kartu Keluarga Baru'}</h3>
+            {isEditing ? 'Edit Kartu Keluarga' : 'Tambah Kartu Keluarga Baru'}
+          </h3>
         </div>
-        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto">
+        
+        <form onSubmit={onFormSubmit} className="p-6 overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <fieldset className="space-y-4">
-              <legend className="font-semibold text-lg border-b border-gray-300 pb-2 text-gray-700 w-full">Data Kartu Keluarga</legend>
+              <legend className="font-semibold text-lg border-b border-gray-300 pb-2 text-gray-700 w-full">
+                Data Kartu Keluarga
+              </legend>
+              
               <TextInput
                 id="noKk"
                 name="noKk"
@@ -254,7 +282,9 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 placeholder="Masukan Nomor KK..."
                 error={errors.noKk}
                 onChange={handleChange}
+                disabled={isEditing || isSubmitting}
               />
+              
               <TextInput
                 id="alamat"
                 name="alamat"
@@ -263,7 +293,9 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 placeholder="Masukan Alamat..."
                 error={errors.alamat}
                 onChange={handleChange}
+                disabled={isSubmitting}
               />
+              
               <SelectInput
                 id="dukuhId"
                 name="dukuhId"
@@ -272,10 +304,12 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 onChange={handleChange}
                 disabled={isSubmitting}
                 error={errors.dukuhId}
-                required>
+                required
+              >
                 <option value={0}>-- Pilih Dukuh --</option>
                 {allDukuh.map(d => <option key={d.id} value={d.id}>{d.nama}</option>)}
               </SelectInput>
+              
               <SelectInput
                 id="rwId"
                 name="rwId"
@@ -284,10 +318,12 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 onChange={handleChange}
                 disabled={!formData.dukuhId || isLoadingRw || isSubmitting}
                 error={errors.rwId}
-                required>
+                required
+              >
                 <option value={0}>{isLoadingRw ? 'Memuat...' : '-- Pilih RW --'}</option>
                 {filteredRw.map(rw => <option key={rw.id} value={rw.id}>RW {rw.nomor}</option>)}
               </SelectInput>
+              
               <SelectInput
                 id="rtId"
                 name="rtId"
@@ -296,14 +332,18 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 onChange={handleChange}
                 disabled={!formData.rwId || isLoadingRt || isSubmitting}
                 error={errors.rtId}
-                required>
+                required
+              >
                 <option value={0}>{isLoadingRt ? 'Memuat...' : '-- Pilih RT --'}</option>
                 {filteredRt.map(rt => <option key={rt.id} value={rt.id}>RT {rt.nomor}</option>)}
               </SelectInput>
             </fieldset>
 
             <fieldset className="space-y-4">
-              <legend className="font-semibold text-lg border-b border-gray-300 pb-2 text-gray-700 w-full">Data Kepala Keluarga</legend>
+              <legend className="font-semibold text-lg border-b border-gray-300 pb-2 text-gray-700 w-full">
+                Data Kepala Keluarga
+              </legend>
+              
               <TextInput
                 id="nik"
                 name="nik"
@@ -312,42 +352,59 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 placeholder="Masukan 16 digit NIK..."
                 error={errors.nik}
                 onChange={handleChange}
-                disabled={isSubmitting}
+                disabled={isEditing || isSubmitting}
                 helpText={isCheckingNik ? 'Mengecek NIK...' : (foundPenduduk ? `✔️ NIK ditemukan: ${foundPenduduk.nama}` : 'Ketik 16 digit NIK untuk cek otomatis.')}
               />
+              
               <TextInput
-                id="nama" name="nama" label="Nama"
+                id="nama"
+                name="nama"
+                label="Nama"
                 value={displayKepalaKeluarga.nama}
                 onChange={handleChange}
                 error={errors.nama}
-                disabled={isEditing || isSubmitting}
-                readOnly={isEditing}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+                readOnly={!!foundPenduduk || isEditing}
               />
+              
               <TextInput
-                id="tempatLahir" name="tempatLahir" label="Tempat Lahir"
+                id="tempatLahir"
+                name="tempatLahir"
+                label="Tempat Lahir"
                 value={displayKepalaKeluarga.tempatLahir}
                 onChange={handleChange}
                 error={errors.tempatLahir}
-                disabled={isEditing || isSubmitting}
-                readOnly={isEditing}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+                readOnly={!!foundPenduduk || isEditing}
               />
+              
               <TextInput
-                type="date" id="tanggalLahir" name="tanggalLahir" label="Tanggal Lahir"
+                type="date"
+                id="tanggalLahir"
+                name="tanggalLahir"
+                label="Tanggal Lahir"
                 value={displayKepalaKeluarga.tanggalLahir}
                 onChange={handleChange}
                 error={errors.tanggalLahir}
-                disabled={isEditing || isSubmitting}
-                readOnly={isEditing}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
+                readOnly={!!foundPenduduk || isEditing}
               />
+              
               <SelectInput
-                id="jenisKelamin" name="jenisKelamin" label="Jenis Kelamin"
+                id="jenisKelamin"
+                name="jenisKelamin"
+                label="Jenis Kelamin"
                 value={displayKepalaKeluarga.jenisKelamin}
                 onChange={handleChange}
                 error={errors.jenisKelamin}
-                disabled={isEditing || isSubmitting}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
               >
-                {jenisKelaminOptions.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
+                <option value="">-- Pilih Jenis Kelamin --</option>
+                {jenisKelaminOptions.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
               </SelectInput>
+              
               <SelectInput
                 id="agama"
                 name="agama"
@@ -355,14 +412,14 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 value={displayKepalaKeluarga.agama}
                 onChange={handleChange}
                 error={errors.agama}
-                disabled={isEditing || isSubmitting}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
               >
+                <option value="">-- Pilih Agama --</option>
                 {agamaOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
+                  <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </SelectInput>
+              
               <SelectInput
                 id="statusPerkawinan"
                 name="statusPerkawinan"
@@ -370,14 +427,14 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 value={displayKepalaKeluarga.statusPerkawinan}
                 onChange={handleChange}
                 error={errors.statusPerkawinan}
-                disabled={isEditing || isSubmitting}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
               >
+                <option value="">-- Pilih Status Perkawinan --</option>
                 {statusPerkawinanOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
+                  <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </SelectInput>
+              
               <SelectInput
                 id="pendidikan"
                 name="pendidikan"
@@ -385,14 +442,14 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 value={displayKepalaKeluarga.pendidikan}
                 onChange={handleChange}
                 error={errors.pendidikan}
-                disabled={isEditing || isSubmitting}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
               >
+                <option value="">-- Pilih Pendidikan --</option>
                 {pendidikanOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
+                  <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </SelectInput>
+              
               <TextInput
                 id="pekerjaan"
                 name="pekerjaan"
@@ -400,14 +457,14 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 value={displayKepalaKeluarga.pekerjaan}
                 placeholder="Masukan Pekerjaan..."
                 error={errors.pekerjaan}
-                disabled={isEditing || isSubmitting}
+                disabled={!!foundPenduduk || isEditing || isSubmitting}
                 onChange={handleChange}
               />
             </fieldset>
           </div>
 
           {globalError && (
-            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-4" role="alert">
+            <div className="bg-red-`100 border-l-4 border-red-500 text-red-700 p-4 mb-4 mt-4" role="alert">
               <p>{globalError}</p>
             </div>
           )}
@@ -429,6 +486,24 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
       </div>
     </div>
   );
+};
+
+const initialFormState: FormData = {
+  noKk: '',
+  alamat: '',
+  dukuhId: 0,
+  rwId: 0,
+  rtId: 0,
+  nik: '',
+  nama: '',
+  tempatLahir: '',
+  tanggalLahir: '',
+  jenisKelamin: '',
+  agama: '',
+  statusPerkawinan: '',
+  pendidikan: '',
+  pekerjaan: '',
+  hubunganDalamKeluarga: '',
 };
 
 export default KartuKeluargaFormModal;

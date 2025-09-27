@@ -1,6 +1,6 @@
 import React, { useState, useEffect, type FormEvent, type ChangeEvent, Fragment } from 'react';
 import { useWilayahContext } from '../../contexts/wilayahContext';
-import type { KartuKeluargaSimple, Penduduk, PendudukDto } from '../../types/penduduk.types';
+import { createPendudukSchema, type CreatePendudukDto, type KartuKeluargaSimple, type Penduduk, type PendudukDto, type UpdatePendudukDto } from '../../types/penduduk.types';
 import kartuKeluargaService from '../../services/kartuKeluargaService';
 import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react';
@@ -10,38 +10,50 @@ import { toast } from 'sonner';
 import { Button } from '../ui/Button';
 import { formatDateForInput } from '../../utils/date';
 import SelectInput from '../ui/SelectInput';
+import z from 'zod';
 
 type FormData = Omit<PendudukDto, 'tanggalLahir'> & { tanggalLahir: string };
 
 interface PendudukFormModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSave: (formData: PendudukDto, id: number | null) => Promise<void>;
+    onSave: (dto: CreatePendudukDto | UpdatePendudukDto, id?: number | null) => Promise<void>;
     editingPenduduk: Penduduk | null;
 }
 
-const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, onSave, editingPenduduk }) => {
+export const PendudukFormModal: React.FC<PendudukFormModalProps> = ({
+    isOpen,
+    onClose,
+    onSave,
+    editingPenduduk,
+}) => {
     const isEditing = !!editingPenduduk;
 
-    const {
-    } = useWilayahContext();
+    const { } = useWilayahContext()
 
     const initialFormState: FormData = {
-        nik: '', nama: '', tempatLahir: '', tanggalLahir: '', jenisKelamin: '',
-        agama: '', statusPerkawinan: '', pendidikan: '', pekerjaan: '',
-        hubunganDalamKeluarga: '', kartuKeluargaId: 0,
+        nik: "",
+        nama: "",
+        tempatLahir: "",
+        tanggalLahir: "",
+        jenisKelamin: "",
+        agama: "",
+        statusPerkawinan: "",
+        pendidikan: "",
+        pekerjaan: "",
+        hubunganDalamKeluarga: "",
+        kartuKeluargaId: 0,
     };
 
     const [formData, setFormData] = useState<FormData>(initialFormState);
+    const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     const [kkOptions, setKkOptions] = useState<KartuKeluargaSimple[]>([]);
-    const [kkSearchTerm, setKkSearchTerm] = useState('');
+    const [kkSearchTerm, setKkSearchTerm] = useState("");
     const [isKkLoading, setIsKkLoading] = useState(false);
     const [selectedKk, setSelectedKk] = useState<KartuKeluargaSimple | null>(null);
 
-    // useEffect untuk fetching data Kartu Keluarga (sudah baik)
     useEffect(() => {
         if (!isOpen) return;
 
@@ -50,48 +62,46 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
             try {
                 const response = await kartuKeluargaService.findAll({
                     limit: 10,
-                    search: kkSearchTerm
+                    search: kkSearchTerm,
                 });
                 setKkOptions(response.data);
-
-
             } catch (error) {
                 console.error("Gagal mencari Kartu Keluarga:", error);
             } finally {
                 setIsKkLoading(false);
             }
-
         }, 500);
 
         return () => clearTimeout(timer);
     }, [kkSearchTerm, isOpen]);
 
     useEffect(() => {
-        if (isOpen) {
-            if (isEditing && editingPenduduk) {
-                setFormData({
-                    nik: editingPenduduk.nik,
-                    nama: editingPenduduk.nama,
-                    tempatLahir: editingPenduduk.tempatLahir,
-                    tanggalLahir: formatDateForInput(editingPenduduk.tanggalLahir),
-                    jenisKelamin: editingPenduduk.jenisKelamin,
-                    agama: editingPenduduk.agama,
-                    statusPerkawinan: editingPenduduk.statusPerkawinan,
-                    pendidikan: editingPenduduk.pendidikan || '',
-                    pekerjaan: editingPenduduk.pekerjaan || '',
-                    hubunganDalamKeluarga: editingPenduduk.hubunganDalamKeluarga,
-                    kartuKeluargaId: editingPenduduk.kartuKeluargaId,
-                });
-                if (editingPenduduk.kartuKeluarga) {
-                    setSelectedKk(editingPenduduk.kartuKeluarga);
-                    setKkOptions([editingPenduduk.kartuKeluarga]);
-                }
-            } else {
-                setFormData(initialFormState);
-                setSelectedKk(null);
-                setKkOptions([]);
-                setKkSearchTerm('');
+        if (!isOpen) return;
+
+        if (isEditing && editingPenduduk) {
+            setFormData({
+                nik: editingPenduduk.nik,
+                nama: editingPenduduk.nama,
+                tempatLahir: editingPenduduk.tempatLahir,
+                tanggalLahir: formatDateForInput(editingPenduduk.tanggalLahir),
+                jenisKelamin: editingPenduduk.jenisKelamin,
+                agama: editingPenduduk.agama,
+                statusPerkawinan: editingPenduduk.statusPerkawinan,
+                pendidikan: editingPenduduk.pendidikan || "",
+                pekerjaan: editingPenduduk.pekerjaan || "",
+                hubunganDalamKeluarga: editingPenduduk.hubunganDalamKeluarga,
+                kartuKeluargaId: editingPenduduk.kartuKeluargaId,
+            });
+
+            if (editingPenduduk.kartuKeluarga) {
+                setSelectedKk(editingPenduduk.kartuKeluarga);
+                setKkOptions([editingPenduduk.kartuKeluarga]);
             }
+        } else {
+            setFormData(initialFormState);
+            setSelectedKk(null);
+            setKkOptions([]);
+            setKkSearchTerm("");
         }
     }, [isOpen, isEditing, editingPenduduk]);
 
@@ -102,34 +112,26 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
             );
 
             if (!isConfirmed) {
-                setSelectedKk(kkOptions.find(opt => opt.id === formData.kartuKeluargaId) || null);
+                setSelectedKk(kkOptions.find((opt) => opt.id === formData.kartuKeluargaId) || null);
                 return;
             }
         }
 
         setSelectedKk(kk);
 
-        if (kk) {
-            setFormData(prev => ({
-                ...prev,
-                kartuKeluargaId: kk.id,
-                hubunganDalamKeluarga: '',
-            }));
-        } else {
-            setFormData(prev => ({
-                ...prev,
-                kartuKeluargaId: 0,
-                hubunganDalamKeluarga: '',
-            }));
-        }
+        setFormData((prev) => ({
+            ...prev,
+            kartuKeluargaId: kk ? kk.id : 0,
+            hubunganDalamKeluarga: "",
+        }));
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
 
         if (errors[name]) {
-            setErrors(prev => {
+            setErrors((prev) => {
                 const newErrors = { ...prev };
                 delete newErrors[name];
                 return newErrors;
@@ -143,39 +145,47 @@ const PendudukFormModal: React.FC<PendudukFormModalProps> = ({ isOpen, onClose, 
         setErrors({});
 
         try {
-            const payload: PendudukDto = {
+            // const schema = isEditing ? updatePendudukSchema : createPendudukSchema;
+            const schema = createPendudukSchema;
+            const parsed = schema.parse({
                 ...formData,
-                tanggalLahir: new Date(formData.tanggalLahir),
-            };
+                kartuKeluargaId: formData.kartuKeluargaId.toString(),
+            });
 
-            await onSave(payload, isEditing ? editingPenduduk?.id ?? null : null);
+            await onSave(parsed, isEditing ? editingPenduduk?.id ?? null : null);
 
-            toast.success(`Penduduk berhasil ${isEditing ? 'diperbarui' : 'ditambahkan'}`);
+            toast.success(`Penduduk berhasil ${isEditing ? "diperbarui" : "ditambahkan"}`);
             onClose();
         } catch (err: any) {
-            console.error("Error submit penduduk:", err);
-
-            const apiError = err?.response?.data;
-
-            if (apiError?.error?.code === "VALIDATION_ERROR" && apiError?.error?.details) {
-                const fieldErrors: { [key: string]: string } = {};
-                for (const key in apiError.error.details) {
-                    fieldErrors[key] = apiError.error.details[key][0];
-                }
+            if (err instanceof z.ZodError) {
+                const fieldErrors: Record<string, string> = {};
+                err.issues.forEach((e) => {
+                    if (e.path[0]) fieldErrors[e.path[0].toString()] = e.message;
+                });
                 setErrors(fieldErrors);
-
                 toast.error("Periksa kembali data yang kamu isi.");
-            } else if (apiError?.error?.code === "Conflict") {
-                setErrors({ _global: apiError.message });
-                toast.error(apiError?.message || "Terjadi konflik data (misalnya NIK sudah terdaftar)");
             } else {
-                toast.error(apiError?.message || `Gagal ${isEditing ? 'memperbarui' : 'menambahkan'} penduduk`);
+                const apiError = err?.response?.data;
+                if (apiError?.error?.code === "VALIDATION_ERROR" && apiError?.error?.details) {
+                    const fieldErrors: Record<string, string> = {};
+                    for (const key in apiError.error.details) {
+                        fieldErrors[key] = apiError.error.details[key][0];
+                    }
+                    setErrors(fieldErrors);
+                    toast.error("Periksa kembali data yang kamu isi.");
+                } else if (apiError?.error?.code === "Conflict") {
+                    setErrors({ _global: apiError.message });
+                    toast.error(apiError?.message || "Terjadi konflik data (misalnya NIK sudah terdaftar)");
+                } else {
+                    toast.error(
+                        apiError?.message || `Gagal ${isEditing ? "memperbarui" : "menambahkan"} penduduk`
+                    );
+                }
             }
         } finally {
             setIsSubmitting(false);
         }
     };
-
 
     if (!isOpen) return null;
 

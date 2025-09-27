@@ -4,6 +4,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label: string;
   error?: string;
+  disabled?: boolean;
   helpText?: string;
 }
 
@@ -11,6 +12,7 @@ const TextInput: React.FC<TextInputProps> = ({
   id,
   label,
   error,
+  disabled = false,
   helpText,
   type = 'text',
   className,
@@ -32,12 +34,11 @@ const TextInput: React.FC<TextInputProps> = ({
       <input
         id={id}
         type={type}
+        disabled={disabled}
         aria-invalid={!!error}
         aria-describedby={ariaDescribedBy}
-        className={`w-full px-4 py-3 bg-white border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200 ${error
-          ? 'border-red-500 ring-red-500 focus:border-red-500'
-          : 'border-blue-300 focus:ring-emerald-500 focus:border-emerald-500'
-          } ${className || ''}`}
+        className={`w-full px-4 py-3 border rounded-md text-gray-900 focus:outline-none focus:ring-2 transition-colors duration-200 ${disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed border-gray-200 focus:ring-0'
+            : error ? 'border-red-500 ring-red-500 focus:border-red-500' : 'bg-white border-blue-300 focus:ring-emerald-500 focus:border-emerald-500'} ${className || ''}`}
         {...rest}
       />
 

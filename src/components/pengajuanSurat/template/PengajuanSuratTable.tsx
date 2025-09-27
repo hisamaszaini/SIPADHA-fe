@@ -101,7 +101,7 @@ export default function PengajuanSuratTable({
         </button>
       )}
 
-      {user?.role === "WARGA" && item.statusSurat !== 'SELESAI' && (
+      {user?.role === "WARGA" && (
         <button
           onClick={() => onEdit(item.id)}
           title="Edit Pengajuan"

@@ -5,6 +5,7 @@ import { ProcessSuratModal } from '../components/pengajuanSurat/template/Process
 import { usePengajuanSuratManagement } from '../hooks/PengajuanSurat/usePengajuanSuratManagement';
 import { Toaster } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
+import { formatNoHpToWa } from '../lib/utils';
 
 export function DetailPengajuanSuratPage() {
     const { id } = useParams<{ id: string }>();
@@ -156,6 +157,18 @@ export function DetailPengajuanSuratPage() {
                     </div>
 
                     <div className="flex w-full flex-col sm:flex-row sm:w-auto items-center gap-3">
+                        {suratData?.createdBy?.role === "WARGA" && suratData?.createdBy?.noHp && (
+                            <a
+                                href={`https://wa.me/${formatNoHpToWa(suratData.createdBy.noHp)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group w-full sm:w-auto bg-green-500 text-white px-5 py-2.5 rounded-lg font-semibold inline-flex items-center justify-center space-x-2 shadow-md hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300"
+                            >
+                                <i className="fab fa-whatsapp transition-transform duration-300 group-hover:scale-110"></i>
+                                <span>Hubungi WA</span>
+                            </a>
+                        )}
+
                         {user?.role === "ADMIN" && (
                             <button
                                 onClick={() => management.openProcessModal(suratData)}

@@ -271,6 +271,13 @@ const baseDetailPengajuanSuratSchema = z.object({
     updatedAt: z.string().datetime(),
     penduduk: pendudukDetailSchema,
     target: pendudukDetailSchema.nullable(),
+    createdBy: z.object({
+        id: z.number(),
+        username: z.string(),
+        role: z.string(),
+        noHp: z.string().nullable(),
+        email: z.string().nullable(),
+    }),
     setting: z.object({
         namaKepdes: z.string(),
         nikKepdes: z.string(),

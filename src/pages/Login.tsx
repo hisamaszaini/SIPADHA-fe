@@ -97,18 +97,16 @@ const LoginPage: React.FC = () => {
               )}
               {isSubmitting ? 'Sedang login...' : 'Login'}
             </Button>
-
             <div className="mt-4 text-center">
-              <Button variant="outline"
-                size="normal"
-                icon={undefined}
+              <button
+                type="button"
                 onClick={() => window.open('https://wa.me/6281234567890', '_blank')}
+                className="flex items-center justify-center w-full px-6 py-3 gap-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition-all focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 <Phone className="mr-2 h-5 w-5" />
                 Hubungi Admin via WhatsApp
-              </Button>
+              </button>
             </div>
-
             <p className="text-center text-sm text-white/80">
               Belum punya akun?{" "}
               <Link to="/register" className="font-semibold text-white hover:underline focus:outline-none focus:ring-2 focus:ring-white rounded">

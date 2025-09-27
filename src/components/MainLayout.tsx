@@ -101,11 +101,10 @@ const MainLayout: React.FC = () => {
                     <Outlet />
                 </main>
 
-                <footer className="h-16 flex items-center justify-center px-6 bg-white/90 font-semibold backdrop-blur-sm border-t border-gray-200 text-sm text-gray-500">
-                    <span>© 2025 SIPANDHA. All rights reserved. </span>
-                    <span className="hidden sm:block">
-                        Dibuat dengan ❤️ di Ponorogo, KKN Tematik 5 Universitas Muhammadiyah Ponorogo
-                    </span>
+                <footer className="flex items-center justify-center px-6 py-4 min-h-16 bg-white/90 font-medium backdrop-blur-sm border-t border-slate-200 text-sm text-slate-500 text-center">
+                    <p>
+                        © 2025 SIPANDHA. Hak Cipta Dilindungi | Dibuat oleh KKN Tematik 5 UM Ponorogo
+                    </p>
                 </footer>
 
                 <ConfirmationModal

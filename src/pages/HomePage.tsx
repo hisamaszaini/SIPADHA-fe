@@ -393,21 +393,21 @@ const HomePage: React.FC = () => {
                                 <img
                                     src="/images/logo-umpo.png"
                                     alt="Logo Universitas Muhammadiyah Ponorogo"
-                                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain hover-scale-105 transition-transform"
+                                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
                                 />
                             </div>
                             <div className="bg-slate-800/50 p-2 rounded-xl border border-slate-700 shadow-lg hover:bg-slate-700/50 transition-colors">
                                 <img
                                     src="/images/logo-kelompok.png"
                                     alt="Logo Kelompok 5 KKN Tematik"
-                                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain hover-scale-105 transition-transform"
+                                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
                                 />
                             </div>
                             <div className="bg-slate-800/50 p-2 rounded-xl border border-slate-700 shadow-lg hover:bg-slate-700/50 transition-colors">
                                 <img
                                     src="/images/logo-ft.png"
                                     alt="Logo Fakultas Teknik"
-                                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain hover-scale-105 transition-transform"
+                                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
                                 />
                             </div>
                         </div>

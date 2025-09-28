@@ -1,4 +1,4 @@
-import React, { useState, type ChangeEvent } from "react";
+import React, { useEffect, useState, type ChangeEvent } from "react";
 import { useImportFromExcel, useImportJobStatus, useImportHistory } from "../../hooks/useImportExportData";
 import { toast } from "sonner";
 import ImportTable from "../../components/ImportExport/ImportTable";
@@ -56,7 +56,13 @@ export default function AdminImportExportPage() {
     const { data: activeJob, isLoading: isStatusLoading } =
         useImportJobStatus(activeJobId);
 
-    const { data: history, isLoading: isHistoryLoading } = useImportHistory();
+    const { data: history, isLoading: isHistoryLoading, refetch } = useImportHistory();
+
+    useEffect(() => {
+        if (activeJob?.state === "completed" || activeJob?.state === "failed") {
+            refetch();
+        }
+    }, [activeJob?.state, refetch]);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {

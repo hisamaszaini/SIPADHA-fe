@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import kartuKeluargaService from '../services/kartuKeluargaService';
 import type { KartuKeluargaQueryParams, FindAllKartuKeluargaResponse, KartuKeluargaSortableKeys } from '../types/kartuKeluarga.types';
 import type { PaginationMeta } from '../types/api.types';
+import { toast } from 'sonner';
 
 export const useKartuKeluargaData = () => {
     const [kkList, setKkList] = useState<FindAllKartuKeluargaResponse[]>([]);
@@ -58,9 +59,23 @@ export const useKartuKeluargaData = () => {
     }, [fetchKkList]);
 
     const deleteKk = useCallback(async (id: number) => {
-        if (window.confirm('Apakah Anda yakin ingin menghapus Kartu Keluarga ini? Seluruh anggota di dalamnya akan ikut terhapus.')) {
-            await kartuKeluargaService.remove(id);
-            setQueryParams(prev => ({ ...prev, page: 1 }));
+        if (
+            window.confirm(
+                "Apakah Anda yakin ingin menghapus Kartu Keluarga ini? Seluruh anggota di dalamnya akan ikut terhapus."
+            )
+        ) {
+            try {
+                await kartuKeluargaService.remove(id);
+                toast.success("Kartu Keluarga berhasil dihapus ✅");
+                setQueryParams((prev) => ({ ...prev, page: 1 }));
+            } catch (err: any) {
+                console.error("Gagal hapus KK:", err);
+                toast.error(
+                    err?.response?.data?.message ||
+                    err.message ||
+                    "Gagal menghapus Kartu Keluarga"
+                );
+            }
         }
     }, []);
 

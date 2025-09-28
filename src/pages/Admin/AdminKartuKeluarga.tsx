@@ -60,7 +60,6 @@ const KartuKeluargaPage: React.FC = () => {
 
     const handleViewMembers = (kk: FindAllKartuKeluargaResponse) => {
         console.log("Lihat anggota keluarga dari KK:", kk.noKk);
-        // navigate logic here
     };
 
     return (

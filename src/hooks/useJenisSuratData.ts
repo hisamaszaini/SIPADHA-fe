@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import jenisSuratService from '../services/jenisSuratService';
 import type { JenisSurat, JenisSuratQueryParams, JenisSuratSortableKeys, CreateJenisSuratDto, UpdateJenisSuratDto } from '../types/jenisSurat.types';
 import type { PaginationMeta } from '../types/api.types';
+import { toast } from 'sonner';
 
 export const useJenisSuratData = () => {
     const [jenisSuratList, setJenisSuratList] = useState<JenisSurat[]>([]);
@@ -86,16 +87,26 @@ export const useJenisSuratData = () => {
         }
     }, [fetchData]);
 
-    const deleteJenisSurat = useCallback(async (id: number) => {
-        if (window.confirm('Apakah Anda yakin ingin menghapus jenis surat ini?')) {
-            try {
-                await jenisSuratService.remove(id);
-                await fetchData(); // Refresh data setelah berhasil
-            } catch (error) {
-                console.error("Gagal menghapus jenis surat:", error);
+
+    const deleteJenisSurat = useCallback(
+        async (id: number) => {
+            if (window.confirm("Apakah Anda yakin ingin menghapus jenis surat ini?")) {
+                try {
+                    await jenisSuratService.remove(id);
+                    toast.success("Jenis surat berhasil dihapus");
+                    await fetchData();
+                } catch (err: any) {
+                    console.error("Gagal menghapus jenis surat:", err);
+                    toast.error(
+                        err?.response?.data?.message ||
+                        err.message ||
+                        "Gagal menghapus jenis surat"
+                    );
+                }
             }
-        }
-    }, [fetchData]);
+        },
+        [fetchData]
+    );
 
     return {
         jenisSuratList,

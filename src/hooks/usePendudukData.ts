@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import pendudukService from '../services/pendudukService';
 import type { FindAllPendudukResponse, PendudukQueryParams, PendudukSortableKeys, PendudukDto, CreatePendudukDto } from '../types/penduduk.types';
 import type { PaginationMeta } from '../types/api.types';
+import { toast } from 'sonner';
 
 export const usePendudukData = () => {
     const [pendudukList, setPendudukList] = useState<FindAllPendudukResponse[]>([]);
@@ -70,10 +71,21 @@ export const usePendudukData = () => {
 
 
     const deletePenduduk = useCallback(async (id: number) => {
-        if (window.confirm('Apakah Anda yakin ingin menghapus data penduduk ini?')) {
-            await pendudukService.remove(id);
-            setQueryParams(prev => ({ ...prev, page: 1 }));
+        if (window.confirm("Apakah Anda yakin ingin menghapus data penduduk ini?")) {
+            try {
+                await pendudukService.remove(id);
+                toast.success("Penduduk berhasil dihapus ✅");
+                setQueryParams((prev) => ({ ...prev, page: 1 }));
+            } catch (err: any) {
+                console.error("Gagal hapus penduduk:", err);
+                toast.error(
+                    err?.response?.data?.message ||
+                    err.message ||
+                    "Gagal menghapus data penduduk"
+                );
+            }
         }
     }, []);
+
     return { pendudukList, isLoading, paginationMeta, queryParams, handleFilterChange, handleSort, handlePageChange, findOnePenduduk, savePenduduk, deletePenduduk };
 };

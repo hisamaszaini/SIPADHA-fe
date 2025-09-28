@@ -270,7 +270,7 @@ const HomePage: React.FC = () => {
                                     Daftar &amp; Isi Formulir
                                 </h3>
                                 <p className="text-slate-600">
-                                    Buat akun dengan NIK, pilih jenis surat, dan lengkapi data pada
+                                    Buat akun, pilih jenis surat, dan lengkapi data pada
                                     formulir online yang interaktif.
                                 </p>
                             </div>

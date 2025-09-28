@@ -74,7 +74,7 @@ export const useRtData = () => {
                 toast.success('RT berhasil dihapus');
                 await refreshWilayahOptions();
             } catch (err: any) {
-                err?.response?.data?.message || err.message || 'Gagal menghapus data RT'
+                toast.error(err?.response?.data?.message || err.message || 'Gagal menghapus data RT')
                 console.error('Gagal menghapus data RT:', err);
             }
         }

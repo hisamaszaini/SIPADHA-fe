@@ -74,7 +74,7 @@ export const useDukuhData = () => {
                 toast.success('Dukuh berhasil dihapus');
                 await refreshWilayahOptions();
             } catch (err: any) {
-                err?.response?.data?.message || err.message || 'Gagal menghapus data Dukuh'
+                toast.error(err?.response?.data?.message || err.message || 'Gagal menghapus data Dukuh');
                 console.error('Gagal menghapus data Dukuh:', err);
             }
         }

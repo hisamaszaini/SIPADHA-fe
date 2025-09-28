@@ -73,7 +73,7 @@ export const useRwData = () => {
                 await refreshWilayahOptions();
             } catch (err: any) {
                 console.error('Gagal menghapus data RW:', err);
-                err?.response?.data?.message || err.message || 'Gagal menghapus data RW'
+                toast.error(err?.response?.data?.message || err.message || 'Gagal menghapus data RW')
             }
         }
     };

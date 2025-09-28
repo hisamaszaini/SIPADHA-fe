@@ -3,6 +3,7 @@ import dukuhService from '../services/dukuhService';
 import { useWilayahContext } from '../contexts/wilayahContext';
 import type { CreateDukuhDto, Dukuh, DukuhQueryParams, DukuhSortableKeys } from '../types/dukuh.types';
 import type { PaginationMeta } from '../types/api.types';
+import { toast } from 'sonner';
 
 export const useDukuhData = () => {
     const { refreshWilayahOptions } = useWilayahContext(); 
@@ -70,8 +71,10 @@ export const useDukuhData = () => {
             try {
                 await dukuhService.remove(id);
                 setQueryParams(prev => ({ ...prev, page: 1 }));
+                toast.success('Dukuh berhasil dihapus');
                 await refreshWilayahOptions();
             } catch (err) {
+                toast.error(err instanceof Error ? err.message : 'Gagal menghapus data Dukuh');
                 console.error('Gagal menghapus data Dukuh:', err);
             }
         }

@@ -3,6 +3,7 @@ import { useWilayahContext } from '../contexts/wilayahContext';
 import type { CreateRwDto, FindAllRwResponse, RwQueryParams, RwSortableKeys } from '../types/rw.types';
 import type { PaginationMeta } from '../types/api.types';
 import rwService from '../services/RwService';
+import { toast } from 'sonner';
 
 export const useRwData = () => {
     const { refreshWilayahOptions } = useWilayahContext();
@@ -68,9 +69,11 @@ export const useRwData = () => {
             try {
                 await rwService.remove(id);
                 await fetchData();
+                toast.success('RW berhasil dihapus');
                 await refreshWilayahOptions();
             } catch (err) {
                 console.error('Gagal menghapus data RW:', err);
+                toast.error(err instanceof Error ? err.message : 'Gagal menghapus data RW');
             }
         }
     };

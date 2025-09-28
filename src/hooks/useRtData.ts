@@ -3,6 +3,7 @@ import { useWilayahContext } from '../contexts/wilayahContext';
 import type { CreateRtDto, RtQueryParams, RtSortableKeys, RtWithRelations } from '../types/rt.types';
 import type { PaginationMeta } from '../types/api.types';
 import rtService from '../services/RtService';
+import { toast } from 'sonner';
 
 export const useRtData = () => {
     const { refreshWilayahOptions } = useWilayahContext();
@@ -70,8 +71,10 @@ export const useRtData = () => {
             try {
                 await rtService.remove(id);
                 setQueryParams(prev => ({ ...prev, page: 1 }));
+                toast.success('RT berhasil dihapus');
                 await refreshWilayahOptions();
             } catch (err) {
+                toast.error(err instanceof Error ? err.message : 'Gagal menghapus data RT');
                 console.error('Gagal menghapus data RT:', err);
             }
         }

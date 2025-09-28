@@ -104,7 +104,7 @@ const LoginPage: React.FC = () => {
                 className="flex items-center justify-center w-full px-6 py-3 gap-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition-all focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 <Phone className="mr-2 h-5 w-5" />
-                Hubungi Admin via WhatsApp
+                Hubungi Admin
               </button>
             </div>
             <p className="text-center text-sm text-white/80">

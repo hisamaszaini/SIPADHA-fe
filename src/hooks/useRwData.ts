@@ -71,9 +71,9 @@ export const useRwData = () => {
                 await fetchData();
                 toast.success('RW berhasil dihapus');
                 await refreshWilayahOptions();
-            } catch (err) {
+            } catch (err: any) {
                 console.error('Gagal menghapus data RW:', err);
-                toast.error(err instanceof Error ? err.message : 'Gagal menghapus data RW');
+                err?.response?.data?.message || err.message || 'Gagal menghapus data RW'
             }
         }
     };

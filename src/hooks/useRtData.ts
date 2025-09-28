@@ -12,10 +12,10 @@ export const useRtData = () => {
     const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState('');
-    
-    const [queryParams, setQueryParams] = useState<RtQueryParams>({ 
-        page: 1, 
-        limit: 10, 
+
+    const [queryParams, setQueryParams] = useState<RtQueryParams>({
+        page: 1,
+        limit: 10,
         search: '',
         sortBy: 'id',
         sortOrder: 'desc'
@@ -73,8 +73,8 @@ export const useRtData = () => {
                 setQueryParams(prev => ({ ...prev, page: 1 }));
                 toast.success('RT berhasil dihapus');
                 await refreshWilayahOptions();
-            } catch (err) {
-                toast.error(err instanceof Error ? err.message : 'Gagal menghapus data RT');
+            } catch (err: any) {
+                err?.response?.data?.message || err.message || 'Gagal menghapus data RT'
                 console.error('Gagal menghapus data RT:', err);
             }
         }

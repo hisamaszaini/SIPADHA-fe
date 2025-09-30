@@ -68,14 +68,15 @@ const HomePage: React.FC = () => {
                         <div className="md:hidden flex items-center">
                             <button
                                 onClick={() => setOpen(!open)}
-                                className="text-white focus:outline-none z-50" // Z-index dinaikkan agar selalu di atas overlay
+                                className="text-white focus:outline-none z-50"
+                                aria-label="Open menu"
                             >
                                 {open ? <X size={24} /> : <Menu size={24} />}
                             </button>
                         </div>
                     </nav>
 
-                    {/* Mobile Menu Overlay (INI BAGIAN YANG DIPERBAIKI) */}
+                    {/* Mobile Menu Overlay */}
                     <div
                         className={`
             md:hidden bg-gray-900/95 backdrop-blur-sm fixed top-0 left-0 h-screen w-4/5 max-w-sm z-40
@@ -84,7 +85,6 @@ const HomePage: React.FC = () => {
         `}
                     >
                         <div className="p-6 flex flex-col h-full">
-                            {/* 1. Logo & Teks ditambahkan di sini */}
                             <div className="flex items-center gap-3 mb-8">
                                 <img
                                     src="/images/logo.png"
@@ -97,10 +97,8 @@ const HomePage: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Pemisah visual */}
                             <hr className="border-white/10 mb-8" />
 
-                            {/* 2. Tombol Menu */}
                             <div className="flex flex-col gap-4">
                                 <a
                                     href="/register"

@@ -99,7 +99,11 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSave, 
 
         setIsSaving(true);
         try {
-            await onSave(formData, isEditing && editingUser ? editingUser.id : null);
+            const payload: UserDto = {
+                ...formData,
+                nik: formData.role === 'WARGA' ? formData.nik : null,
+            };
+            await onSave(payload, isEditing && editingUser ? editingUser.id : null);
         } catch (err: any) {
             console.error(err);
             const apiError = err?.response?.data;

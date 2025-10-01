@@ -32,8 +32,7 @@ export const pendidikanOptions: SelectOption[] = [
     { value: 'D1', label: 'Diploma I/II' },
     { value: 'D2', label: 'Akademi/Diploma II' },
     { value: 'D3', label: 'Strata I/Diploma III' },
-    { value: 'D4', label: 'Strata I/Diploma IV' },
-    { value: 'S1', label: 'Strata I' },
+    { value: 'D4/S1', label: 'Strata I/Diploma IV' },
     { value: 'S2', label: 'Strata II' },
     { value: 'S3', label: 'Strata III' },
 ];

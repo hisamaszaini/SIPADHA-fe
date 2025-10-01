@@ -139,6 +139,10 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
       if (!formData.tanggalLahir) newErrors.tanggalLahir = "Tanggal lahir wajib diisi.";
     }
 
+    if (!formData.jenisKelamin) newErrors.jenisKelamin = "Jenis kelamin wajib dipilih.";
+    if (!formData.agama) newErrors.agama = "Agama wajib dipilih.";
+    if (!formData.statusPerkawinan) newErrors.statusPerkawinan = "Status perkawinan wajib dipilih.";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -346,6 +350,7 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 error={errors.jenisKelamin}
                 disabled={isEditing || isSubmitting}
               >
+                <option value="">-- Pilih Jenis Kelamin --</option>
                 {jenisKelaminOptions.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
               </SelectInput>
               <SelectInput
@@ -357,6 +362,7 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 error={errors.agama}
                 disabled={isEditing || isSubmitting}
               >
+                <option value="">-- Pilih Agama --</option>
                 {agamaOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -372,6 +378,7 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 error={errors.statusPerkawinan}
                 disabled={isEditing || isSubmitting}
               >
+                <option value="">-- Pilih Perkawinan --</option>
                 {statusPerkawinanOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -387,6 +394,7 @@ const KartuKeluargaFormModal: React.FC<KartuKeluargaFormModalProps> = ({ isOpen,
                 error={errors.pendidikan}
                 disabled={isEditing || isSubmitting}
               >
+                <option value="">-- Pilih Pendidikan Terakhir --</option>
                 {pendidikanOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
